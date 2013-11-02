@@ -21,13 +21,9 @@ Menu::~Menu()
 
 void Menu::clearMenu()
 {
-	if(m_options_text != NULL)
-	{
-		delete []m_options_text;
-		delete []m_options_text;
-		m_options_text = NULL;
-		m_usableOptions = 0;
-	}
+	delete []m_options_text;
+	m_options_text = NULL;
+	m_usableOptions = 0;
 }
 
 void Menu::updateUsability(unsigned int option_number, const string& option_text)
@@ -51,6 +47,8 @@ void Menu::displayOptions()
 			cout << i << "> " << m_options_text[i] << endl;
 		}
 	}
+
+	cout << "Please enter your choice:";
 }
 
 void Menu::Init(unsigned int num_of_options)
@@ -77,7 +75,8 @@ unsigned int Menu::choose()
 	clrscr();
 	displayOptions();
 	cin >> l_choice;
-	while (l_choice >= m_num_of_options)
+
+	while (l_choice >= m_num_of_options && m_usableOptions > 0)
 	{
 		cerr << "Wrong option ! Please choose an option between 0 and " 
 			 << m_num_of_options << endl << endl << endl;
