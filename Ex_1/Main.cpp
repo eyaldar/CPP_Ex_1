@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include "Menu.h"
+#include "Rectangle.h"
 #include "Gotoxy.h"
 
 using namespace std;
