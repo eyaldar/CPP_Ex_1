@@ -33,7 +33,12 @@ void main()
 		//	if(y>20) {y=1;}
 		//}
 
-		Rect a(1,2,4,'@');
+		Rect a(70,-4, 10,'H');
+		a.draw();
+
+		char b;
+		cin >> b; 
+
 	}
 	catch(const string& error)
 	{
