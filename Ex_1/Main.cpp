@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include "Menu.h"
-#include "Rect.h"
+#include "Square.h"
 #include "Gotoxy.h"
 
 using namespace std;
@@ -33,7 +33,7 @@ void main()
 		//	if(y>20) {y=1;}
 		//}
 
-		Rect a(70,-4, 10,'H');
+		Square a(70,-4, 10,'H');
 		a.draw();
 
 		char b;

@@ -27,4 +27,4 @@ private:
 	int m_y;
 };
 
-#endif __POINT_H__
+#endif

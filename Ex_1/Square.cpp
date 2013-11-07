@@ -1,16 +1,16 @@
-#include "Rect.h"
+#include "Square.h"
 #include "Gotoxy.h"
 
 #include <math.h>
 #include <string>
 using namespace std;
 
-bool Rect::isValidChar(char ch)
+bool Square::isValidChar(char ch)
 {
 	return ch != '@';
 }
 
-void Rect::validateChar(char ch)
+void Square::validateChar(char ch)
 {
 	if(!isValidChar(ch))
 	{
@@ -18,7 +18,7 @@ void Rect::validateChar(char ch)
 	}
 }
 
-void Rect::draw()
+void Square::draw()
 {
 	int left = m_top_left.getX();
 	int top = m_top_left.getY();

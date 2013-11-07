@@ -1,18 +1,18 @@
-#ifndef __Rect_H__
-#define __Rect_H__
+#ifndef __SQUARE_H__
+#define __SQUARE_H__
 
 #include "Point.h"
 
-class Rect 
+class Square 
 {
 public:
-	Rect(Point& point, unsigned int side_length, char ch)
+	Square(Point& point, unsigned int side_length, char ch)
 	: m_top_left(point), m_side_length(side_length), m_draw_char(ch) 
 	{
 		validateChar(ch);
 	}
 
-	Rect(int x, int y, unsigned int side_length, char ch)
+	Square(int x, int y, unsigned int side_length, char ch)
 	: m_top_left(x,y), m_side_length(side_length), m_draw_char(ch) 
 	{
 		validateChar(ch);
@@ -29,4 +29,4 @@ private:
 	void validateChar(char);
 };
 
-#endif __Rect_H__
+#endif
