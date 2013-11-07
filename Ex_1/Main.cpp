@@ -35,7 +35,7 @@ void main()
 
 		Rect a(1,2,4,'@');
 	}
-	catch(string error)
+	catch(const string& error)
 	{
 		cerr << "Got error: '"<< error << "'";
 	}

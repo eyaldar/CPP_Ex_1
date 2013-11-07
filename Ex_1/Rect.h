@@ -18,12 +18,14 @@ public:
 		validateChar(ch);
 	}
 
-	bool isValidChar(char);
-	void validateChar(char);
+
 private:
 	unsigned int m_side_length;
 	Point m_top_left;
 	char m_draw_char;
+
+	bool isValidChar(char);
+	void validateChar(char);
 };
 
 #endif __Rect_H__
