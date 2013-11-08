@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include "Menu.h"
-#include "Square.h"
+#include "SquaresContainer.h"
 #include "Gotoxy.h"
 
 using namespace std;
@@ -32,24 +32,20 @@ void main()
 		//	++y;
 		//	if(y>20) {y=1;}
 		//}
-/*
-		Square a(70,-4, 10,'H');
-		a.draw();
 
-		Square b(0, 0, 80, 'G');
-		b.draw();*/
+		SquaresContainer sc;
+		sc.init();
 
-		while(!_kbhit())
-		{
-			gotoxy(2, 2);
-			cout << ' ';
-			
-			Sleep(50);
+		sc.addSquare(1, 2, 30, 'H');
+		sc.addSquare(4, 3, 30, 'A');
+		sc.addSquare(5, 6, 30, 'M');
+		sc.addSquare(7, 7, 30, 'D');	
 
-			gotoxy(2, 2);
-			cout << '@';			
-		}
+		sc.removeSquare(1);
 
+		sc.addSquare(3, 6, 10, '%');
+
+		sc.drawSquares();
 	}
 	catch(const string& error)
 	{
