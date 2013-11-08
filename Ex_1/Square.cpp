@@ -5,6 +5,13 @@
 #include <string>
 using namespace std;
 
+Square::Square(const Square& other)
+{
+	this->m_draw_char = other.m_draw_char;
+	this->m_side_length = other.m_side_length;
+	this->m_top_left = Point(other.m_top_left);
+}
+
 bool Square::isValidChar(char ch)
 {
 	return ch != '@';

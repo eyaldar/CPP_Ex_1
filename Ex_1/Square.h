@@ -18,11 +18,12 @@ public:
 		validateChar(ch);
 	}
 
+	explicit Square(const Square&);
+
 	void draw();
 private:
 	unsigned int m_side_length;
 	Point m_top_left;
-	Point m_bottom_right;
 	char m_draw_char;
 
 	bool isValidChar(char);

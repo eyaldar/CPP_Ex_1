@@ -32,12 +32,23 @@ void main()
 		//	++y;
 		//	if(y>20) {y=1;}
 		//}
-
+/*
 		Square a(70,-4, 10,'H');
 		a.draw();
 
-		char b;
-		cin >> b; 
+		Square b(0, 0, 80, 'G');
+		b.draw();*/
+
+		while(!_kbhit())
+		{
+			gotoxy(2, 2);
+			cout << ' ';
+			
+			Sleep(50);
+
+			gotoxy(2, 2);
+			cout << '@';			
+		}
 
 	}
 	catch(const string& error)
