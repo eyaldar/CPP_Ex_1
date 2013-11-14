@@ -36,16 +36,27 @@ void main()
 		SquaresContainer sc;
 		sc.init();
 
-		sc.addSquare(1, 2, 30, 'H');
-		sc.addSquare(4, 3, 30, 'A');
-		sc.addSquare(5, 6, 30, 'M');
-		sc.addSquare(7, 7, 30, 'D');	
+		sc.addSquare(1, 1, 20, 'A');
+		sc.addSquare(2, 2, 20, 'B');
+		sc.addSquare(3, 3, 20, 'C');
+		sc.addSquare(4, 4, 20, 'D');
+		sc.addSquare(5, 5, 20, 'E');
+		sc.addSquare(6, 6, 20, 'F');
+		sc.addSquare(7, 7, 20, 'G');
+		sc.addSquare(8, 8, 20, 'H');	
+		sc.addSquare(9, 9, 20, 'I');
+		sc.addSquare(10, 10, 20, 'J');
+		sc.addSquare(11, 11, 20, 'K');	
 
 		sc.removeSquare(1);
 
-		sc.addSquare(3, 6, 10, '%');
+		sc.addSquare(2, 2, 10, '%');
 
 		sc.drawSquares();
+
+		clrscr();
+
+		sc.selectSquareByCoordinates(13,14);
 	}
 	catch(const string& error)
 	{

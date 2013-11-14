@@ -3,10 +3,10 @@
 
 using namespace std;
 
-void Point::draw(char ch)
+void Point::draw(char ch) const
 {
-	if((m_x >= 0 && m_x <= 79) &&
-	   (m_y >= 0 && m_y <= 24))
+	if((m_x >= 0 && m_x < 79) &&
+	   (m_y >= 0 && m_y < 24))
 	{
 		gotoxy(m_x, m_y);
 		cout << ch;
@@ -24,7 +24,7 @@ void Point::setX(int x)
 	m_x = x;
 }
 
-int Point::getX()
+int Point::getX() const
 {
 	return m_x;
 }
@@ -34,7 +34,7 @@ void Point::setY(int y)
 	m_y = y;
 }
 
-int Point::getY()
+int Point::getY() const
 {
 	return m_y;
 }

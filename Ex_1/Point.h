@@ -13,14 +13,14 @@ public:
 	Point(int x, int y)
 	: m_x(x), m_y(y) {}
 
-	void draw(char ch);
+	void draw(char ch) const;
 	void init(int x, int y);
 
 	void setX(int x);
-	int getX();
+	int getX() const;
 
 	void setY(int y);
-	int getY();
+	int getY() const;
 
 private:
 	int m_x;
