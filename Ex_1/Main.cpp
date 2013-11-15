@@ -5,6 +5,7 @@
 #include "Menu.h"
 #include "SquaresContainer.h"
 #include "Gotoxy.h"
+#include "SquaresApp.h"
 
 using namespace std;
 
@@ -12,120 +13,115 @@ void main()
 {
 	try
 	{
-		//system("cls");
+		SquaresApp sa;
+		sa.run();
+
+		//SquaresContainer sc;
+		//sc.init(10);
+
+		//sc.addSquare(1, 1, 7, 'A');
+		//		
+		//sc.drawSquares();
+		//Sleep(500);
+
+		//sc.addSquare(11, 1, 7, 'B');
+		//		
+		//sc.drawSquares();
+		//Sleep(500);
+
+		//sc.addSquare(3, 4, 11, 'C');
+		//		
+		//sc.drawSquares();
+		//Sleep(500);
+
+		//sc.addSquare(1, 11, 7, 'D');
+		//		
+		//sc.drawSquares();
+		//Sleep(500);
+
+		//sc.addSquare(12, 11, 7, 'E');
+		//Sleep(500);
 		//
-		//_flushall();
+		//sc.drawSquares();
+		//Sleep(500);
 
-		//int x=1;
-		//int y=1;
+		//sc.addSquare(0, 0, 20, 'F');
+		//		
+		//sc.drawSquares();
+		//Sleep(500);
 
-		//// esc (Ascii 27) ends the loop
-		//while(!_kbhit() || _getch()!=27)
-		//{
-		//	gotoxy(x,y);
-		//	cout << "*" << endl;
-		//	Sleep(50);
-		//	gotoxy(x,y);
-		//	cout << " " << endl;
-		//	++x;
-		//	if(x>79) {x=1;}
-		//	++y;
-		//	if(y>20) {y=1;}
-		//}
+		//sc.addSquare(50, 10, 21, 'G');
+		//
+		//sc.drawSquares();
+		//Sleep(500);
 
-		SquaresContainer sc;
-		sc.init(10);
+		//sc.addSquare(74, -8, 20, 'H');
 
-		sc.addSquare(1, 1, 7, 'A');
-				
-		sc.drawSquares();
-		Sleep(500);
+		//sc.drawSquares();
+		//Sleep(500);
 
-		sc.addSquare(11, 1, 7, 'B');
-				
-		sc.drawSquares();
-		Sleep(500);
+		//sc.addSquare(0, 0, 50, 'I');
 
-		sc.addSquare(3, 4, 11, 'C');
-				
-		sc.drawSquares();
-		Sleep(500);
+		//sc.drawSquares();
+		//Sleep(500);
 
-		sc.addSquare(1, 11, 7, 'D');
-				
-		sc.drawSquares();
-		Sleep(500);
+		//sc.addSquare(40, -10, 20, 'J');
+		//
+		//sc.drawSquares();
+		//Sleep(500);	
 
-		sc.addSquare(12, 11, 7, 'E');
-		Sleep(500);
-		
-		sc.drawSquares();
-		Sleep(500);
+		//clrscr();
 
-		sc.addSquare(0, 0, 20, 'F');
-				
-		sc.drawSquares();
-		Sleep(500);
+		//sc.removeSquare(1);
 
-		sc.addSquare(50, 10, 20, 'G');
-		
-		sc.drawSquares();
-		Sleep(500);
+		//sc.drawSquares();
+		//Sleep(500);
 
-		sc.addSquare(74, -8, 20, 'H');
+		//clrscr();
 
-		sc.drawSquares();
-		Sleep(500);
+		//sc.addSquare(2, 2, 10, '%');
 
-		sc.addSquare(0, 0, 50, 'I');
+		//sc.drawSquares();
+		//Sleep(2000);
 
-		sc.drawSquares();
-		Sleep(500);
+		//clrscr();
 
-		sc.addSquare(40, -10, 20, 'J');
-		
-		sc.drawSquares();
-		Sleep(500);	
+		//Point p(10,12);
+		//int squareIndex = sc.findSquareByCoordinates(p);
+		//sc.drawSquaresWithSelection(squareIndex);
+		//p.draw('X');
 
-		clrscr();
+		//Sleep(2000);
 
-		sc.removeSquare(1);
+		//clrscr();
 
-		sc.drawSquares();
-		Sleep(500);
+		//sc.promoteSquare(1);
 
-		clrscr();
+		//sc.drawSquares();
+		//Sleep(2000);
 
-		sc.addSquare(2, 2, 10, '%');
+		//clrscr();
 
-		sc.drawSquares();
-		Sleep(2000);
+		//Point p2(41,13);
+		//int squareIndex2 = sc.findSquareByCoordinates(p2);
 
-		clrscr();
+		//sc.intersectSquares(squareIndex, squareIndex2);
+		//sc.drawSquares();
 
-		Point p(10,12);
-		int squareIndex = sc.findSquareByCoordinates(p);
-		sc.drawSquaresWithSelection(squareIndex);
-		p.draw('X');
+		//Sleep(5000);
 
-		Sleep(2000);
+		//clrscr();
 
-		clrscr();
+		//p.init(2, 12);
+		//squareIndex = sc.findSquareByCoordinates(p);
 
-		sc.promoteSquare(1);
+		//p2.init(51, 12);
+		//squareIndex2 = sc.findSquareByCoordinates(p2);
 
-		sc.drawSquares();
-		Sleep(2000);
+		//sc.intersectSquares(squareIndex, squareIndex2);
+		//sc.drawSquares();
 
-		clrscr();
-
-		Point p2(41,13);
-		int squareIndex2 = sc.findSquareByCoordinates(p2);
-
-		sc.intersectSquares(squareIndex, squareIndex2);
-		sc.drawSquares();
-
-		Sleep(5000);
+		//Sleep(5000);
 	}
 	catch(const string& error)
 	{

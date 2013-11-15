@@ -4,7 +4,6 @@
 void gotoxy(int, int); // prototype
 void clrscr(); // prototype
 
-
 #include <windows.h>
 #include <process.h>
 

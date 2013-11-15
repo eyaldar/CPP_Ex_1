@@ -2,12 +2,14 @@
 #define __SQUARES_CONTAINER_H__
 
 #include "Square.h"
-#include <iostream>
 
 class SquaresContainer {
 public:
+	static const char SELECTION_CHAR = '@';
+	static const int NOT_FOUND = -1;
+
 	SquaresContainer() 
-	: m_numOfSquares(0), m_squares(NULL), m_containerSize(0) {}
+	: m_num_of_squares(0), m_squares(NULL), m_container_size(0) {}
 
 	~SquaresContainer();
 
@@ -16,17 +18,15 @@ public:
 	void removeSquare(int);
 	void promoteSquare(int squareIndex);
 	void intersectSquares(int firstIndex, int secondIndex);
-
+	
 	void drawSquares() const;
 	void drawSquaresWithSelection(int squareIndex) const;
 	int findSquareByCoordinates(const Point&) const;
-	int getNumOfSquares() const;
+	bool isContainerFull() const;
 
-private:
-	static const char SELECTION_CHAR = '@';
-
-	int m_containerSize;
-	int m_numOfSquares;
+private:	
+	int m_container_size;
+	int m_num_of_squares;
 	Square** m_squares;
 
 	void destruct();
