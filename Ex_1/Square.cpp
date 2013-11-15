@@ -65,11 +65,22 @@ bool Square::contains(const Point& point) const
 		   (m_top_left.getY() <= point.getY() && point.getY() <= m_bottom_right.getY());
 }
 
+bool Square::contains(const Square& other) const
+{
+	return this->contains(other.m_bottom_right) &&
+		   this->contains(other.m_top_left);
+}
+
 void Square::intersect(const Square& other)
 {
-	if(other.isContained(*this) ||
-	   (other.isIntersecting(*this) && this->compareAreaTo(other) > 0)   ||
-	   (!other.isIntersecting(*this) && this->compareAreaTo(other) <= 0))
+	bool areIntersecting = this->isIntersectingWith(other);
+	bool isThisAreaBigger = this->compareAreaTo(other) > 0;
+	bool doesOtherContainsThis = this->contains(other);
+
+	if(!this->contains(other) &&
+	   (other.contains(*this) ||
+	   (areIntersecting && isThisAreaBigger)  ||
+	   (!areIntersecting && !isThisAreaBigger)))
 	{
 		copyFrom(other);
 	}
@@ -91,16 +102,10 @@ int Square::compareAreaTo(const Square& other) const
 	return thisArea - otherArea;
 }
 
-bool Square::isIntersecting(const Square& other) const
+bool Square::isIntersectingWith(const Square& other) const
 {
 	return  this->m_top_left.getX() <= other.m_bottom_right.getX() &&
 			other.m_top_left.getX() <= this->m_bottom_right.getX() &&
 			this->m_top_left.getY() <= other.m_bottom_right.getY() &&
 			other.m_top_left.getY() <= this->m_bottom_right.getY();
-}
-
-bool Square::isContained(const Square& other) const
-{
-	return this->contains(other.m_bottom_right) &&
-		   this->contains(other.m_top_left);
 }
