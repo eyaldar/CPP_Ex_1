@@ -7,9 +7,7 @@ using namespace std;
 
 Square::Square(const Square& other)
 {
-	this->m_draw_char = other.m_draw_char;
-	this->m_side_length = other.m_side_length;
-	this->m_top_left = Point(other.m_top_left);
+	copyFrom(other);
 }
 
 bool Square::isValidChar(char ch)
@@ -61,8 +59,48 @@ void Square::drawWithChar(char ch) const
 	p.draw(ch);
 }
 
-bool Square::isInside(const Point& point) const
+bool Square::contains(const Point& point) const
 {
 	return (m_top_left.getX() <= point.getX() && point.getX() <= m_bottom_right.getX()) &&
 		   (m_top_left.getY() <= point.getY() && point.getY() <= m_bottom_right.getY());
+}
+
+void Square::intersect(const Square& other)
+{
+	if(other.isContained(*this) ||
+	   (other.isIntersecting(*this) && other.hasSmallerArea(*this)) ||
+	   this->hasSmallerArea(other))
+	{
+		copyFrom(other);
+	}
+}
+
+void Square::copyFrom(const Square& other)
+{
+	this->m_draw_char = other.m_draw_char;
+	this->m_side_length = other.m_side_length;
+	this->m_top_left = Point(other.m_top_left);
+	this->m_bottom_right = Point(other.m_bottom_right);
+}
+
+bool Square::hasSmallerArea(const Square& other) const
+{
+	int thisArea = this->m_side_length*this->m_side_length;
+	int otherArea = other.m_side_length*other.m_side_length;
+		
+	return thisArea < otherArea;	
+}
+
+bool Square::isIntersecting(const Square& other) const
+{
+	return  this->m_top_left.getX() <= other.m_bottom_right.getX() &&
+			other.m_top_left.getX() <= this->m_bottom_right.getX() &&
+			this->m_top_left.getY() <= other.m_bottom_right.getY() &&
+			other.m_top_left.getY() <= this->m_bottom_right.getY();
+}
+
+bool Square::isContained(const Square& other) const
+{
+	return this->contains(other.m_bottom_right) &&
+		   this->contains(other.m_top_left);
 }

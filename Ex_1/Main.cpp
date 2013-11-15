@@ -34,7 +34,7 @@ void main()
 		//}
 
 		SquaresContainer sc;
-		sc.init();
+		sc.init(10);
 
 		sc.addSquare(1, 1, 20, 'A');
 		sc.addSquare(2, 2, 20, 'B');
@@ -57,6 +57,11 @@ void main()
 		clrscr();
 
 		sc.selectSquareByCoordinates(13,14);
+
+		clrscr();
+
+		sc.promoteSquare(6);
+		sc.drawSquares();
 	}
 	catch(const string& error)
 	{
