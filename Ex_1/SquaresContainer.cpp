@@ -1,4 +1,5 @@
 #include "SquaresContainer.h"
+#include <string.h>
 
 using namespace std;
 
@@ -64,7 +65,7 @@ void SquaresContainer::removeSquare(int squareIndex)
 	m_numOfSquares--;
 }
 
-void SquaresContainer::drawSquares()
+void SquaresContainer::drawSquares() const
 {
 	for (int squareIndex = 0; squareIndex < m_numOfSquares; squareIndex++)
 	{
@@ -72,12 +73,12 @@ void SquaresContainer::drawSquares()
 	}
 }
 
-void SquaresContainer::selectSquare(int selectedIndex)
+void SquaresContainer::drawSquaresWithSelection(int squareIndex) const
 {
-	squareIndexNotOutOfBounds(selectedIndex);
+	squareIndexNotOutOfBounds(squareIndex);
 
 	drawSquares();
-	m_squares[selectedIndex]->drawWithChar(SELECTION_CHAR);
+	m_squares[squareIndex]->drawWithChar(SELECTION_CHAR);
 }
 
 void SquaresContainer::promoteSquare(int squareIndex)
@@ -91,9 +92,18 @@ void SquaresContainer::promoteSquare(int squareIndex)
 	m_squares[m_numOfSquares - 1] = squareToPromote;
 }
 
-int SquaresContainer::findSquareByCoordinates(const Point& coordinates)
+void SquaresContainer::intersectSquares(int firstIndex, int secondIndex)
 {
-	for (int squareIndex = m_numOfSquares-1; squareIndex >= 0; squareIndex--)
+	squareIndexNotOutOfBounds(firstIndex);
+	squareIndexNotOutOfBounds(secondIndex);
+
+	m_squares[firstIndex]->intersect(*m_squares[secondIndex]);
+	removeSquare(secondIndex);
+}
+
+int SquaresContainer::findSquareByCoordinates(const Point& coordinates) const
+{
+	for (int squareIndex = m_numOfSquares - 1; squareIndex >= 0; squareIndex--)
 	{
 		if(m_squares[squareIndex]->contains(coordinates))
 		{
@@ -104,29 +114,18 @@ int SquaresContainer::findSquareByCoordinates(const Point& coordinates)
 	return -1;
 }
 
-void SquaresContainer::selectSquareByCoordinates(int x, int y)
-{
-	int squareIndex = findSquareByCoordinates(Point(x,y));
-
-	if(squareIndex != -1)
-	{
-		selectSquare(squareIndex);
-	}
-	else
-	{
-		drawSquares();
-	}
-}
-
-int SquaresContainer::getNumOfSquares()
+int SquaresContainer::getNumOfSquares() const
 {
 	return m_numOfSquares;
 }
 
-void SquaresContainer::squareIndexNotOutOfBounds(int squareIndex)
+void SquaresContainer::squareIndexNotOutOfBounds(int squareIndex) const
 {
 	if(m_numOfSquares < squareIndex || squareIndex < 0)
 	{
-		throw "Given square index is out of bounds!";
+		string error("Given square index: '" + squareIndex);
+		error.append("' is out of bounds!");
+
+		throw error;
 	}
 }

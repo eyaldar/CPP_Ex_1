@@ -14,11 +14,13 @@ public:
 	void init(int containerSize);
 	void addSquare(int x, int y, unsigned int side_length, char ch); 
 	void removeSquare(int);
-	void drawSquares();
-	void selectSquareByCoordinates(int x, int y);
 	void promoteSquare(int squareIndex);
+	void intersectSquares(int firstIndex, int secondIndex);
 
-	int getNumOfSquares();
+	void drawSquares() const;
+	void drawSquaresWithSelection(int squareIndex) const;
+	int findSquareByCoordinates(const Point&) const;
+	int getNumOfSquares() const;
 
 private:
 	static const char SELECTION_CHAR = '@';
@@ -29,9 +31,8 @@ private:
 
 	void destruct();
 	void reorderSquaresFrom(int emptyIndex);
-	void selectSquare(int selectedIndex);
-	int findSquareByCoordinates(const Point& coordinates);
-	void squareIndexNotOutOfBounds(int squareIndex);
+	void selectSquare(int selectedIndex) const;
+	void squareIndexNotOutOfBounds(int squareIndex) const;
 };
 
 #endif

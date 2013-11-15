@@ -13,7 +13,7 @@ void SquaresApp::initMainMenu()
 	m_app_main_menu.set(0, "Add a new square.");
 	m_app_main_menu.set(1, "Draw all squares.");
 	m_app_main_menu.set(2, "Select square.");
-	m_app_main_menu.set(8, "Exit.");
+	m_app_main_menu.set(7, "Exit.");
 }
 
 void SquaresApp::initSquareMenu()

@@ -24,12 +24,17 @@ public:
 
 	void intersect(const Square&);
 
-	void drawWithChar(char ch) const;
 	void draw() const;
+	void drawWithChar(char ch) const;
 	bool contains(const Point& point) const;
-	bool hasSmallerArea(const Square&) const;
+
+	// Compares to squares by area
+	// Returns 0 if the areas are equal, in case this square is bigger returns positive number
+	// otherwise returns negative number.
+	int compareAreaTo(const Square&) const;
 	bool isIntersecting(const Square&) const;
 	bool isContained(const Square&) const;
+
 private:
 	unsigned int m_side_length;
 	Point m_top_left;

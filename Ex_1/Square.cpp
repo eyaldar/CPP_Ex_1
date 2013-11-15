@@ -68,8 +68,8 @@ bool Square::contains(const Point& point) const
 void Square::intersect(const Square& other)
 {
 	if(other.isContained(*this) ||
-	   (other.isIntersecting(*this) && other.hasSmallerArea(*this)) ||
-	   this->hasSmallerArea(other))
+	   (other.isIntersecting(*this) && this->compareAreaTo(other) > 0)   ||
+	   (!other.isIntersecting(*this) && this->compareAreaTo(other) <= 0))
 	{
 		copyFrom(other);
 	}
@@ -83,12 +83,12 @@ void Square::copyFrom(const Square& other)
 	this->m_bottom_right = Point(other.m_bottom_right);
 }
 
-bool Square::hasSmallerArea(const Square& other) const
+int Square::compareAreaTo(const Square& other) const
 {
 	int thisArea = this->m_side_length*this->m_side_length;
 	int otherArea = other.m_side_length*other.m_side_length;
 		
-	return thisArea < otherArea;	
+	return thisArea - otherArea;
 }
 
 bool Square::isIntersecting(const Square& other) const
