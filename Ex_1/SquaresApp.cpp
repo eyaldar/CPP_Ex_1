@@ -148,7 +148,7 @@ void SquaresApp::drawBlinkingPoint(const Point& point) const
 {
 	while(!_kbhit() || _getch()!=27)
 	{
-		point.draw(SquaresContainer::SELECTION_CHAR);
+		point.draw(SELECTION_CHAR);
 		Sleep(100);
 		point.draw(' ');
 		Sleep(100);
@@ -157,12 +157,10 @@ void SquaresApp::drawBlinkingPoint(const Point& point) const
 
 void SquaresApp::drawSquaresWithSelection() const
 {
+	m_squares.drawSquares();
+
 	if(m_selected_square_index != SquaresContainer::NOT_FOUND)
 	{
-		m_squares.drawSquaresWithSelection(m_selected_square_index);
-	}
-	else
-	{
-		m_squares.drawSquares();
+		m_squares.drawSquareWithChar(m_selected_square_index, SELECTION_CHAR);
 	}
 }

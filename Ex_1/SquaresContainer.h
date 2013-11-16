@@ -5,7 +5,6 @@
 
 class SquaresContainer {
 public:
-	static const char SELECTION_CHAR = '@';
 	static const int NOT_FOUND = -1;
 
 	SquaresContainer() 
@@ -20,7 +19,7 @@ public:
 	void intersectSquares(int firstIndex, int secondIndex);
 	
 	void drawSquares() const;
-	void drawSquaresWithSelection(int squareIndex) const;
+	void drawSquareWithChar(int squareIndex, char ch) const;
 	int findSquareByCoordinates(const Point&) const;
 	bool isContainerFull() const;
 
@@ -31,7 +30,6 @@ private:
 
 	void destruct();
 	void reorderSquaresFrom(int emptyIndex);
-	void selectSquare(int selectedIndex) const;
 	void squareIndexNotOutOfBounds(int squareIndex) const;
 };
 

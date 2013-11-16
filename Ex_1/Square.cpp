@@ -10,19 +10,6 @@ Square::Square(const Square& other)
 	copyFrom(other);
 }
 
-bool Square::isValidChar(char ch)
-{
-	return ch != '@';
-}
-
-void Square::validateChar(char ch)
-{
-	if(!isValidChar(ch))
-	{
-		throw string("Invalid char! using '@' is not allowed!");
-	}
-}
-
 void Square::draw() const
 {
 	drawWithChar(m_draw_char);

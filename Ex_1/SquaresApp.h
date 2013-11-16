@@ -21,6 +21,7 @@ public:
 	void run();
 
 private:
+	static const char SELECTION_CHAR = '@';
 	static const int MAX_AVAILABLE_SQUARES = 10;
 	static const int NUM_OF_MAIN_MENU_OPTIONS = 8;
 	static const int NUM_OF_SQUARE_MENU_OPTIONS = 8;

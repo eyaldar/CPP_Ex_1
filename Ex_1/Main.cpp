@@ -1,10 +1,3 @@
-#include <iostream>
-#include <stdlib.h>
-#include <stdio.h>
-#include <conio.h>
-#include "Menu.h"
-#include "SquaresContainer.h"
-#include "Gotoxy.h"
 #include "SquaresApp.h"
 
 using namespace std;
@@ -90,7 +83,8 @@ void main()
 
 		Point p(10,12);
 		int squareIndex = sc.findSquareByCoordinates(p);
-		sc.drawSquaresWithSelection(squareIndex);
+		sc.drawSquares();
+		sc.drawSquareWithChar(squareIndex, '@');
 		p.draw('X');
 
 		Sleep(2000);

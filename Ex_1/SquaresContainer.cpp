@@ -72,12 +72,11 @@ void SquaresContainer::drawSquares() const
 	}
 }
 
-void SquaresContainer::drawSquaresWithSelection(int squareIndex) const
+void SquaresContainer::drawSquareWithChar(int squareIndex, char ch) const
 {
 	squareIndexNotOutOfBounds(squareIndex);
 
-	drawSquares();
-	m_squares[squareIndex]->drawWithChar(SELECTION_CHAR);
+	m_squares[squareIndex]->drawWithChar(ch);
 }
 
 void SquaresContainer::promoteSquare(int squareIndex)

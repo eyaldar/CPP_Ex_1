@@ -8,17 +8,11 @@ class Square
 public:
 	Square(Point& point, unsigned int side_length, char ch)
 	: m_top_left(point), m_bottom_right(point.getX() + side_length - 1, point.getX() + side_length - 1), 
-	  m_side_length(side_length), m_draw_char(ch)
-	{
-		validateChar(ch);
-	}
+	  m_side_length(side_length), m_draw_char(ch) {}
 
 	Square(int x, int y, unsigned int side_length, char ch)
 	: m_top_left(x,y), m_bottom_right(x + side_length - 1, y + side_length - 1), 
-	  m_side_length(side_length), m_draw_char(ch) 
-	{
-		validateChar(ch);
-	}
+	  m_side_length(side_length), m_draw_char(ch) {}
 
 	explicit Square(const Square&);
 
@@ -43,8 +37,6 @@ private:
 	Point m_bottom_right;
 	char m_draw_char;
 
-	bool isValidChar(char);
-	void validateChar(char);
 	void copyFrom(const Square&);
 };
 
