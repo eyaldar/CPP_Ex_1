@@ -93,7 +93,7 @@ void SquaresApp::runSquareMenu()
 			int secondSquareIndex = m_squares.findSquare(selectionPoint);
 
 			if(secondSquareIndex != SquaresContainer::NOT_FOUND)
-				m_squares.intersectSquares(m_selected_square_index, secondSquareIndex);
+				m_squares.mergeSquares(m_selected_square_index, secondSquareIndex);
 
 			break;
 	}

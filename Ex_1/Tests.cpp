@@ -92,7 +92,7 @@ void testContainer()
 		Point p2(41,13);
 		int squareIndex2 = sc.findSquare(p2);
 
-		sc.intersectSquares(squareIndex, squareIndex2);
+		sc.mergeSquares(squareIndex, squareIndex2);
 		sc.drawSquares();
 
 		Sleep(5000);
@@ -105,7 +105,7 @@ void testContainer()
 		p2.init(3, 4);
 		squareIndex2 = sc.findSquare(p2);
 
-		sc.intersectSquares(squareIndex, squareIndex2);
+		sc.mergeSquares(squareIndex, squareIndex2);
 		sc.drawSquares();
 
 		Sleep(5000);
@@ -118,7 +118,7 @@ void testContainer()
 		p2.init(40, -10);
 		squareIndex2 = sc.findSquare(p2);
 
-		sc.intersectSquares(squareIndex, squareIndex2);
+		sc.mergeSquares(squareIndex, squareIndex2);
 		sc.drawSquares();
 
 		Sleep(5000);

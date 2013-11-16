@@ -90,12 +90,12 @@ void SquaresContainer::promoteSquare(int squareIndex)
 	m_squares[m_num_of_squares - 1] = squareToPromote;
 }
 
-void SquaresContainer::intersectSquares(int firstIndex, int secondIndex)
+void SquaresContainer::mergeSquares(int firstIndex, int secondIndex)
 {
 	squareIndexNotOutOfBounds(firstIndex);
 	squareIndexNotOutOfBounds(secondIndex);
 
-	m_squares[firstIndex]->intersect(*m_squares[secondIndex]);
+	m_squares[firstIndex]->merge(*m_squares[secondIndex]);
 	removeSquare(secondIndex);
 }
 

@@ -43,7 +43,7 @@ void Menu::setAvailability(unsigned int option_number, bool isEnabled)
 	m_option_availability[option_number] = isEnabled;
 }
 
-void Menu::displayOptions()
+void Menu::displayOptions() const
 {
 	for (unsigned int i=0; i < m_num_of_options; i++)
 	{
@@ -73,13 +73,13 @@ void Menu::set(unsigned int option_number, string option_text)
 	m_options_text[option_number] = option_text;
 }
 
-void Menu::checkAvailableOptions()
+void Menu::checkAvailableOptions() const
 {
 	if(m_num_of_available_options <= 0)
 		throw "Error! there are no available options to choose from...";
 }
 
-unsigned int Menu::choose()
+unsigned int Menu::choose() const
 {
 	checkAvailableOptions();
 

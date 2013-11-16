@@ -58,7 +58,7 @@ bool Square::contains(const Square& other) const
 		   this->contains(other.m_top_left);
 }
 
-void Square::intersect(const Square& other)
+void Square::merge(const Square& other)
 {
 	bool areIntersecting = this->isIntersectingWith(other);
 	bool isThisAreaBigger = this->compareAreaTo(other) > 0;

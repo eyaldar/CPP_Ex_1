@@ -16,7 +16,7 @@ public:
 	void addSquare(int x, int y, unsigned int side_length, char ch); 
 	void removeSquare(int);
 	void promoteSquare(int squareIndex);
-	void intersectSquares(int firstIndex, int secondIndex);
+	void mergeSquares(int firstIndex, int secondIndex);
 	
 	void drawSquares() const;
 	void drawSquare(int squareIndex, char ch) const;

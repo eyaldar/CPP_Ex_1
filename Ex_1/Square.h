@@ -16,7 +16,7 @@ public:
 
 	explicit Square(const Square&);
 
-	void intersect(const Square&);
+	void merge(const Square&);
 
 	void draw() const;
 	void draw(char ch) const;
