@@ -116,17 +116,36 @@ Point SquaresApp::createPointByInput() const
 
 void SquaresApp::addSquareByInput()
 {
-	int x,y, sideLength;
+	double x,y, sideLength;
 	char ch;
 
 	cout << "Please enter the X coordinate for the top left point :";
 	cin >> x;
+
 	cout << "Please enter the Y coordinate for the top left point :";
 	cin >> y;
-	cout << "Please eneter the side length [Natural numbers only] :";
-	cin >> sideLength;	
-	cout << "Please enter the square character:";
+
+	cout << "Please enter the side length [At least 1] :";
+	cin >> sideLength;
+
+	while(sideLength < 1)
+	{
+		cerr << "Invalid side length !." << endl << endl << endl;
+
+		cout << "Please enter the side length [At least 1] :";
+		cin >> sideLength;
+	}
+
+	cout << "Please enter the square character ['@' is not allowed]:";
 	cin >> ch;
+
+	while(ch == SELECTION_CHAR)
+	{
+		cerr << "Invalid character ! Please insert different square character ." << endl << endl << endl;
+
+		cout << "Please enter the square character ['@' is not allowed]:";
+		cin >> ch;
+	}
 
 	m_squares.addSquare(x, y, sideLength, ch);
 }
