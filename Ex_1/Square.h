@@ -29,8 +29,6 @@ public:
 	// otherwise returns negative number.
 	int compareAreaTo(const Square&) const;
 
-
-
 private:
 	unsigned int m_side_length;
 	Point m_top_left;
