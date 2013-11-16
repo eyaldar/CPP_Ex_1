@@ -71,6 +71,7 @@
     <ClCompile Include="Square.cpp" />
     <ClCompile Include="SquaresApp.cpp" />
     <ClCompile Include="SquaresContainer.cpp" />
+    <ClCompile Include="Tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gotoxy.h" />
@@ -79,6 +80,7 @@
     <ClInclude Include="Square.h" />
     <ClInclude Include="SquaresApp.h" />
     <ClInclude Include="SquaresContainer.h" />
+    <ClInclude Include="Tests.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

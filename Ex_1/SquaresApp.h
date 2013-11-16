@@ -9,16 +9,23 @@
 class SquaresApp
 {
 public:
-	SquaresApp()
-	: m_selected_square_index(SquaresContainer::NOT_FOUND)
+	
+	static SquaresApp& getInstance()
 	{
-		init();
+		static SquaresApp instance;
+		return instance;
 	}
 
 	void init();
 	void run();
 
 private:
+	SquaresApp()
+	: m_selected_square_index(SquaresContainer::NOT_FOUND)
+	{
+		init();
+	}
+
 	static const char SELECTION_CHAR = '@';
 	static const int MAX_AVAILABLE_SQUARES = 10;
 	static const int NUM_OF_MAIN_MENU_OPTIONS = 8;
