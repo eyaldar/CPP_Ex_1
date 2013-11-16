@@ -2,11 +2,9 @@
 #define __SQUARES_APP_H__
 
 #include "Menu.h"
-#include "Point.h"
 #include "SquaresContainer.h"
 #include "Gotoxy.h"
 #include <conio.h>
-#include <iostream>
 
 class SquaresApp
 {
