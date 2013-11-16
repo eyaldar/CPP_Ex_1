@@ -72,11 +72,11 @@ void SquaresContainer::drawSquares() const
 	}
 }
 
-void SquaresContainer::drawSquareWithChar(int squareIndex, char ch) const
+void SquaresContainer::drawSquare(int squareIndex, char ch) const
 {
 	squareIndexNotOutOfBounds(squareIndex);
 
-	m_squares[squareIndex]->drawWithChar(ch);
+	m_squares[squareIndex]->draw(ch);
 }
 
 void SquaresContainer::promoteSquare(int squareIndex)
@@ -99,7 +99,7 @@ void SquaresContainer::intersectSquares(int firstIndex, int secondIndex)
 	removeSquare(secondIndex);
 }
 
-int SquaresContainer::findSquareByCoordinates(const Point& coordinates) const
+int SquaresContainer::findSquare(const Point& coordinates) const
 {
 	for (int squareIndex = m_num_of_squares - 1; squareIndex >= 0; squareIndex--)
 	{

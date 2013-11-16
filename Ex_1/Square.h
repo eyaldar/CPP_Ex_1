@@ -19,7 +19,7 @@ public:
 	void intersect(const Square&);
 
 	void draw() const;
-	void drawWithChar(char ch) const;
+	void draw(char ch) const;
 	bool contains(const Point& point) const;
 	bool contains(const Square&) const;
 	bool isIntersectingWith(const Square&) const;

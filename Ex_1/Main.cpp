@@ -1,5 +1,5 @@
 #include "SquaresApp.h"
-
+#define DEBUG
 using namespace std;
 
 void main()
@@ -82,9 +82,9 @@ void main()
 		clrscr();
 
 		Point p(10,12);
-		int squareIndex = sc.findSquareByCoordinates(p);
+		int squareIndex = sc.findSquare(p);
 		sc.drawSquares();
-		sc.drawSquareWithChar(squareIndex, '@');
+		sc.drawSquare(squareIndex, '@');
 		p.draw('X');
 
 		Sleep(2000);
@@ -99,7 +99,7 @@ void main()
 		clrscr();
 
 		Point p2(41,13);
-		int squareIndex2 = sc.findSquareByCoordinates(p2);
+		int squareIndex2 = sc.findSquare(p2);
 
 		sc.intersectSquares(squareIndex, squareIndex2);
 		sc.drawSquares();
@@ -109,10 +109,10 @@ void main()
 		clrscr();
 
 		p.init(0, 0);
-		squareIndex = sc.findSquareByCoordinates(p);
+		squareIndex = sc.findSquare(p);
 
 		p2.init(3, 4);
-		squareIndex2 = sc.findSquareByCoordinates(p2);
+		squareIndex2 = sc.findSquare(p2);
 
 		sc.intersectSquares(squareIndex, squareIndex2);
 		sc.drawSquares();
@@ -122,10 +122,10 @@ void main()
 		clrscr();
 
 		p.init(50, 10);
-		squareIndex = sc.findSquareByCoordinates(p);
+		squareIndex = sc.findSquare(p);
 
 		p2.init(40, -10);
-		squareIndex2 = sc.findSquareByCoordinates(p2);
+		squareIndex2 = sc.findSquare(p2);
 
 		sc.intersectSquares(squareIndex, squareIndex2);
 		sc.drawSquares();

@@ -12,10 +12,10 @@ Square::Square(const Square& other)
 
 void Square::draw() const
 {
-	drawWithChar(m_draw_char);
+	draw(m_draw_char);
 }
 
-void Square::drawWithChar(char ch) const
+void Square::draw(char ch) const
 {
 	int left = m_top_left.getX();
 	int top = m_top_left.getY();

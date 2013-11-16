@@ -64,7 +64,7 @@ void SquaresApp::run()
 void SquaresApp::selectSquare()
 {
 	Point& selectionPoint = createPointByInput();
-	m_selected_square_index = m_squares.findSquareByCoordinates(selectionPoint);
+	m_selected_square_index = m_squares.findSquare(selectionPoint);
 
 	clrscr();
 
@@ -90,7 +90,7 @@ void SquaresApp::runSquareMenu()
 			break;
 		case 3:
 			Point& selectionPoint = createPointByInput();
-			int secondSquareIndex = m_squares.findSquareByCoordinates(selectionPoint);
+			int secondSquareIndex = m_squares.findSquare(selectionPoint);
 
 			if(secondSquareIndex != SquaresContainer::NOT_FOUND)
 				m_squares.intersectSquares(m_selected_square_index, secondSquareIndex);
@@ -180,6 +180,6 @@ void SquaresApp::drawSquaresWithSelection() const
 
 	if(m_selected_square_index != SquaresContainer::NOT_FOUND)
 	{
-		m_squares.drawSquareWithChar(m_selected_square_index, SELECTION_CHAR);
+		m_squares.drawSquare(m_selected_square_index, SELECTION_CHAR);
 	}
 }

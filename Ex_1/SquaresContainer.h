@@ -19,8 +19,8 @@ public:
 	void intersectSquares(int firstIndex, int secondIndex);
 	
 	void drawSquares() const;
-	void drawSquareWithChar(int squareIndex, char ch) const;
-	int findSquareByCoordinates(const Point&) const;
+	void drawSquare(int squareIndex, char ch) const;
+	int findSquare(const Point&) const;
 	bool isContainerFull() const;
 
 private:	
