@@ -13,9 +13,11 @@ void main()
 {
 	try
 	{
-		//SquaresApp sa;
-		//sa.run();
+#ifndef DEBUG
 
+		SquaresApp app;
+		app.run();
+#else
 		SquaresContainer sc;
 		sc.init(10);
 
@@ -135,6 +137,7 @@ void main()
 		sc.drawSquares();
 
 		Sleep(5000);
+#endif
 	}
 	catch(const string& error)
 	{

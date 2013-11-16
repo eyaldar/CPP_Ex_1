@@ -133,7 +133,7 @@ void SquaresApp::addSquareByInput()
 
 void SquaresApp::updateMainMenuOptions()
 {
-	m_app_main_menu.setAvailability(7, !m_squares.isContainerFull());
+	m_app_main_menu.setAvailability(0, !m_squares.isContainerFull());
 }
 
 void SquaresApp::waitForEscape() const
@@ -149,8 +149,9 @@ void SquaresApp::drawBlinkingPoint(const Point& point) const
 	while(!_kbhit() || _getch()!=27)
 	{
 		point.draw(SquaresContainer::SELECTION_CHAR);
-		Sleep(500);
+		Sleep(100);
 		point.draw(' ');
+		Sleep(100);
 	}
 }
 
