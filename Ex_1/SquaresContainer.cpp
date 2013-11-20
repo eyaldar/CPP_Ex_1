@@ -34,7 +34,7 @@ void SquaresContainer::destruct()
 	m_num_of_squares = 0;
 }
 
-void SquaresContainer::reorderSquaresFrom(int emptyIndex)
+void SquaresContainer::rearrangeSquaresFrom(int emptyIndex)
 {
 	for (int squareIndex = emptyIndex; squareIndex < m_num_of_squares - 1; squareIndex++)
 	{
@@ -59,7 +59,7 @@ void SquaresContainer::removeSquare(int squareIndex)
 	delete m_squares[squareIndex];
 	m_squares[squareIndex] = NULL;
 
-	reorderSquaresFrom(squareIndex);
+	rearrangeSquaresFrom(squareIndex);
 	
 	m_num_of_squares--;
 }
@@ -85,7 +85,7 @@ void SquaresContainer::promoteSquare(int squareIndex)
 
 	Square* squareToPromote = m_squares[squareIndex];
 
-	reorderSquaresFrom(squareIndex);
+	rearrangeSquaresFrom(squareIndex);
 
 	m_squares[m_num_of_squares - 1] = squareToPromote;
 }

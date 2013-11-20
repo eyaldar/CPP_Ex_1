@@ -29,7 +29,7 @@ private:
 	Square** m_squares;
 
 	void destruct();
-	void reorderSquaresFrom(int emptyIndex);
+	void rearrangeSquaresFrom(int emptyIndex);
 	void squareIndexNotOutOfBounds(int squareIndex) const;
 };
 
