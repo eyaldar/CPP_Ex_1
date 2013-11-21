@@ -99,9 +99,12 @@ void SquaresContainer::mergeSquares(int firstIndex, int secondIndex)
 	removeSquare(secondIndex);
 }
 
-int SquaresContainer::findSquare(const Point& coordinates) const
+int SquaresContainer::findSquare(const Point& coordinates, int formIndex) const
 {
-	for (int squareIndex = m_num_of_squares - 1; squareIndex >= 0; squareIndex--)
+	if(formIndex > m_num_of_squares - 1)
+		throw "given fromIndex is invalid!";
+
+	for (int squareIndex = formIndex; squareIndex >= 0; squareIndex--)
 	{
 		if(m_squares[squareIndex]->contains(coordinates))
 		{
@@ -110,6 +113,11 @@ int SquaresContainer::findSquare(const Point& coordinates) const
 	}
 
 	return NOT_FOUND;
+}
+
+int SquaresContainer::getNumOfSquares() const
+{
+	return m_num_of_squares;
 }
 
 bool SquaresContainer::isContainerFull() const

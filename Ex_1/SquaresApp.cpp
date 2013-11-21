@@ -25,8 +25,8 @@ void SquaresApp::initSquareMenu()
 	m_app_square_menu.init(NUM_OF_SQUARE_MENU_OPTIONS);
 
 	m_app_square_menu.set(0, "Cancel selection.");
-	m_app_square_menu.set(1, "Delete square.");
-	m_app_square_menu.set(2, "Show square on top.");
+	m_app_square_menu.set(1, "Remove square.");
+	m_app_square_menu.set(2, "Move to top.");
 	m_app_square_menu.set(3, "Merge with other square.");
 }
 
@@ -39,15 +39,15 @@ void SquaresApp::run()
 		l_option = m_app_main_menu.choose();
 		switch(l_option)
 		{
-			case 0:
+			case ADD_SQUARE:
 				addSquareByInput();
-				break;
-			case 1:
+				// Allows this case to continue to the next case, as it needs to be printed anyway...
+			case DRAW_SQUARES:
 				clrscr();
 				m_squares.drawSquares();
 				waitForEscape();
 				break;
-			case 2:
+			case SELECT_SQUARE:
 				selectSquare();
 
 				if(m_selected_square_index != SquaresContainer::NOT_FOUND)
@@ -64,7 +64,7 @@ void SquaresApp::run()
 void SquaresApp::selectSquare()
 {
 	Point& selectionPoint = createPointByInput();
-	m_selected_square_index = m_squares.findSquare(selectionPoint);
+	m_selected_square_index = findSquare(selectionPoint);
 
 	clrscr();
 
@@ -79,18 +79,18 @@ void SquaresApp::runSquareMenu()
 	l_option = m_app_square_menu.choose();
 	switch(l_option)
 	{
-		case 0:
+		case CANCEL_SELECTION:
 			m_selected_square_index = SquaresContainer::NOT_FOUND;
 			break;
-		case 1:
+		case REMOVE_SQUARE:
 			m_squares.removeSquare(m_selected_square_index);
 			break;
-		case 2:
+		case MOVE_TOP:
 			m_squares.promoteSquare(m_selected_square_index);
 			break;
-		case 3:
+		case MERGE_SQUARE:
 			Point& selectionPoint = createPointByInput();
-			int secondSquareIndex = m_squares.findSquare(selectionPoint);
+			int secondSquareIndex = findSquare(selectionPoint);
 
 			if(secondSquareIndex != SquaresContainer::NOT_FOUND)
 				m_squares.mergeSquares(m_selected_square_index, secondSquareIndex);
@@ -102,6 +102,22 @@ void SquaresApp::runSquareMenu()
 	m_squares.drawSquares();
 	waitForEscape();
 }
+
+int SquaresApp::findSquare(const Point& coordinates)
+{
+	int fromIndex = m_squares.getNumOfSquares();
+
+	while(fromIndex != SquaresContainer::NOT_FOUND)
+	{
+		fromIndex = m_squares.findSquare(coordinates, fromIndex - 1);
+
+		if(fromIndex != m_selected_square_index)
+			return fromIndex;
+	}
+
+	return fromIndex;
+}
+
 Point SquaresApp::createPointByInput() const
 {
 	int x,y;

@@ -49,7 +49,7 @@ void Menu::displayOptions() const
 	{
 		if(m_option_availability[i])
 		{
-			cout << i << "> " << m_options_text[i] << endl;
+			cout << i + 1 << "> " << m_options_text[i] << endl;
 		}
 	}
 
@@ -89,12 +89,15 @@ unsigned int Menu::choose() const
 	displayOptions();
 	cin >> l_choice;
 
+	l_choice--;
+
 	while (l_choice < 0 || l_choice >= m_num_of_options || !m_option_availability[l_choice])
 	{
 		cerr << "Wrong option ! Please choose an option from the available options." << endl << endl << endl;
 		displayOptions();
 
 		cin >> l_choice;
+		l_choice--;
 	}
 
 	return l_choice;

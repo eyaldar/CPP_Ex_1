@@ -20,9 +20,9 @@ public:
 	
 	void drawSquares() const;
 	void drawSquare(int squareIndex, char ch) const;
-	int findSquare(const Point&) const;
+	int findSquare(const Point&, int from) const;
+	int getNumOfSquares() const;
 	bool isContainerFull() const;
-
 private:	
 	int m_container_size;
 	int m_num_of_squares;
