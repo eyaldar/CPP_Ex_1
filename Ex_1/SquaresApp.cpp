@@ -3,9 +3,9 @@ using namespace std;
 
 void SquaresApp::init()
 {
-	m_selected_square_index = -1;
+	m_selected_square = NULL;
 
-	m_squares.init(MAX_AVAILABLE_SQUARES);
+	m_squares.init();
 	initMainMenu();
 	initSquareMenu();
 }
@@ -50,21 +50,19 @@ void SquaresApp::run()
 			case SELECT_SQUARE:
 				selectSquare();
 
-				if(m_selected_square_index != SquaresContainer::NOT_FOUND)
+				if(m_selected_square != NOT_FOUND)
 					runSquareMenu();
 				break;
 			case EXIT_OPTION:
 				return;
 		}
-
-		updateMainMenuOptions();
 	}
 }
 
 void SquaresApp::selectSquare()
 {
 	Point& selectionPoint = createPointByInput();
-	m_selected_square_index = findSquare(selectionPoint);
+	m_selected_square = m_squares.findSquare(selectionPoint, NULL);
 
 	clrscr();
 
@@ -80,20 +78,20 @@ void SquaresApp::runSquareMenu()
 	switch(l_option)
 	{
 		case CANCEL_SELECTION:
-			m_selected_square_index = SquaresContainer::NOT_FOUND;
+			m_selected_square = NOT_FOUND;
 			break;
 		case REMOVE_SQUARE:
-			m_squares.removeSquare(m_selected_square_index);
+			m_squares.removeSquare(m_selected_square);
 			break;
 		case MOVE_TOP:
-			m_squares.promoteSquare(m_selected_square_index);
+			m_squares.promoteSquare(m_selected_square);
 			break;
 		case MERGE_SQUARE:
 			Point& selectionPoint = createPointByInput();
-			int secondSquareIndex = findSquare(selectionPoint);
+			Square* secondSquare =  m_squares.findSquare(selectionPoint, m_selected_square);
 
-			if(secondSquareIndex != SquaresContainer::NOT_FOUND)
-				m_squares.mergeSquares(m_selected_square_index, secondSquareIndex);
+			if(secondSquare != NOT_FOUND)
+				m_squares.mergeSquares(m_selected_square, secondSquare);
 
 			break;
 	}
@@ -101,21 +99,6 @@ void SquaresApp::runSquareMenu()
 	clrscr();
 	m_squares.drawSquares();
 	waitForEscape();
-}
-
-int SquaresApp::findSquare(const Point& coordinates)
-{
-	int fromIndex = m_squares.getNumOfSquares();
-
-	while(fromIndex != SquaresContainer::NOT_FOUND)
-	{
-		fromIndex = m_squares.findSquare(coordinates, fromIndex - 1);
-
-		if(fromIndex != m_selected_square_index)
-			return fromIndex;
-	}
-
-	return fromIndex;
 }
 
 Point SquaresApp::createPointByInput() const
@@ -166,11 +149,6 @@ void SquaresApp::addSquareByInput()
 	m_squares.addSquare(x, y, sideLength, ch);
 }
 
-void SquaresApp::updateMainMenuOptions()
-{
-	m_app_main_menu.setAvailability(0, !m_squares.isContainerFull());
-}
-
 void SquaresApp::waitForEscape() const
 {
 	while(!_kbhit() || _getch()!=27)
@@ -194,8 +172,8 @@ void SquaresApp::drawSquaresWithSelection() const
 {
 	m_squares.drawSquares();
 
-	if(m_selected_square_index != SquaresContainer::NOT_FOUND)
+	if(m_selected_square != NOT_FOUND)
 	{
-		m_squares.drawSquare(m_selected_square_index, SELECTION_CHAR);
+		m_selected_square->draw(SELECTION_CHAR);
 	}
 }

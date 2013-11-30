@@ -21,7 +21,6 @@ public:
 
 private:
 	static const char SELECTION_CHAR = '@';
-	static const int MAX_AVAILABLE_SQUARES = 10;
 	static const int NUM_OF_MAIN_MENU_OPTIONS = 8;
 	static const int NUM_OF_SQUARE_MENU_OPTIONS = 8;
 
@@ -38,10 +37,10 @@ private:
 	Menu m_app_main_menu;
 	Menu m_app_square_menu;
 	SquaresContainer m_squares;
-	int	m_selected_square_index;
+	Square*	m_selected_square;
 
 	SquaresApp()
-	: m_selected_square_index(SquaresContainer::NOT_FOUND)
+	: m_selected_square(NOT_FOUND)
 	{
 		init();
 	}
@@ -50,11 +49,9 @@ private:
 	void initSquareMenu();
 
 	void selectSquare();
-	void updateMainMenuOptions();
 	void runSquareMenu();
 	void addSquareByInput();
 
-	int findSquare(const Point& coordinates);
 	void waitForEscape() const;
 	void drawSquaresWithSelection() const;
 	void drawBlinkingPoint(const Point&) const;

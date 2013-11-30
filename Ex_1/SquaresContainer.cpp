@@ -7,131 +7,64 @@ SquaresContainer::~SquaresContainer()
 	destruct();
 }
 
-void SquaresContainer::init(int containerSize)
+void SquaresContainer::init()
 {
 	destruct();
 
-	m_container_size = containerSize;
-	m_num_of_squares = 0;
-	m_squares = new Square*[containerSize];
-
-	for (int squareIndex = 0; squareIndex < m_container_size; squareIndex++)
-	{
-		m_squares[squareIndex] = NULL;
-	}
+	m_squares.clear();
 }
 
 void SquaresContainer::destruct()
 {
-	for (int squareIndex = 0; squareIndex < m_num_of_squares; squareIndex++)
+	for (list<Square*>::iterator it = m_squares.begin(); it != m_squares.end(); ++it)
 	{
-		delete m_squares[squareIndex];
+		delete *it;
 	}
 
-	delete[] m_squares;
-
-	m_squares = NULL;
-	m_num_of_squares = 0;
-}
-
-void SquaresContainer::rearrangeSquaresFrom(int emptyIndex)
-{
-	for (int squareIndex = emptyIndex; squareIndex < m_num_of_squares - 1; squareIndex++)
-	{
-		m_squares[squareIndex] = m_squares[squareIndex + 1];
-	}
-
-	m_squares[m_num_of_squares - 1] = NULL;
+	m_squares.clear();
 }
 
 void SquaresContainer::addSquare(int x, int y, unsigned int side_length, char ch)
 {
-	if(m_num_of_squares < m_container_size)
-	{
-		m_squares[m_num_of_squares++] = new Square(x, y, side_length, ch);
-	}
+	Square* newSquare = new Square(x, y, side_length, ch);
+	m_squares.push_back(newSquare);
 }
 
-void SquaresContainer::removeSquare(int squareIndex)
+void SquaresContainer::removeSquare(Square* square)
 {
-	squareIndexNotOutOfBounds(squareIndex);
-
-	delete m_squares[squareIndex];
-	m_squares[squareIndex] = NULL;
-
-	rearrangeSquaresFrom(squareIndex);
-	
-	m_num_of_squares--;
+	m_squares.remove(square);
+	delete square;
 }
 
 void SquaresContainer::drawSquares() const
 {
-	for (int squareIndex = 0; squareIndex < m_num_of_squares; squareIndex++)
+	for (list<Square*>::const_iterator it = m_squares.begin(); it != m_squares.end(); ++it)
 	{
-		m_squares[squareIndex]->draw();
+		(*it)->draw();
 	}
 }
 
-void SquaresContainer::drawSquare(int squareIndex, char ch) const
+void SquaresContainer::promoteSquare(Square* square)
 {
-	squareIndexNotOutOfBounds(squareIndex);
-
-	m_squares[squareIndex]->draw(ch);
+	m_squares.remove(square);
+	m_squares.push_back(square);
 }
 
-void SquaresContainer::promoteSquare(int squareIndex)
+void SquaresContainer::mergeSquares(Square* firstSquare, Square* secondSquare)
 {
-	squareIndexNotOutOfBounds(squareIndex);
-
-	Square* squareToPromote = m_squares[squareIndex];
-
-	rearrangeSquaresFrom(squareIndex);
-
-	m_squares[m_num_of_squares - 1] = squareToPromote;
+	firstSquare->merge(*secondSquare);
+	removeSquare(secondSquare);
 }
 
-void SquaresContainer::mergeSquares(int firstIndex, int secondIndex)
+Square* SquaresContainer::findSquare(const Point& coordinates, const Square* except) const
 {
-	squareIndexNotOutOfBounds(firstIndex);
-	squareIndexNotOutOfBounds(secondIndex);
-
-	m_squares[firstIndex]->merge(*m_squares[secondIndex]);
-	removeSquare(secondIndex);
-}
-
-int SquaresContainer::findSquare(const Point& coordinates, int formIndex) const
-{
-	if(formIndex > m_num_of_squares - 1)
-		throw "given fromIndex is invalid!";
-
-	for (int squareIndex = formIndex; squareIndex >= 0; squareIndex--)
+	for (list<Square*>::const_iterator it = m_squares.begin(); it != m_squares.end(); ++it)
 	{
-		if(m_squares[squareIndex]->contains(coordinates))
+		if(*it != except && (*it)->contains(coordinates))
 		{
-			return squareIndex;
+			return *it;
 		}
 	}
 
 	return NOT_FOUND;
-}
-
-int SquaresContainer::getNumOfSquares() const
-{
-	return m_num_of_squares;
-}
-
-bool SquaresContainer::isContainerFull() const
-{
-	return m_num_of_squares >= m_container_size;
-}
-
-void SquaresContainer::squareIndexNotOutOfBounds(int squareIndex) const
-{
-	if(m_num_of_squares < squareIndex || squareIndex < 0)
-	{
-		string error("Given square index: '" + squareIndex);
-		error.append("' is out of bounds!");
-
-		throw error;
-	}
 }

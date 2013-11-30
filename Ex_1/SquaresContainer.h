@@ -1,36 +1,35 @@
 #ifndef __SQUARES_CONTAINER_H__
 #define __SQUARES_CONTAINER_H__
 
+#include <list>
 #include "Square.h"
+
+#define NOT_FOUND NULL
 
 class SquaresContainer {
 public:
-	static const int NOT_FOUND = -1;
 
 	SquaresContainer() 
-	: m_num_of_squares(0), m_squares(NULL), m_container_size(0) {}
+	{
+		init();
+
+		m_squares.resize(10);
+	}
 
 	~SquaresContainer();
 
-	void init(int containerSize);
+	void init();
 	void addSquare(int x, int y, unsigned int side_length, char ch); 
-	void removeSquare(int);
-	void promoteSquare(int squareIndex);
-	void mergeSquares(int firstIndex, int secondIndex);
+	void removeSquare(Square*);
+	void promoteSquare(Square*);
+	void mergeSquares(Square*, Square*);
 	
 	void drawSquares() const;
-	void drawSquare(int squareIndex, char ch) const;
-	int findSquare(const Point&, int from) const;
-	int getNumOfSquares() const;
-	bool isContainerFull() const;
+	Square* findSquare(const Point& coordinates, const Square* except) const;
 private:	
-	int m_container_size;
-	int m_num_of_squares;
-	Square** m_squares;
+	std::list<Square*> m_squares;
 
 	void destruct();
-	void rearrangeSquaresFrom(int emptyIndex);
-	void squareIndexNotOutOfBounds(int squareIndex) const;
 };
 
 #endif
