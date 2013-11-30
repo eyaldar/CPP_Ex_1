@@ -23,6 +23,7 @@ private:
 	static const char SELECTION_CHAR = '@';
 	static const int NUM_OF_MAIN_MENU_OPTIONS = 8;
 	static const int NUM_OF_SQUARE_MENU_OPTIONS = 8;
+	static const int BEGIN_SQUARE_MENU = -1;
 
 	static const int ADD_SQUARE = 0;
 	static const int DRAW_SQUARES = 1;
@@ -32,6 +33,8 @@ private:
 	static const int REMOVE_SQUARE = 1;
 	static const int MOVE_TOP = 2;
 	static const int MERGE_SQUARE = 3;
+	static const int ADD_ANIMATION = 4;
+	static const int DOUBLE_ANIMATION = 5;
 	static const int EXIT_OPTION = 7;
 
 	Menu m_app_main_menu;
@@ -55,6 +58,9 @@ private:
 	void waitForEscape() const;
 	void drawSquaresWithSelection() const;
 	void drawBlinkingPoint(const Point&) const;
+	void drawMove() const;
+	bool shouldReturnToSquareMenu(int lastOption) const;
+	Point createShiftByInput() const;
 	Point createPointByInput() const;
 };
 

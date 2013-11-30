@@ -17,10 +17,10 @@ void Square::draw() const
 
 void Square::draw(char ch) const
 {
-	int left = m_top_left.getX();
-	int top = m_top_left.getY();
-	int right = m_bottom_right.getX();
-	int bottom = m_bottom_right.getY();
+	double left = m_top_left.getX();
+	double top = m_top_left.getY();
+	double right = m_bottom_right.getX();
+	double bottom = m_bottom_right.getY();
 	Point p;
 
 	for (unsigned int lengthIndex = 0; lengthIndex < m_side_length; lengthIndex++)
@@ -95,4 +95,19 @@ bool Square::isIntersectingWith(const Square& other) const
 			other.m_top_left.getX() <= this->m_bottom_right.getX() &&
 			this->m_top_left.getY() <= other.m_bottom_right.getY() &&
 			other.m_top_left.getY() <= this->m_bottom_right.getY();
+}
+
+void Square::setShift(const Point& point)
+{
+	m_shift = Point(point);
+}
+
+bool Square::move()
+{
+	Point oldTopLeft = Point(m_top_left);
+
+	m_top_left += m_shift;
+	m_bottom_right += m_shift;
+
+	return (oldTopLeft == m_top_left);
 }

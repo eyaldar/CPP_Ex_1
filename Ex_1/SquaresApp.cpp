@@ -28,6 +28,8 @@ void SquaresApp::initSquareMenu()
 	m_app_square_menu.set(1, "Remove square.");
 	m_app_square_menu.set(2, "Move to top.");
 	m_app_square_menu.set(3, "Merge with other square.");
+	m_app_square_menu.set(4, "Add animation");
+	m_app_square_menu.set(5, "Show doubled animation");
 }
 
 void SquaresApp::run()
@@ -72,28 +74,48 @@ void SquaresApp::selectSquare()
 
 void SquaresApp::runSquareMenu()
 {
-	unsigned int l_option = 0;
+	unsigned int l_option = BEGIN_SQUARE_MENU;
 
-	l_option = m_app_square_menu.choose();
-	switch(l_option)
+	while (shouldReturnToSquareMenu(l_option))
 	{
-		case CANCEL_SELECTION:
-			m_selected_square = NOT_FOUND;
-			break;
-		case REMOVE_SQUARE:
-			m_squares.removeSquare(m_selected_square);
-			break;
-		case MOVE_TOP:
-			m_squares.promoteSquare(m_selected_square);
-			break;
-		case MERGE_SQUARE:
-			Point& selectionPoint = createPointByInput();
-			Square* secondSquare =  m_squares.findSquare(selectionPoint, m_selected_square);
+		l_option = m_app_square_menu.choose();
+		switch(l_option)
+		{
+			case CANCEL_SELECTION:
+			{
+				m_selected_square = NOT_FOUND;
+				break;
+			}
+			case REMOVE_SQUARE:
+			{
+				m_squares.removeSquare(m_selected_square);
+				break;
+			}
+			case MOVE_TOP:
+			{
+				m_squares.promoteSquare(m_selected_square);
+				break;
+			}
+			case MERGE_SQUARE:
+			{
+				Point& selectionPoint = createPointByInput();
+				Square* secondSquare =  m_squares.findSquare(selectionPoint, m_selected_square);
 
-			if(secondSquare != NOT_FOUND)
-				m_squares.mergeSquares(m_selected_square, secondSquare);
+				if(secondSquare != NOT_FOUND)
+					m_squares.mergeSquares(m_selected_square, secondSquare);
 
-			break;
+				break;
+			}
+			case ADD_ANIMATION:
+			{
+				Point shift = createShiftByInput();
+				m_selected_square->setShift(shift);
+
+				drawMove();
+
+				break;
+			}
+		}
 	}
 	
 	clrscr();
@@ -101,9 +123,38 @@ void SquaresApp::runSquareMenu()
 	waitForEscape();
 }
 
+Point SquaresApp::createShiftByInput() const
+{
+	double x,y;
+
+	cout << "Please enter the required shift in X axis [ Value between -1 and 1 ] :";
+	cin >> x;
+
+	while(x > 1 || x < -1)
+	{
+		cerr << "Given shift in X axis is too big !." << endl << endl << endl;
+
+		cout << "Please enter the required shift in X axis [ Value between -1 and 1 ] :";
+		cin >> x;
+	}
+
+	cout << "Please enter the required shift in Y axis [ Value between -1 and 1 ] :";
+	cin >> y;
+
+	while(y > 1 || y < -1)
+	{
+		cerr << "Given shift in Y axis is too big !." << endl << endl << endl;
+
+		cout << "Please enter the required shift in Y axis [ Value between -1 and 1 ] :";
+		cin >> y;
+	}
+
+	return Point(x,y);
+}
+
 Point SquaresApp::createPointByInput() const
 {
-	int x,y;
+	double x,y;
 
 	cout << "Please enter the X coordinate :";
 	cin >> x;
@@ -115,14 +166,9 @@ Point SquaresApp::createPointByInput() const
 
 void SquaresApp::addSquareByInput()
 {
-	double x,y, sideLength;
+	double sideLength;
 	char ch;
-
-	cout << "Please enter the X coordinate for the top left point :";
-	cin >> x;
-
-	cout << "Please enter the Y coordinate for the top left point :";
-	cin >> y;
+	Point topLeft = createPointByInput();
 
 	cout << "Please enter the side length [At least 1] :";
 	cin >> sideLength;
@@ -146,7 +192,7 @@ void SquaresApp::addSquareByInput()
 		cin >> ch;
 	}
 
-	m_squares.addSquare(x, y, sideLength, ch);
+	m_squares.addSquare(topLeft, (unsigned int)sideLength, ch);
 }
 
 void SquaresApp::waitForEscape() const
@@ -168,6 +214,17 @@ void SquaresApp::drawBlinkingPoint(const Point& point) const
 	}
 }
 
+void SquaresApp::drawMove() const
+{
+	while(!_kbhit() || _getch()!=27)
+	{
+		clrscr();
+		if(m_selected_square->move())
+			drawSquaresWithSelection();
+		Sleep(100);
+	}
+}
+
 void SquaresApp::drawSquaresWithSelection() const
 {
 	m_squares.drawSquares();
@@ -176,4 +233,11 @@ void SquaresApp::drawSquaresWithSelection() const
 	{
 		m_selected_square->draw(SELECTION_CHAR);
 	}
+}
+
+bool SquaresApp::shouldReturnToSquareMenu(int lastOption) const
+{
+	return lastOption == ADD_ANIMATION || 
+		   lastOption == DOUBLE_ANIMATION || 
+		   lastOption == BEGIN_SQUARE_MENU;
 }

@@ -6,7 +6,7 @@
 class Square 
 {
 public:
-	Square(Point& point, unsigned int side_length, char ch)
+	Square(const Point& point, unsigned int side_length, char ch)
 	: m_top_left(point), m_bottom_right(point.getX() + side_length - 1, point.getX() + side_length - 1), 
 	  m_side_length(side_length), m_draw_char(ch) {}
 
@@ -16,6 +16,10 @@ public:
 
 	explicit Square(const Square&);
 
+	void setShift(const Point& newShift);
+	
+	// returns whether or not the square was changed by a full point.
+	bool move();
 	void merge(const Square&);
 
 	void draw() const;
@@ -34,6 +38,7 @@ private:
 	Point m_top_left;
 	Point m_bottom_right;
 	char m_draw_char;
+	Point m_shift;
 
 	void copyFrom(const Square&);
 };

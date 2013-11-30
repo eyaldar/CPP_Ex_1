@@ -8,33 +8,47 @@ void Point::draw(char ch) const
 	if((m_x >= 0 && m_x < 79) &&
 	   (m_y >= 0 && m_y < 24))
 	{
-		gotoxy(m_x, m_y);
+		gotoxy((int)m_x, (int)m_y);
 		cout << ch;
 	}
 }
 
-void Point::init(int x, int y)
+void Point::init(double x, double y)
 {
 	setX(x);
 	setY(y);
 }
 
-void Point::setX(int x)
+void Point::setX(double x)
 {
 	m_x = x;
 }
 
-int Point::getX() const
+double Point::getX() const
 {
 	return m_x;
 }
 
-void Point::setY(int y)
+void Point::setY(double y)
 {
 	m_y = y;
 }
 
-int Point::getY() const
+double Point::getY() const
 {
 	return m_y;
+}
+
+Point& Point::operator+=(const Point& shift)
+{
+	m_x += shift.m_x;
+	m_y += shift.m_y;
+
+	return *this;
+}
+
+bool Point::operator==(const Point& other)
+{
+	return (int)m_x == (int)other.m_x &&
+		   (int)m_y == (int)other.m_y;
 }
