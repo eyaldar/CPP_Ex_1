@@ -67,6 +67,23 @@ void SquaresContainer::mergeSquares(Square& firstSquare, Square& secondSquare)
 	removeSquare(secondSquare);
 }
 
+void SquaresContainer::mergeOnCollision(Square& firstSquare, Square& secondSquare)
+{
+	bool isFirstMovingFasterHorizontally = firstSquare.compareHorizontalSpeedTo(secondSquare) > 0;
+	bool isFirstMovingFasterVertically = firstSquare.compareVerticalSpeedTo(secondSquare) > 0;
+	bool isSecondAreaBigger = firstSquare.compareAreaTo(secondSquare) < 0;
+
+	if((isFirstMovingFasterHorizontally && firstSquare.isCollidingHorizontallyWith(secondSquare)) ||
+		(isFirstMovingFasterVertically && firstSquare.isCollidingVerticallyWith(secondSquare)) && isSecondAreaBigger)
+	{
+		removeSquare(firstSquare);
+	}
+	else
+	{
+		removeSquare(secondSquare);
+	}
+}
+
 Square* SquaresContainer::findSquare(const Point& coordinates, const Square* except) const
 {
 	for (list<Square*>::const_iterator it = m_squares.begin(); it != m_squares.end(); ++it)

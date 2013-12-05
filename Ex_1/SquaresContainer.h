@@ -23,6 +23,7 @@ public:
 	void removeSquare(Square&);
 	void promoteSquare(Square&);
 	void mergeSquares(Square&, Square&);
+	void mergeOnCollision(Square&, Square&);
 	
 	void drawSquares() const;
 	void drawIntersectingWith(const Square& square) const;

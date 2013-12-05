@@ -54,14 +54,18 @@ private:
 	void selectSquare();
 	void runSquareMenu();
 	void addSquareByInput();
+	bool checkCollision(Square& oldSquare, Square& newSquare);
+	void handleDoubleAnimation(Square& secondSquare);
 
 	void waitForEscape() const;
 	void drawSquaresWithSelection() const;
 	void drawBlinkingPoint(const Point&) const;
-	void drawMove() const;
+	void drawAnimation() const;
 	bool shouldReturnToSquareMenu(int lastOption) const;
 	Point createShiftByInput() const;
 	Point createPointByInput() const;
+	void redrawSquareWithSorroundings(const Square& oldSquare, const Square& newSquare) const;
+
 };
 
 #endif

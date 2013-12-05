@@ -2,6 +2,7 @@
 #define __SQUARE_H__
 
 #include "Point.h"
+#include <cmath>
 
 class Square 
 {
@@ -24,7 +25,9 @@ public:
 	void copyFrom(const Square&);
 
 	void draw() const;
+	void drawAsFilled() const;
 	void draw(char ch) const;
+	void drawAsFilled(char ch) const;
 	bool contains(const Point& point) const;
 	bool contains(const Square&) const;
 	bool isIntersectingWith(const Square&) const;
@@ -35,6 +38,16 @@ public:
 	// Returns 0 if the areas are equal, in case this square is bigger returns positive number
 	// otherwise returns negative number.
 	int compareAreaTo(const Square&) const;
+
+	// Compares to squares by horizontal shift
+	// Returns 0 if the speeds are equal, in case this square is faster returns positive number
+	// otherwise returns negative number.
+	int compareHorizontalSpeedTo(const Square&) const;
+
+	// Compares to squares by vertical shift
+	// Returns 0 if the speeds are equal, in case this square is faster returns positive number
+	// otherwise returns negative number.
+	int compareVerticalSpeedTo(const Square&) const;
 private:
 	static const Point TOP_LEFT_BOUND;
 	static const Point BOTTOM_RIGHT_BOUND;

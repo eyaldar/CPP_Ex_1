@@ -49,6 +49,27 @@ void Square::draw(char ch) const
 	p.draw(ch);
 }
 
+void Square::drawAsFilled() const
+{
+	drawAsFilled(m_draw_char);
+}
+
+void Square::drawAsFilled(char ch) const
+{
+	double left = m_top_left.getX();
+	double top = m_top_left.getY();
+	Point p;
+
+	for (unsigned int rowIndex = 0; rowIndex < m_side_length; rowIndex++)
+	{
+		for (unsigned int columnIndex = 0; columnIndex < m_side_length; columnIndex++)
+		{
+			p.init(left + rowIndex, top + columnIndex);
+			p.draw(ch);
+		}
+	}
+}
+
 bool Square::contains(const Point& point) const
 {
 	return (m_top_left.getX() <= point.getX() && point.getX() <= m_bottom_right.getX()) &&
@@ -92,6 +113,22 @@ int Square::compareAreaTo(const Square& other) const
 	return thisArea - otherArea;
 }
 
+int Square::compareHorizontalSpeedTo(const Square& other) const
+{		
+	double thisAbsShift = abs(this->m_shift.getX());
+	double otherAbsShift = abs(this->m_shift.getX());
+
+	return (int)(thisAbsShift - otherAbsShift);
+}
+
+int Square::compareVerticalSpeedTo(const Square& other) const
+{		
+	double thisAbsShift = abs(this->m_shift.getY());
+	double otherAbsShift = abs(this->m_shift.getY());
+
+	return (int)(thisAbsShift - otherAbsShift);
+}
+
 bool Square::isIntersectingWith(const Square& other) const
 {
 	return  (int)this->m_top_left.getX() <= (int)other.m_bottom_right.getX() &&
@@ -126,20 +163,20 @@ bool Square::move()
 
 bool Square::isCollidingHorizontallyWith(const Square& other) const
 {
-	return (this->m_top_left.getX() + 1 == other.m_top_left.getX()		||
-			this->m_top_left.getX() - 1 == other.m_top_left.getX())				&&
-			((this->m_top_left.getY() <= other.m_top_left.getY()		&&
-			this->m_bottom_right.getY() <= other.m_bottom_right.getY())		||
-			(this->m_top_left.getY() >= other.m_top_left.getY()			&&
-			this->m_bottom_right.getY() >= other.m_bottom_right.getY()));
+	return (this->m_top_left.getX() + 1 >= other.m_top_left.getX()	&&
+			this->m_top_left.getX() - 1 <= other.m_top_left.getX())	&&
+			((this->m_top_left.getY() <= other.m_top_left.getY() && 
+			 this->m_bottom_right.getY() >= other.m_top_left.getY()) ||
+			(other.m_top_left.getY() <= this->m_top_left.getY() && 
+			 other.m_bottom_right.getY() >= this->m_top_left.getY())); 
 }
 
 bool Square::isCollidingVerticallyWith(const Square& other) const
 {
-	return (this->m_top_left.getY() + 1 == other.m_top_left.getY()		||
-			this->m_top_left.getY() - 1 == other.m_top_left.getY())				&&
-			((this->m_top_left.getX() <= other.m_top_left.getX()		&&
-			this->m_bottom_right.getX() <= other.m_bottom_right.getX())		||
-			(this->m_top_left.getX() >= other.m_top_left.getX()			&&
-			this->m_bottom_right.getX() >= other.m_bottom_right.getX()));
+	return (this->m_top_left.getY() + 1 >= other.m_top_left.getY()	&&
+			this->m_top_left.getY() - 1 <= other.m_top_left.getY())	&&
+			((this->m_top_left.getX() <= other.m_top_left.getX() && 
+			 this->m_bottom_right.getX() >= other.m_top_left.getX()) ||
+			(other.m_top_left.getX() <= this->m_top_left.getX() && 
+			 other.m_bottom_right.getX() >= this->m_top_left.getX()));
 }

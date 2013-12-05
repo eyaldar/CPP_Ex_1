@@ -111,7 +111,17 @@ void SquaresApp::runSquareMenu()
 				Point shift = createShiftByInput();
 				m_selected_square->setShift(shift);
 
-				drawMove();
+				drawAnimation();
+
+				break;
+			}
+			case DOUBLE_ANIMATION:
+			{
+				Point& selectionPoint = createPointByInput();
+				Square* secondSquare =  m_squares.findSquare(selectionPoint, m_selected_square);
+
+				if(secondSquare != NOT_FOUND)
+					handleDoubleAnimation(*secondSquare);
 
 				break;
 			}
@@ -214,9 +224,9 @@ void SquaresApp::drawBlinkingPoint(const Point& point) const
 	}
 }
 
-void SquaresApp::drawMove() const
+void SquaresApp::drawAnimation() const
 {
-	Square oldSquare(*m_selected_square);
+	Square oldSelectedSquare(*m_selected_square);
 
 	clrscr();
 	drawSquaresWithSelection();
@@ -225,15 +235,72 @@ void SquaresApp::drawMove() const
 	{
 		if(m_selected_square->move())
 		{
-			oldSquare.draw(' ');
-			m_squares.drawIntersectingWith(oldSquare);
-			m_squares.drawIntersectingWith(*m_selected_square);
-			m_selected_square->draw(SELECTION_CHAR);
-
-			oldSquare.copyFrom(*m_selected_square);
+			redrawSquareWithSorroundings(oldSelectedSquare, *m_selected_square);
+			oldSelectedSquare.copyFrom(*m_selected_square);
 		}
 		Sleep(100);
 	}
+}
+
+void SquaresApp::handleDoubleAnimation(Square& secondSquare)
+{
+	Square oldSelectedSquare(*m_selected_square);
+	Square oldSecondSquare(*m_selected_square);
+
+	clrscr();
+	drawSquaresWithSelection();
+
+	while(!_kbhit() || _getch()!=27)
+	{
+		if(m_selected_square->move())
+		{
+			redrawSquareWithSorroundings(oldSelectedSquare, *m_selected_square);
+			oldSelectedSquare.copyFrom(*m_selected_square);
+
+			if(checkCollision(*m_selected_square, secondSquare))
+			{
+				return;
+			}
+		}
+
+		if(secondSquare.move())
+		{
+			redrawSquareWithSorroundings(oldSecondSquare, secondSquare);
+			oldSecondSquare.copyFrom(secondSquare);
+
+			if(checkCollision(secondSquare, *m_selected_square))
+			{
+				return;
+			}
+		}
+
+		Sleep(100);
+	}
+}
+
+void SquaresApp::redrawSquareWithSorroundings(const Square& oldSquare, const Square& newSquare) const
+{
+	oldSquare.draw(' ');
+	m_squares.drawIntersectingWith(oldSquare);
+	m_squares.drawIntersectingWith(newSquare);
+	m_selected_square->draw(SELECTION_CHAR);
+}
+
+bool SquaresApp::checkCollision(Square& firstSquare, Square& secondSquare)
+{
+	if(firstSquare.isCollidingHorizontallyWith(secondSquare) || firstSquare.isCollidingVerticallyWith(secondSquare))
+	{
+		firstSquare.drawAsFilled();
+		secondSquare.drawAsFilled();
+
+		Sleep(100);
+
+		m_squares.mergeOnCollision(firstSquare, secondSquare);
+
+		return true;
+	}
+
+	return false;
 }
 
 void SquaresApp::drawSquaresWithSelection() const
@@ -249,6 +316,5 @@ void SquaresApp::drawSquaresWithSelection() const
 bool SquaresApp::shouldReturnToSquareMenu(int lastOption) const
 {
 	return lastOption == ADD_ANIMATION || 
-		   lastOption == DOUBLE_ANIMATION || 
 		   lastOption == BEGIN_SQUARE_MENU;
 }
