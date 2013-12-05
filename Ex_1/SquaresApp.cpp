@@ -245,7 +245,7 @@ void SquaresApp::drawAnimation() const
 void SquaresApp::handleDoubleAnimation(Square& secondSquare)
 {
 	Square oldSelectedSquare(*m_selected_square);
-	Square oldSecondSquare(*m_selected_square);
+	Square oldSecondSquare(secondSquare);
 
 	clrscr();
 	drawSquaresWithSelection();
