@@ -52,3 +52,8 @@ bool Point::operator==(const Point& other)
 	return (int)m_x == (int)other.m_x &&
 		   (int)m_y == (int)other.m_y;
 }
+
+bool Point::operator!=(const Point& other)
+{
+	return !(*this == other);
+}

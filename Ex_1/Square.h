@@ -28,12 +28,17 @@ public:
 	bool contains(const Point& point) const;
 	bool contains(const Square&) const;
 	bool isIntersectingWith(const Square&) const;
+	bool isCollidingHorizontallyWith(const Square&) const; 
+	bool isCollidingVerticallyWith(const Square&) const;
 
 	// Compares to squares by area
 	// Returns 0 if the areas are equal, in case this square is bigger returns positive number
 	// otherwise returns negative number.
 	int compareAreaTo(const Square&) const;
 private:
+	static const Point TOP_LEFT_BOUND;
+	static const Point BOTTOM_RIGHT_BOUND;
+
 	unsigned int m_side_length;
 	Point m_top_left;
 	Point m_bottom_right;

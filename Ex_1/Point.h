@@ -24,6 +24,7 @@ public:
 
 	Point& operator+=(const Point& shift);
 	bool operator==(const Point& other);
+	bool operator!=(const Point& other);
 private:
 	double m_x;
 	double m_y;

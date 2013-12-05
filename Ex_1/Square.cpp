@@ -5,6 +5,9 @@
 #include <string>
 using namespace std;
 
+const Point Square::TOP_LEFT_BOUND(0,0);
+const Point Square::BOTTOM_RIGHT_BOUND(79, 24);
+
 Square::Square(const Square& other)
 {
 	copyFrom(other);
@@ -106,8 +109,37 @@ bool Square::move()
 {
 	Point oldTopLeft = Point(m_top_left);
 
+	if(TOP_LEFT_BOUND.getX() == m_top_left.getX() ||
+	   BOTTOM_RIGHT_BOUND.getX() == m_bottom_right.getX())
+		m_shift.setX(m_shift.getX() * -1);
+
+	
+	if(TOP_LEFT_BOUND.getY() == m_top_left.getY() ||
+	   BOTTOM_RIGHT_BOUND.getY() == m_bottom_right.getY())
+		m_shift.setY(m_shift.getY() * -1);
+
 	m_top_left += m_shift;
 	m_bottom_right += m_shift;
 
-	return (oldTopLeft == m_top_left);
+	return (oldTopLeft != m_top_left);
+}
+
+bool Square::isCollidingHorizontallyWith(const Square& other) const
+{
+	return (this->m_top_left.getX() + 1 == other.m_top_left.getX()		||
+			this->m_top_left.getX() - 1 == other.m_top_left.getX())				&&
+			((this->m_top_left.getY() <= other.m_top_left.getY()		&&
+			this->m_bottom_right.getY() <= other.m_bottom_right.getY())		||
+			(this->m_top_left.getY() >= other.m_top_left.getY()			&&
+			this->m_bottom_right.getY() >= other.m_bottom_right.getY()));
+}
+
+bool Square::isCollidingVerticallyWith(const Square& other) const
+{
+	return (this->m_top_left.getY() + 1 == other.m_top_left.getY()		||
+			this->m_top_left.getY() - 1 == other.m_top_left.getY())				&&
+			((this->m_top_left.getX() <= other.m_top_left.getX()		&&
+			this->m_bottom_right.getX() <= other.m_bottom_right.getX())		||
+			(this->m_top_left.getX() >= other.m_top_left.getX()			&&
+			this->m_bottom_right.getX() >= other.m_bottom_right.getX()));
 }
