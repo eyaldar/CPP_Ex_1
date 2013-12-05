@@ -30,10 +30,10 @@ void SquaresContainer::addSquare(Point p, unsigned int side_length, char ch)
 	m_squares.push_back(newSquare);
 }
 
-void SquaresContainer::removeSquare(Square* square)
+void SquaresContainer::removeSquare(Square& square)
 {
-	m_squares.remove(square);
-	delete square;
+	m_squares.remove(&square);
+	delete &square;
 }
 
 void SquaresContainer::drawSquares() const
@@ -44,15 +44,26 @@ void SquaresContainer::drawSquares() const
 	}
 }
 
-void SquaresContainer::promoteSquare(Square* square)
+void SquaresContainer::drawIntersectingWith(const Square& square) const
 {
-	m_squares.remove(square);
-	m_squares.push_back(square);
+	for (list<Square*>::const_iterator it = m_squares.begin(); it != m_squares.end(); ++it)
+	{
+		if(&square != (*it) && (*it)->isIntersectingWith(square))
+		{
+			(*it)->draw();
+		}
+	}
 }
 
-void SquaresContainer::mergeSquares(Square* firstSquare, Square* secondSquare)
+void SquaresContainer::promoteSquare(Square& square)
 {
-	firstSquare->merge(*secondSquare);
+	m_squares.remove(&square);
+	m_squares.push_back(&square);
+}
+
+void SquaresContainer::mergeSquares(Square& firstSquare, Square& secondSquare)
+{
+	firstSquare.merge(secondSquare);
 	removeSquare(secondSquare);
 }
 

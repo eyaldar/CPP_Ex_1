@@ -20,12 +20,13 @@ public:
 
 	void init();
 	void addSquare(Point p, unsigned int side_length, char ch); 
-	void removeSquare(Square*);
-	void promoteSquare(Square*);
-	void mergeSquares(Square*, Square*);
+	void removeSquare(Square&);
+	void promoteSquare(Square&);
+	void mergeSquares(Square&, Square&);
 	
 	void drawSquares() const;
-	Square* findSquare(const Point& coordinates, const Square* except) const;
+	void drawIntersectingWith(const Square& square) const;
+	Square* findSquare(const Point& coordinates, const Square* except = NULL) const;
 private:	
 	std::list<Square*> m_squares;
 

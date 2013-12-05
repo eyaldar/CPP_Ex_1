@@ -64,7 +64,7 @@ void SquaresApp::run()
 void SquaresApp::selectSquare()
 {
 	Point& selectionPoint = createPointByInput();
-	m_selected_square = m_squares.findSquare(selectionPoint, NULL);
+	m_selected_square = m_squares.findSquare(selectionPoint);
 
 	clrscr();
 
@@ -88,12 +88,12 @@ void SquaresApp::runSquareMenu()
 			}
 			case REMOVE_SQUARE:
 			{
-				m_squares.removeSquare(m_selected_square);
+				m_squares.removeSquare(*m_selected_square);
 				break;
 			}
 			case MOVE_TOP:
 			{
-				m_squares.promoteSquare(m_selected_square);
+				m_squares.promoteSquare(*m_selected_square);
 				break;
 			}
 			case MERGE_SQUARE:
@@ -102,7 +102,7 @@ void SquaresApp::runSquareMenu()
 				Square* secondSquare =  m_squares.findSquare(selectionPoint, m_selected_square);
 
 				if(secondSquare != NOT_FOUND)
-					m_squares.mergeSquares(m_selected_square, secondSquare);
+					m_squares.mergeSquares(*m_selected_square, *secondSquare);
 
 				break;
 			}
@@ -216,11 +216,22 @@ void SquaresApp::drawBlinkingPoint(const Point& point) const
 
 void SquaresApp::drawMove() const
 {
+	Square oldSquare(*m_selected_square);
+
+	clrscr();
+	drawSquaresWithSelection();
+
 	while(!_kbhit() || _getch()!=27)
 	{
-		clrscr();
 		if(m_selected_square->move())
-			drawSquaresWithSelection();
+		{
+			oldSquare.draw(' ');
+			m_squares.drawIntersectingWith(oldSquare);
+			m_squares.drawIntersectingWith(*m_selected_square);
+			m_selected_square->draw(SELECTION_CHAR);
+
+			oldSquare.copyFrom(*m_selected_square);
+		}
 		Sleep(100);
 	}
 }

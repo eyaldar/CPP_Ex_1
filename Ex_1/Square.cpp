@@ -91,10 +91,10 @@ int Square::compareAreaTo(const Square& other) const
 
 bool Square::isIntersectingWith(const Square& other) const
 {
-	return  this->m_top_left.getX() <= other.m_bottom_right.getX() &&
-			other.m_top_left.getX() <= this->m_bottom_right.getX() &&
-			this->m_top_left.getY() <= other.m_bottom_right.getY() &&
-			other.m_top_left.getY() <= this->m_bottom_right.getY();
+	return  (int)this->m_top_left.getX() <= (int)other.m_bottom_right.getX() &&
+			(int)other.m_top_left.getX() <= (int)this->m_bottom_right.getX() &&
+			(int)this->m_top_left.getY() <= (int)other.m_bottom_right.getY() &&
+			(int)other.m_top_left.getY() <= (int)this->m_bottom_right.getY();
 }
 
 void Square::setShift(const Point& point)
