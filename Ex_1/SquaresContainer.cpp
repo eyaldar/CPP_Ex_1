@@ -24,9 +24,9 @@ void SquaresContainer::destruct()
 	m_squares.clear();
 }
 
-void SquaresContainer::addSquare(Point p, unsigned int side_length, char ch)
+void SquaresContainer::addSquare(const Square& square)
 {
-	Square* newSquare = new Square(p, side_length, ch);
+	Square* newSquare = new Square(square);
 	m_squares.push_back(newSquare);
 }
 

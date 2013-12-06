@@ -19,7 +19,7 @@ public:
 	~SquaresContainer();
 
 	void init();
-	void addSquare(Point p, unsigned int side_length, char ch); 
+	void addSquare(const Square& square);
 	void removeSquare(Square&);
 	void promoteSquare(Square&);
 	void mergeSquares(Square&, Square&);

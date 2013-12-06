@@ -8,6 +8,8 @@ void SquaresApp::init()
 	m_squares.init();
 	initMainMenu();
 	initSquareMenu();
+
+	InputManager::getInstance().setForbiddenChar(SELECTION_CHAR);
 }
 
 void SquaresApp::initMainMenu()
@@ -42,7 +44,10 @@ void SquaresApp::run()
 		switch(l_option)
 		{
 			case ADD_SQUARE:
-				addSquareByInput();
+				{
+					Square square = InputManager::getInstance().createSquareByInput();
+					m_squares.addSquare(square);
+				}
 				// Allows this case to continue to the next case, as it needs to be printed anyway...
 			case DRAW_SQUARES:
 				clrscr();
@@ -63,7 +68,7 @@ void SquaresApp::run()
 
 void SquaresApp::selectSquare()
 {
-	Point& selectionPoint = createPointByInput();
+	Point& selectionPoint = InputManager::getInstance().createPointByInput();
 	m_selected_square = m_squares.findSquare(selectionPoint);
 
 	clrscr();
@@ -98,7 +103,7 @@ void SquaresApp::runSquareMenu()
 			}
 			case MERGE_SQUARE:
 			{
-				Point& selectionPoint = createPointByInput();
+				Point& selectionPoint = InputManager::getInstance().createPointByInput();
 				Square* secondSquare =  m_squares.findSquare(selectionPoint, m_selected_square);
 
 				if(secondSquare != NOT_FOUND)
@@ -108,7 +113,7 @@ void SquaresApp::runSquareMenu()
 			}
 			case ADD_ANIMATION:
 			{
-				Point shift = createShiftByInput();
+				Point shift = InputManager::getInstance().createShiftByInput();
 				m_selected_square->setShift(shift);
 
 				handleAnimation();
@@ -117,7 +122,7 @@ void SquaresApp::runSquareMenu()
 			}
 			case DOUBLE_ANIMATION:
 			{
-				Point& selectionPoint = createPointByInput();
+				Point& selectionPoint = InputManager::getInstance().createPointByInput();
 				Square* secondSquare =  m_squares.findSquare(selectionPoint, m_selected_square);
 
 				if(secondSquare != NOT_FOUND)
@@ -131,78 +136,6 @@ void SquaresApp::runSquareMenu()
 	clrscr();
 	m_squares.drawSquares();
 	waitForEscape();
-}
-
-Point SquaresApp::createShiftByInput() const
-{
-	double x,y;
-
-	cout << "Please enter the required shift in X axis [ Value between -1 and 1 ] :";
-	cin >> x;
-
-	while(x > 1 || x < -1)
-	{
-		cerr << "Given shift in X axis is too big !." << endl << endl << endl;
-
-		cout << "Please enter the required shift in X axis [ Value between -1 and 1 ] :";
-		cin >> x;
-	}
-
-	cout << "Please enter the required shift in Y axis [ Value between -1 and 1 ] :";
-	cin >> y;
-
-	while(y > 1 || y < -1)
-	{
-		cerr << "Given shift in Y axis is too big !." << endl << endl << endl;
-
-		cout << "Please enter the required shift in Y axis [ Value between -1 and 1 ] :";
-		cin >> y;
-	}
-
-	return Point(x,y);
-}
-
-Point SquaresApp::createPointByInput() const
-{
-	double x,y;
-
-	cout << "Please enter the X coordinate :";
-	cin >> x;
-	cout << "Please enter the Y coordinate :";
-	cin >> y;
-
-	return Point(x,y);
-}
-
-void SquaresApp::addSquareByInput()
-{
-	double sideLength;
-	char ch;
-	Point topLeft = createPointByInput();
-
-	cout << "Please enter the side length [At least 1] :";
-	cin >> sideLength;
-
-	while(sideLength < 1)
-	{
-		cerr << "Invalid side length !." << endl << endl << endl;
-
-		cout << "Please enter the side length [At least 1] :";
-		cin >> sideLength;
-	}
-
-	cout << "Please enter the square character ['@' is not allowed]:";
-	cin >> ch;
-
-	while(ch == SELECTION_CHAR)
-	{
-		cerr << "Invalid character ! Please insert different square character ." << endl << endl << endl;
-
-		cout << "Please enter the square character ['@' is not allowed]:";
-		cin >> ch;
-	}
-
-	m_squares.addSquare(topLeft, (unsigned int)sideLength, ch);
 }
 
 void SquaresApp::waitForEscape() const

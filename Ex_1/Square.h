@@ -15,7 +15,7 @@ public:
 	: m_top_left(x,y), m_bottom_right(x + side_length - 1, y + side_length - 1), 
 	  m_side_length(side_length), m_draw_char(ch) {}
 
-	explicit Square(const Square&);
+	Square(const Square&);
 
 	void setShift(const Point& newShift);
 	

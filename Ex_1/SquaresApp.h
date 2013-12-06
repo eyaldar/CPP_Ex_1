@@ -3,6 +3,7 @@
 
 #include "Menu.h"
 #include "SquaresContainer.h"
+#include "InputManager.h"
 #include "Gotoxy.h"
 #include <conio.h>
 
@@ -53,7 +54,6 @@ private:
 
 	void selectSquare();
 	void runSquareMenu();
-	void addSquareByInput();
 	bool checkCollision(Square& oldSquare, Square& newSquare);
 	void handleDoubleAnimation(Square& secondSquare);
 
@@ -63,8 +63,6 @@ private:
 	void drawAnimation(Square&, Square&) const;
 	void handleAnimation() const;
 	bool shouldReturnToSquareMenu(int lastOption) const;
-	Point createShiftByInput() const;
-	Point createPointByInput() const;
 	void redrawSquareWithSorroundings(const Square& oldSquare, const Square& newSquare) const;
 
 };
