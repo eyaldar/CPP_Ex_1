@@ -111,7 +111,7 @@ void SquaresApp::runSquareMenu()
 				Point shift = createShiftByInput();
 				m_selected_square->setShift(shift);
 
-				drawAnimation();
+				handleAnimation();
 
 				break;
 			}
@@ -224,7 +224,7 @@ void SquaresApp::drawBlinkingPoint(const Point& point) const
 	}
 }
 
-void SquaresApp::drawAnimation() const
+void SquaresApp::handleAnimation() const
 {
 	Square oldSelectedSquare(*m_selected_square);
 
@@ -248,13 +248,16 @@ void SquaresApp::handleDoubleAnimation(Square& secondSquare)
 	Square oldSecondSquare(secondSquare);
 
 	clrscr();
-	drawSquaresWithSelection();
+	m_selected_square->draw();
+	secondSquare.draw();
 
 	while(!_kbhit() || _getch()!=27)
 	{
 		if(m_selected_square->move())
 		{
-			redrawSquareWithSorroundings(oldSelectedSquare, *m_selected_square);
+			oldSelectedSquare.draw(' ');
+			m_selected_square->draw();
+
 			oldSelectedSquare.copyFrom(*m_selected_square);
 
 			if(checkCollision(*m_selected_square, secondSquare))
@@ -265,7 +268,8 @@ void SquaresApp::handleDoubleAnimation(Square& secondSquare)
 
 		if(secondSquare.move())
 		{
-			redrawSquareWithSorroundings(oldSecondSquare, secondSquare);
+			oldSecondSquare.draw(' ');
+			secondSquare.draw();
 			oldSecondSquare.copyFrom(secondSquare);
 
 			if(checkCollision(secondSquare, *m_selected_square))
@@ -293,9 +297,9 @@ bool SquaresApp::checkCollision(Square& firstSquare, Square& secondSquare)
 		firstSquare.drawAsFilled();
 		secondSquare.drawAsFilled();
 
-		Sleep(100);
-
 		m_squares.mergeOnCollision(firstSquare, secondSquare);
+
+		waitForEscape();
 
 		return true;
 	}

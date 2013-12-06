@@ -60,7 +60,8 @@ private:
 	void waitForEscape() const;
 	void drawSquaresWithSelection() const;
 	void drawBlinkingPoint(const Point&) const;
-	void drawAnimation() const;
+	void drawAnimation(Square&, Square&) const;
+	void handleAnimation() const;
 	bool shouldReturnToSquareMenu(int lastOption) const;
 	Point createShiftByInput() const;
 	Point createPointByInput() const;

@@ -163,8 +163,7 @@ bool Square::move()
 
 bool Square::isCollidingHorizontallyWith(const Square& other) const
 {
-	return (this->m_top_left.getX() + 1 >= other.m_top_left.getX()	&&
-			this->m_top_left.getX() - 1 <= other.m_top_left.getX())	&&
+	return this->m_top_left.getX() == other.m_top_left.getX()	&&
 			((this->m_top_left.getY() <= other.m_top_left.getY() && 
 			 this->m_bottom_right.getY() >= other.m_top_left.getY()) ||
 			(other.m_top_left.getY() <= this->m_top_left.getY() && 
@@ -173,8 +172,7 @@ bool Square::isCollidingHorizontallyWith(const Square& other) const
 
 bool Square::isCollidingVerticallyWith(const Square& other) const
 {
-	return (this->m_top_left.getY() + 1 >= other.m_top_left.getY()	&&
-			this->m_top_left.getY() - 1 <= other.m_top_left.getY())	&&
+	return  this->m_top_left.getY() == other.m_top_left.getY()	&&
 			((this->m_top_left.getX() <= other.m_top_left.getX() && 
 			 this->m_bottom_right.getX() >= other.m_top_left.getX()) ||
 			(other.m_top_left.getX() <= this->m_top_left.getX() && 
