@@ -2,7 +2,8 @@
 #define __SQUARE_H__
 
 #include "Point.h"
-#include <cmath>
+#include <math.h>
+#include <string>
 
 class Square 
 {
@@ -18,6 +19,7 @@ public:
 	Square(const Square&);
 
 	void setShift(const Point& newShift);
+	const Point& getShift() const;
 	
 	// returns whether or not the square was changed by a full point.
 	bool move();
@@ -31,8 +33,10 @@ public:
 	bool contains(const Point& point) const;
 	bool contains(const Square&) const;
 	bool isIntersectingWith(const Square&) const;
+	bool isCollidingWith(const Square&) const; 
 	bool isCollidingHorizontallyWith(const Square&) const; 
 	bool isCollidingVerticallyWith(const Square&) const;
+	bool isWithinScreenBounds() const;
 
 	// Compares to squares by area
 	// Returns 0 if the areas are equal, in case this square is bigger returns positive number
@@ -49,8 +53,6 @@ public:
 	// otherwise returns negative number.
 	int compareVerticalSpeedTo(const Square&) const;
 private:
-	static const Point TOP_LEFT_BOUND;
-	static const Point BOTTOM_RIGHT_BOUND;
 
 	unsigned int m_side_length;
 	Point m_top_left;

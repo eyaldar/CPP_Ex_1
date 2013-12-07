@@ -2,6 +2,8 @@
 #define __POINT_H__
 
 #include <iostream>
+#include "ScreenMatrix.h"
+#include "Gotoxy.h"
 
 class Point 
 {

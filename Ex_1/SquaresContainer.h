@@ -23,14 +23,18 @@ public:
 	void removeSquare(Square&);
 	void promoteSquare(Square&);
 	void mergeSquares(Square&, Square&);
-	void mergeOnCollision(Square&, Square&);
+	Square* mergeOnCollision(Square&, Square&);
 	
 	void drawSquares() const;
 	void drawIntersectingWith(const Square& square) const;
 	Square* findSquare(const Point& coordinates, const Square* except = NULL) const;
+
+	void updateScreenMatrix();
 private:	
+
 	std::list<Square*> m_squares;
 
+	void initScreenMatrix(char** screenMatrix);
 	void destruct();
 };
 

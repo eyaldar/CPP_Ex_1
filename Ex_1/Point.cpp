@@ -1,12 +1,11 @@
 #include "Point.h"
-#include "Gotoxy.h"
 
 using namespace std;
 
 void Point::draw(char ch) const
 {
-	if((m_x >= 0 && m_x < 79) &&
-	   (m_y >= 0 && m_y < 24))
+	if((m_x >= SCREEN_LEFT_BOUNDARY && m_x < SCREEN_RIGHT_BOUNDARY) &&
+	   (m_y >= SCREEN_TOP_BOUNDARY && m_y < SCREEN_BOTTOM_BOUNDARY))
 	{
 		gotoxy((int)m_x, (int)m_y);
 		cout << ch;

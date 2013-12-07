@@ -177,6 +177,7 @@ void SquaresApp::handleAnimation() const
 
 void SquaresApp::handleDoubleAnimation(Square& secondSquare)
 {
+	bool hasCollisionOccured = false;
 	Square oldSelectedSquare(*m_selected_square);
 	Square oldSecondSquare(secondSquare);
 
@@ -193,21 +194,29 @@ void SquaresApp::handleDoubleAnimation(Square& secondSquare)
 
 			oldSelectedSquare.copyFrom(*m_selected_square);
 
-			if(checkCollision(*m_selected_square, secondSquare))
+			if(!hasCollisionOccured)
 			{
-				return;
+				hasCollisionOccured = m_selected_square->isCollidingWith(secondSquare);
+				if(hasCollisionOccured)
+				{
+					m_selected_square = handleCollision(*m_selected_square, secondSquare);
+					clrscr();
+				}
 			}
 		}
 
-		if(secondSquare.move())
+		if(!hasCollisionOccured && secondSquare.move())
 		{
 			oldSecondSquare.draw(' ');
 			secondSquare.draw();
 			oldSecondSquare.copyFrom(secondSquare);
 
-			if(checkCollision(secondSquare, *m_selected_square))
+			hasCollisionOccured = m_selected_square->isCollidingWith(secondSquare);
+
+			if(hasCollisionOccured)
 			{
-				return;
+				m_selected_square = handleCollision(*m_selected_square, secondSquare);
+				clrscr();
 			}
 		}
 
@@ -223,21 +232,17 @@ void SquaresApp::redrawSquareWithSorroundings(const Square& oldSquare, const Squ
 	m_selected_square->draw(SELECTION_CHAR);
 }
 
-bool SquaresApp::checkCollision(Square& firstSquare, Square& secondSquare)
+Square* SquaresApp::handleCollision(Square& firstSquare, Square& secondSquare)
 {
-	if(firstSquare.isCollidingHorizontallyWith(secondSquare) || firstSquare.isCollidingVerticallyWith(secondSquare))
-	{
-		firstSquare.drawAsFilled();
-		secondSquare.drawAsFilled();
+	Square* surviver = NULL;
+	firstSquare.drawAsFilled();
+	secondSquare.drawAsFilled();
 
-		m_squares.mergeOnCollision(firstSquare, secondSquare);
+	surviver = m_squares.mergeOnCollision(firstSquare, secondSquare);
 
-		waitForEscape();
+	waitForEscape();
 
-		return true;
-	}
-
-	return false;
+	return surviver;
 }
 
 void SquaresApp::drawSquaresWithSelection() const

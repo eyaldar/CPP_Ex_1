@@ -1,12 +1,6 @@
 #include "Square.h"
-#include "Gotoxy.h"
 
-#include <math.h>
-#include <string>
 using namespace std;
-
-const Point Square::TOP_LEFT_BOUND(0,0);
-const Point Square::BOTTOM_RIGHT_BOUND(79, 24);
 
 Square::Square(const Square& other)
 {
@@ -137,6 +131,11 @@ bool Square::isIntersectingWith(const Square& other) const
 			(int)other.m_top_left.getY() <= (int)this->m_bottom_right.getY();
 }
 
+const Point& Square::getShift() const
+{
+	return m_shift;
+}
+
 void Square::setShift(const Point& point)
 {
 	m_shift = Point(point);
@@ -146,14 +145,21 @@ bool Square::move()
 {
 	Point oldTopLeft = Point(m_top_left);
 
-	if(TOP_LEFT_BOUND.getX() == m_top_left.getX() ||
-	   BOTTOM_RIGHT_BOUND.getX() == m_bottom_right.getX())
-		m_shift.setX(m_shift.getX() * -1);
+	if(isWithinScreenBounds())
+	{
+		if(SCREEN_LEFT_BOUNDARY > m_top_left.getX() + m_shift.getX() ||
+		   SCREEN_RIGHT_BOUNDARY < m_bottom_right.getX() + m_shift.getX())
+		{
+			m_shift.setX(m_shift.getX() * -1);
+		}
 
-	
-	if(TOP_LEFT_BOUND.getY() == m_top_left.getY() ||
-	   BOTTOM_RIGHT_BOUND.getY() == m_bottom_right.getY())
-		m_shift.setY(m_shift.getY() * -1);
+		if(SCREEN_TOP_BOUNDARY > m_top_left.getY() + m_shift.getY() ||
+		   SCREEN_BOTTOM_BOUNDARY < m_bottom_right.getY() + m_shift.getY())
+		{
+			m_shift.setY(m_shift.getY() * -1);
+		}
+	}
+
 
 	m_top_left += m_shift;
 	m_bottom_right += m_shift;
@@ -161,20 +167,31 @@ bool Square::move()
 	return (oldTopLeft != m_top_left);
 }
 
+bool Square::isCollidingWith(const Square& other) const
+{
+	return isCollidingHorizontallyWith(other) || isCollidingVerticallyWith(other);
+}
+
 bool Square::isCollidingHorizontallyWith(const Square& other) const
 {
-	return this->m_top_left.getX() == other.m_top_left.getX()	&&
-			((this->m_top_left.getY() <= other.m_top_left.getY() && 
-			 this->m_bottom_right.getY() >= other.m_top_left.getY()) ||
-			(other.m_top_left.getY() <= this->m_top_left.getY() && 
-			 other.m_bottom_right.getY() >= this->m_top_left.getY())); 
+	return (this->m_top_left.getX() == other.m_bottom_right.getX() || 
+			this->m_bottom_right.getX() == other.m_top_left.getX()) 	&&
+		   (this->m_top_left.getY() <= other.m_bottom_right.getY() &&
+		    other.m_top_left.getY() <= this->m_bottom_right.getY()); 
 }
 
 bool Square::isCollidingVerticallyWith(const Square& other) const
 {
-	return  this->m_top_left.getY() == other.m_top_left.getY()	&&
-			((this->m_top_left.getX() <= other.m_top_left.getX() && 
-			 this->m_bottom_right.getX() >= other.m_top_left.getX()) ||
-			(other.m_top_left.getX() <= this->m_top_left.getX() && 
-			 other.m_bottom_right.getX() >= this->m_top_left.getX()));
+	return  (this->m_top_left.getY() == other.m_bottom_right.getY() || 
+			this->m_bottom_right.getY() == other.m_top_left.getY())	&&
+			(this->m_top_left.getX() <= other.m_bottom_right.getX() &&
+		    other.m_top_left.getX() <= this->m_bottom_right.getX()); 
+}
+
+bool Square::isWithinScreenBounds() const
+{
+	return SCREEN_TOP_BOUNDARY <= m_top_left.getY() && 
+		   m_bottom_right.getY() <= SCREEN_BOTTOM_BOUNDARY  &&
+		   SCREEN_LEFT_BOUNDARY <= m_top_left.getX() &&
+		   m_bottom_right.getX() <= SCREEN_RIGHT_BOUNDARY;
 }

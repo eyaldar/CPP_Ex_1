@@ -67,21 +67,35 @@ void SquaresContainer::mergeSquares(Square& firstSquare, Square& secondSquare)
 	removeSquare(secondSquare);
 }
 
-void SquaresContainer::mergeOnCollision(Square& firstSquare, Square& secondSquare)
+Square* SquaresContainer::mergeOnCollision(Square& firstSquare, Square& secondSquare)
 {
+	Square* selected_square;
+
+	bool isCollidingHorizontally = firstSquare.isCollidingHorizontallyWith(secondSquare);
+	bool isCollidingVertically = firstSquare.isCollidingVerticallyWith(secondSquare);
 	bool isFirstMovingFasterHorizontally = firstSquare.compareHorizontalSpeedTo(secondSquare) > 0;
 	bool isFirstMovingFasterVertically = firstSquare.compareVerticalSpeedTo(secondSquare) > 0;
 	bool isSecondAreaBigger = firstSquare.compareAreaTo(secondSquare) < 0;
 
-	if((isFirstMovingFasterHorizontally && firstSquare.isCollidingHorizontallyWith(secondSquare)) ||
-		(isFirstMovingFasterVertically && firstSquare.isCollidingVerticallyWith(secondSquare)) && isSecondAreaBigger)
+	if((isFirstMovingFasterHorizontally && isCollidingHorizontally) ||
+		(isFirstMovingFasterVertically && isCollidingVertically) && isSecondAreaBigger)
 	{
 		removeSquare(firstSquare);
+		selected_square = &secondSquare;
 	}
 	else
 	{
 		removeSquare(secondSquare);
+		selected_square = &firstSquare;
 	}
+
+	if(isCollidingHorizontally)
+		selected_square->setShift(Point(selected_square->getShift().getX() * -1, selected_square->getShift().getY()));
+
+	if(isCollidingVertically)
+		selected_square->setShift(Point(selected_square->getShift().getX(), selected_square->getShift().getY() * -1));
+	
+	return selected_square;
 }
 
 Square* SquaresContainer::findSquare(const Point& coordinates, const Square* except) const
