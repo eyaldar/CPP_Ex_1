@@ -19,13 +19,14 @@ public:
 		return instance;
 	}
 
+	void copyCurrentState();
 	void printDiff();
 	void updateScreenMatrix(int x, int y, char ch);
 	void clearScreenMatrix();
 
 private:
-	char currScreenMatrix[SCREEN_RIGHT_BOUNDARY][SCREEN_BOTTOM_BOUNDARY];
 	char prevScreenMatrix[SCREEN_RIGHT_BOUNDARY][SCREEN_BOTTOM_BOUNDARY];
+	char currScreenMatrix[SCREEN_RIGHT_BOUNDARY][SCREEN_BOTTOM_BOUNDARY];
 
 	ScreenMatrix()
 	{
@@ -34,7 +35,6 @@ private:
 
 	void init();
 	void initScreenMatrix(char screenMatrix[SCREEN_RIGHT_BOUNDARY][SCREEN_BOTTOM_BOUNDARY]);
-	void copyCurrentState();
 
 	void checkIsInsideBoundaries(int x, int y);
 };

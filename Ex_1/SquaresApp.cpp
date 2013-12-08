@@ -159,18 +159,13 @@ void SquaresApp::drawBlinkingPoint(const Point& point) const
 
 void SquaresApp::handleAnimation() const
 {
-	Square oldSelectedSquare(*m_selected_square);
-
 	clrscr();
-	drawSquaresWithSelection();
+	ScreenMatrix::getInstance().clearScreenMatrix();
 
 	while(!_kbhit() || _getch()!=27)
 	{
-		if(m_selected_square->move())
-		{
-			redrawSquareWithSorroundings(oldSelectedSquare, *m_selected_square);
-			oldSelectedSquare.copyFrom(*m_selected_square);
-		}
+		moveInScreen(*m_selected_square);
+
 		Sleep(100);
 	}
 }
@@ -178,71 +173,69 @@ void SquaresApp::handleAnimation() const
 void SquaresApp::handleDoubleAnimation(Square& secondSquare)
 {
 	bool hasCollisionOccured = false;
-	Square oldSelectedSquare(*m_selected_square);
-	Square oldSecondSquare(secondSquare);
 
 	clrscr();
-	m_selected_square->draw();
-	secondSquare.draw();
+	ScreenMatrix::getInstance().clearScreenMatrix();
 
 	while(!_kbhit() || _getch()!=27)
 	{
-		if(m_selected_square->move())
-		{
-			oldSelectedSquare.draw(' ');
-			m_selected_square->draw();
+		moveInScreen(*m_selected_square);
 
-			oldSelectedSquare.copyFrom(*m_selected_square);
+		if(checkCollision(*m_selected_square, secondSquare))
+			break;
 
-			if(!hasCollisionOccured)
-			{
-				hasCollisionOccured = m_selected_square->isCollidingWith(secondSquare);
-				if(hasCollisionOccured)
-				{
-					m_selected_square = handleCollision(*m_selected_square, secondSquare);
-					clrscr();
-				}
-			}
-		}
+		moveInScreen(secondSquare);
 
-		if(!hasCollisionOccured && secondSquare.move())
-		{
-			oldSecondSquare.draw(' ');
-			secondSquare.draw();
-			oldSecondSquare.copyFrom(secondSquare);
-
-			hasCollisionOccured = m_selected_square->isCollidingWith(secondSquare);
-
-			if(hasCollisionOccured)
-			{
-				m_selected_square = handleCollision(*m_selected_square, secondSquare);
-				clrscr();
-			}
-		}
+		if(checkCollision(*m_selected_square, secondSquare))
+			break;
 
 		Sleep(100);
 	}
+
+	handleAnimation();
 }
 
-void SquaresApp::redrawSquareWithSorroundings(const Square& oldSquare, const Square& newSquare) const
+bool SquaresApp::checkCollision(Square& firstSquare, Square& secondSquare)
 {
-	oldSquare.draw(' ');
-	m_squares.drawIntersectingWith(oldSquare);
-	m_squares.drawIntersectingWith(newSquare);
-	m_selected_square->draw(SELECTION_CHAR);
+	if(firstSquare.isCollidingWith(secondSquare))
+	{
+		m_selected_square = handleCollision(firstSquare, secondSquare);
+
+		return true;
+	}
+
+	return false;
 }
 
 Square* SquaresApp::handleCollision(Square& firstSquare, Square& secondSquare)
 {
 	Square* surviver = NULL;
+
+	ScreenMatrix::getInstance().copyCurrentState();
+
 	firstSquare.drawAsFilled();
 	secondSquare.drawAsFilled();
+
+	ScreenMatrix::getInstance().printDiff();
 
 	surviver = m_squares.mergeOnCollision(firstSquare, secondSquare);
 
 	waitForEscape();
 
 	return surviver;
+}
+
+void SquaresApp::moveInScreen(Square& square) const
+{
+	ScreenMatrix::getInstance().copyCurrentState();
+
+	square.draw(' ', true);
+
+	square.move();
+
+	square.draw(true);
+
+	ScreenMatrix::getInstance().printDiff();
 }
 
 void SquaresApp::drawSquaresWithSelection() const

@@ -54,7 +54,8 @@ private:
 
 	void selectSquare();
 	void runSquareMenu();
-	Square* handleCollision(Square& oldSquare, Square& newSquare);
+	bool checkCollision(Square& firstSquare, Square& secondSquare);
+	Square* handleCollision(Square& firstSquare, Square& secondSquare);
 	void handleDoubleAnimation(Square& secondSquare);
 
 	void waitForEscape() const;
@@ -64,7 +65,8 @@ private:
 	bool drawSquareMovement(Square&) const;
 	void handleAnimation() const;
 	bool shouldReturnToSquareMenu(int lastOption) const;
-	void redrawSquareWithSorroundings(const Square& oldSquare, const Square& newSquare) const;
+
+	void moveInScreen(Square& square) const;
 };
 
 #endif

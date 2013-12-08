@@ -55,7 +55,6 @@ void ScreenMatrix::updateScreenMatrix(int x, int y, char ch)
 {
 	checkIsInsideBoundaries(x, y);
 
-	prevScreenMatrix[x][y] = currScreenMatrix[x][y]; 
 	currScreenMatrix[x][y] = ch;
 }
 
@@ -68,5 +67,4 @@ void ScreenMatrix::checkIsInsideBoundaries(int x, int y)
 	{
 		throw "Given coordinates is out of ScreenMatrix's boundaries!";
 	}
-
 }

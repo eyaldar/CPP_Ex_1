@@ -20,16 +20,17 @@ public:
 
 	void setShift(const Point& newShift);
 	const Point& getShift() const;
-	
-	// returns whether or not the square was changed by a full point.
-	bool move();
+
+	void move();
 	void merge(const Square&);
 	void copyFrom(const Square&);
 
-	void draw() const;
+	void draw(bool useMatrix = false) const;
+	void draw(char ch, bool useMatrix = false) const;
+
 	void drawAsFilled() const;
-	void draw(char ch) const;
 	void drawAsFilled(char ch) const;
+
 	bool contains(const Point& point) const;
 	bool contains(const Square&) const;
 	bool isIntersectingWith(const Square&) const;
@@ -59,6 +60,9 @@ private:
 	Point m_bottom_right;
 	char m_draw_char;
 	Point m_shift;
+
+	void drawToMatrix(char ch) const;
+	void drawToScreen(char ch) const;
 };
 
 #endif

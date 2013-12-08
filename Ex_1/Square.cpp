@@ -7,12 +7,64 @@ Square::Square(const Square& other)
 	copyFrom(other);
 }
 
-void Square::draw() const
+void Square::draw(bool useMatrix) const
 {
-	draw(m_draw_char);
+	draw(m_draw_char, useMatrix);
 }
 
-void Square::draw(char ch) const
+void Square::draw(char ch, bool useMatrix) const
+{
+	if(useMatrix)
+		drawToMatrix(ch);
+	else
+		drawToScreen(ch);
+}
+
+void Square::drawAsFilled() const
+{
+	drawAsFilled(m_draw_char);
+}
+
+void Square::drawAsFilled(char ch) const
+{
+	double left = m_top_left.getX();
+	double top = m_top_left.getY();
+
+	for (unsigned int rowIndex = 0; rowIndex < m_side_length; rowIndex++)
+	{
+		for (unsigned int columnIndex = 0; columnIndex < m_side_length; columnIndex++)
+		{
+			ScreenMatrix::getInstance().updateScreenMatrix(left + columnIndex, top + rowIndex, ch);
+		}
+	}
+}
+
+void Square::drawToMatrix(char ch) const
+{
+	double left = m_top_left.getX();
+	double top = m_top_left.getY();
+	double right = m_bottom_right.getX();
+	double bottom = m_bottom_right.getY();
+
+	for (unsigned int lengthIndex = 0; lengthIndex < m_side_length; lengthIndex++)
+	{
+		// top side
+		ScreenMatrix::getInstance().updateScreenMatrix(left + lengthIndex, top, ch);
+
+		// left side
+		ScreenMatrix::getInstance().updateScreenMatrix(left, top + lengthIndex, ch);
+
+		// bottom side
+		ScreenMatrix::getInstance().updateScreenMatrix(left + lengthIndex, bottom, ch);
+
+		// right side
+		ScreenMatrix::getInstance().updateScreenMatrix(right, top + lengthIndex, ch);
+	}
+
+	ScreenMatrix::getInstance().updateScreenMatrix(right, bottom, ch);
+}
+
+void Square::drawToScreen(char ch) const
 {
 	double left = m_top_left.getX();
 	double top = m_top_left.getY();
@@ -41,27 +93,6 @@ void Square::draw(char ch) const
 
 	p.init(right, bottom);
 	p.draw(ch);
-}
-
-void Square::drawAsFilled() const
-{
-	drawAsFilled(m_draw_char);
-}
-
-void Square::drawAsFilled(char ch) const
-{
-	double left = m_top_left.getX();
-	double top = m_top_left.getY();
-	Point p;
-
-	for (unsigned int rowIndex = 0; rowIndex < m_side_length; rowIndex++)
-	{
-		for (unsigned int columnIndex = 0; columnIndex < m_side_length; columnIndex++)
-		{
-			p.init(left + rowIndex, top + columnIndex);
-			p.draw(ch);
-		}
-	}
 }
 
 bool Square::contains(const Point& point) const
@@ -141,30 +172,25 @@ void Square::setShift(const Point& point)
 	m_shift = Point(point);
 }
 
-bool Square::move()
+void Square::move()
 {
-	Point oldTopLeft = Point(m_top_left);
-
 	if(isWithinScreenBounds())
 	{
 		if(SCREEN_LEFT_BOUNDARY > m_top_left.getX() + m_shift.getX() ||
-		   SCREEN_RIGHT_BOUNDARY < m_bottom_right.getX() + m_shift.getX())
+		   SCREEN_RIGHT_BOUNDARY <= m_bottom_right.getX() + m_shift.getX())
 		{
 			m_shift.setX(m_shift.getX() * -1);
 		}
 
 		if(SCREEN_TOP_BOUNDARY > m_top_left.getY() + m_shift.getY() ||
-		   SCREEN_BOTTOM_BOUNDARY < m_bottom_right.getY() + m_shift.getY())
+		   SCREEN_BOTTOM_BOUNDARY <= m_bottom_right.getY() + m_shift.getY())
 		{
 			m_shift.setY(m_shift.getY() * -1);
 		}
 	}
 
-
 	m_top_left += m_shift;
 	m_bottom_right += m_shift;
-
-	return (oldTopLeft != m_top_left);
 }
 
 bool Square::isCollidingWith(const Square& other) const

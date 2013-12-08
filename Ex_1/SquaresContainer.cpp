@@ -44,17 +44,6 @@ void SquaresContainer::drawSquares() const
 	}
 }
 
-void SquaresContainer::drawIntersectingWith(const Square& square) const
-{
-	for (list<Square*>::const_iterator it = m_squares.begin(); it != m_squares.end(); ++it)
-	{
-		if(&square != (*it) && (*it)->isIntersectingWith(square))
-		{
-			(*it)->draw();
-		}
-	}
-}
-
 void SquaresContainer::promoteSquare(Square& square)
 {
 	m_squares.remove(&square);
