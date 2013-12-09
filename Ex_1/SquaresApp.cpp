@@ -191,8 +191,6 @@ void SquaresApp::handleDoubleAnimation(Square& secondSquare)
 
 		Sleep(100);
 	}
-
-	handleAnimation();
 }
 
 bool SquaresApp::checkCollision(Square& firstSquare, Square& secondSquare)
@@ -200,6 +198,7 @@ bool SquaresApp::checkCollision(Square& firstSquare, Square& secondSquare)
 	if(firstSquare.isCollidingWith(secondSquare))
 	{
 		m_selected_square = handleCollision(firstSquare, secondSquare);
+		handleAnimation();
 
 		return true;
 	}

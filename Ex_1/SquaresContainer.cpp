@@ -66,8 +66,8 @@ Square* SquaresContainer::mergeOnCollision(Square& firstSquare, Square& secondSq
 	bool isFirstMovingFasterVertically = firstSquare.compareVerticalSpeedTo(secondSquare) > 0;
 	bool isSecondAreaBigger = firstSquare.compareAreaTo(secondSquare) < 0;
 
-	if((isFirstMovingFasterHorizontally && isCollidingHorizontally) ||
-		(isFirstMovingFasterVertically && isCollidingVertically) && isSecondAreaBigger)
+	if(((isFirstMovingFasterHorizontally && isCollidingHorizontally) ||
+		(isFirstMovingFasterVertically && isCollidingVertically)) && isSecondAreaBigger)
 	{
 		removeSquare(firstSquare);
 		selected_square = &secondSquare;
