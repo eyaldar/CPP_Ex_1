@@ -184,8 +184,6 @@ bool SquaresApp::playDoubleAnimation(Square& secondSquare) const
 	bool previouslyContained;
 	bool currentlyContaining;
 
-	bool hasCollisionOccuredMidMove = false;
-
 	clrscr();
 	ScreenMatrix::getInstance().clearScreenMatrix();
 
