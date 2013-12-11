@@ -116,7 +116,7 @@ void SquaresApp::runSquareMenu()
 				Point shift = InputManager::getInstance().createShiftByInput();
 				m_selected_square->setShift(shift);
 
-				handleAnimation();
+				playAnimation();
 
 				break;
 			}
@@ -126,7 +126,13 @@ void SquaresApp::runSquareMenu()
 				Square* secondSquare =  m_squares.findSquare(selectionPoint, m_selected_square);
 
 				if(secondSquare != NOT_FOUND)
-					handleDoubleAnimation(*secondSquare);
+				{
+					if(playDoubleAnimation(*secondSquare))
+					{
+						m_selected_square = handleCollision(*m_selected_square, *secondSquare);
+						playAnimation();
+					}
+				}
 
 				break;
 			}
@@ -157,7 +163,7 @@ void SquaresApp::drawBlinkingPoint(const Point& point) const
 	}
 }
 
-void SquaresApp::handleAnimation() const
+void SquaresApp::playAnimation() const
 {
 	clrscr();
 	ScreenMatrix::getInstance().clearScreenMatrix();
@@ -170,37 +176,36 @@ void SquaresApp::handleAnimation() const
 	}
 }
 
-void SquaresApp::handleDoubleAnimation(Square& secondSquare)
+bool SquaresApp::playDoubleAnimation(Square& secondSquare) const
 {
-	bool hasCollisionOccured = false;
+	bool previouslyIntersected;
+	bool currentlyIntersecting;
+
+	bool previouslyContained;
+	bool currentlyContaining;
+
+	bool hasCollisionOccuredMidMove = false;
 
 	clrscr();
 	ScreenMatrix::getInstance().clearScreenMatrix();
 
 	while(!_kbhit() || _getch()!=27)
 	{
+		m_squares.getSquaresRelations(*m_selected_square, secondSquare, previouslyContained, previouslyIntersected);
+
 		moveInScreen(*m_selected_square);
-
-		if(checkCollision(*m_selected_square, secondSquare))
-			break;
-
 		moveInScreen(secondSquare);
 
-		if(checkCollision(*m_selected_square, secondSquare))
-			break;
+		m_squares.getSquaresRelations(*m_selected_square, secondSquare, currentlyContaining, currentlyIntersecting);
+
+		// Collided now or collision occured after one square's move and relations between squares changed.
+		if(m_selected_square->isCollidingWith(secondSquare) ||
+		   (previouslyIntersected != currentlyIntersecting || previouslyContained != currentlyContaining)))
+		{
+			return true;
+		}
 
 		Sleep(100);
-	}
-}
-
-bool SquaresApp::checkCollision(Square& firstSquare, Square& secondSquare)
-{
-	if(firstSquare.isCollidingWith(secondSquare))
-	{
-		m_selected_square = handleCollision(firstSquare, secondSquare);
-		handleAnimation();
-
-		return true;
 	}
 
 	return false;

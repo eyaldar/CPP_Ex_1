@@ -28,6 +28,9 @@ public:
 	void drawSquares() const;
 	Square* findSquare(const Point& coordinates, const Square* except = NULL) const;
 
+	void getSquaresRelations(Square& firstSquare, Square& secondSquare, 
+						    bool& hasSubsetRelation, bool& hasIntersectionRelation) const;
+
 private:	
 
 	std::list<Square*> m_squares;

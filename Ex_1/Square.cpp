@@ -201,17 +201,19 @@ bool Square::isCollidingWith(const Square& other) const
 bool Square::isCollidingHorizontallyWith(const Square& other) const
 {
 	return (this->m_top_left.getX() == other.m_bottom_right.getX() || 
-			this->m_bottom_right.getX() == other.m_top_left.getX()) 	&&
-		   (this->m_top_left.getY() <= other.m_bottom_right.getY() &&
-		    other.m_top_left.getY() <= this->m_bottom_right.getY()); 
+			this->m_top_left.getX() == other.m_top_left.getX()	   ||
+			this->m_bottom_right.getX() == other.m_top_left.getX() ||
+			this->m_bottom_right.getX() == other.m_bottom_right.getX()) 	&&
+			this->isIntersectingWith(other); 
 }
 
 bool Square::isCollidingVerticallyWith(const Square& other) const
 {
 	return  (this->m_top_left.getY() == other.m_bottom_right.getY() || 
-			this->m_bottom_right.getY() == other.m_top_left.getY())	&&
-			(this->m_top_left.getX() <= other.m_bottom_right.getX() &&
-		    other.m_top_left.getX() <= this->m_bottom_right.getX()); 
+			this->m_top_left.getY() == other.m_top_left.getY()	   ||
+			this->m_bottom_right.getY() == other.m_top_left.getY() ||
+			this->m_bottom_right.getY() == other.m_bottom_right.getY()) 	&&
+			this->isIntersectingWith(other); 
 }
 
 bool Square::isWithinScreenBounds() const

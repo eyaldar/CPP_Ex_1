@@ -77,14 +77,17 @@ Square* SquaresContainer::mergeOnCollision(Square& firstSquare, Square& secondSq
 		removeSquare(secondSquare);
 		selected_square = &firstSquare;
 	}
-
-	if(isCollidingHorizontally)
-		selected_square->setShift(Point(selected_square->getShift().getX() * -1, selected_square->getShift().getY()));
-
-	if(isCollidingVertically)
-		selected_square->setShift(Point(selected_square->getShift().getX(), selected_square->getShift().getY() * -1));
 	
 	return selected_square;
+}
+
+void SquaresContainer::getSquaresRelations(Square& firstSquare, Square& secondSquare, 
+									bool& hasSubsetRelation, bool& hasIntersectionRelation) const
+{
+		hasIntersectionRelation = firstSquare.isIntersectingWith(secondSquare);
+								
+		hasSubsetRelation = (firstSquare.contains(secondSquare) ||
+							 secondSquare.contains(firstSquare));
 }
 
 Square* SquaresContainer::findSquare(const Point& coordinates, const Square* except) const
