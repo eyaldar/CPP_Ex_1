@@ -56,9 +56,9 @@ void SquaresContainer::mergeSquares(Square& firstSquare, Square& secondSquare)
 	removeSquare(secondSquare);
 }
 
-Square* SquaresContainer::mergeOnCollision(Square& firstSquare, Square& secondSquare)
+Square* SquaresContainer::collideSquares(Square& firstSquare, Square& secondSquare)
 {
-	Square* selected_square;
+	Square* surviver;
 
 	bool isCollidingHorizontally = firstSquare.isCollidingHorizontallyWith(secondSquare);
 	bool isCollidingVertically = firstSquare.isCollidingVerticallyWith(secondSquare);
@@ -70,15 +70,15 @@ Square* SquaresContainer::mergeOnCollision(Square& firstSquare, Square& secondSq
 		(isFirstMovingFasterVertically && isCollidingVertically)) && isSecondAreaBigger)
 	{
 		removeSquare(firstSquare);
-		selected_square = &secondSquare;
+		surviver = &secondSquare;
 	}
 	else
 	{
 		removeSquare(secondSquare);
-		selected_square = &firstSquare;
+		surviver = &firstSquare;
 	}
 	
-	return selected_square;
+	return surviver;
 }
 
 void SquaresContainer::getSquaresRelations(Square& firstSquare, Square& secondSquare, 

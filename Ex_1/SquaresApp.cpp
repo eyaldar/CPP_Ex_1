@@ -192,13 +192,14 @@ bool SquaresApp::playDoubleAnimation(Square& secondSquare) const
 		m_squares.getSquaresRelations(*m_selected_square, secondSquare, previouslyContained, previouslyIntersected);
 
 		moveInScreen(*m_selected_square);
+
 		moveInScreen(secondSquare);
 
 		m_squares.getSquaresRelations(*m_selected_square, secondSquare, currentlyContaining, currentlyIntersecting);
 
 		// Collided now or collision occured after one square's move and relations between squares changed.
 		if(m_selected_square->isCollidingWith(secondSquare) ||
-		   (previouslyIntersected != currentlyIntersecting || previouslyContained != currentlyContaining)))
+		   (previouslyIntersected != currentlyIntersecting || previouslyContained != currentlyContaining))
 		{
 			return true;
 		}
@@ -220,7 +221,7 @@ Square* SquaresApp::handleCollision(Square& firstSquare, Square& secondSquare)
 
 	ScreenMatrix::getInstance().printDiff();
 
-	surviver = m_squares.mergeOnCollision(firstSquare, secondSquare);
+	surviver = m_squares.collideSquares(firstSquare, secondSquare);
 
 	waitForEscape();
 
