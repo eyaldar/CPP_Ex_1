@@ -15,7 +15,7 @@ public:
 	Point(double x, double y)
 	: m_x(x), m_y(y) {}
 
-	void draw(char ch) const;
+	void draw(char ch, bool useMatrix = false) const;
 	void init(double x, double y);
 
 	void setX(double x);

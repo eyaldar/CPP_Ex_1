@@ -60,9 +60,6 @@ private:
 	Point m_bottom_right;
 	char m_draw_char;
 	Point m_shift;
-
-	void drawToMatrix(char ch) const;
-	void drawToScreen(char ch) const;
 };
 
 #endif

@@ -23,6 +23,7 @@ public:
 	void printDiff();
 	void updateScreenMatrix(int x, int y, char ch);
 	void clearScreenMatrix();
+	bool isWithinScreenBoundaries(int x, int y);
 
 private:
 	char prevScreenMatrix[SCREEN_RIGHT_BOUNDARY][SCREEN_BOTTOM_BOUNDARY];
@@ -35,8 +36,6 @@ private:
 
 	void init();
 	void initScreenMatrix(char screenMatrix[SCREEN_RIGHT_BOUNDARY][SCREEN_BOTTOM_BOUNDARY]);
-
-	bool isInsideBoundaries(int x, int y);
 };
 
 #endif

@@ -14,10 +14,33 @@ void Square::draw(bool useMatrix) const
 
 void Square::draw(char ch, bool useMatrix) const
 {
-	if(useMatrix)
-		drawToMatrix(ch);
-	else
-		drawToScreen(ch);
+	double left = m_top_left.getX();
+	double top = m_top_left.getY();
+	double right = m_bottom_right.getX();
+	double bottom = m_bottom_right.getY();
+	Point p;
+
+	for (unsigned int lengthIndex = 0; lengthIndex < m_side_length; lengthIndex++)
+	{
+		// top side
+		p.init(left + lengthIndex, top);
+		p.draw(ch, useMatrix);
+
+		// left side
+		p.init(left, top + lengthIndex);
+		p.draw(ch, useMatrix);
+
+		// bottom side
+		p.init(left + lengthIndex, bottom);
+		p.draw(ch, useMatrix);
+
+		// right side
+		p.init(right, top + lengthIndex);
+		p.draw(ch, useMatrix);
+	}
+
+	p.init(right, bottom);
+	p.draw(ch, useMatrix);
 }
 
 void Square::drawAsFilled() const
@@ -37,62 +60,6 @@ void Square::drawAsFilled(char ch) const
 			ScreenMatrix::getInstance().updateScreenMatrix(left + columnIndex, top + rowIndex, ch);
 		}
 	}
-}
-
-void Square::drawToMatrix(char ch) const
-{
-	int left = (int)m_top_left.getX();
-	int top = (int)m_top_left.getY();
-	int right = (int)m_bottom_right.getX();
-	int bottom = (int)m_bottom_right.getY();
-
-	for (unsigned int lengthIndex = 0; lengthIndex < m_side_length; lengthIndex++)
-	{
-		// top side
-		ScreenMatrix::getInstance().updateScreenMatrix(left + lengthIndex, top, ch);
-
-		// left side
-		ScreenMatrix::getInstance().updateScreenMatrix(left, top + lengthIndex, ch);
-
-		// bottom side
-		ScreenMatrix::getInstance().updateScreenMatrix(left + lengthIndex, bottom, ch);
-
-		// right side
-		ScreenMatrix::getInstance().updateScreenMatrix(right, top + lengthIndex, ch);
-	}
-
-	ScreenMatrix::getInstance().updateScreenMatrix(right, bottom, ch);
-}
-
-void Square::drawToScreen(char ch) const
-{
-	double left = m_top_left.getX();
-	double top = m_top_left.getY();
-	double right = m_bottom_right.getX();
-	double bottom = m_bottom_right.getY();
-	Point p;
-
-	for (unsigned int lengthIndex = 0; lengthIndex < m_side_length; lengthIndex++)
-	{
-		// top side
-		p.init(left + lengthIndex, top);
-		p.draw(ch);
-
-		// left side
-		p.init(left, top + lengthIndex);
-		p.draw(ch);
-
-		// bottom side
-		p.init(left + lengthIndex, bottom);
-		p.draw(ch);
-
-		// right side
-		p.init(right, top + lengthIndex);
-		p.draw(ch);
-	}
-
-	p.init(right, bottom);
-	p.draw(ch);
 }
 
 bool Square::contains(const Point& point) const

@@ -2,13 +2,19 @@
 
 using namespace std;
 
-void Point::draw(char ch) const
+void Point::draw(char ch, bool useMatrix) const
 {
-	if((m_x >= SCREEN_LEFT_BOUNDARY && m_x < SCREEN_RIGHT_BOUNDARY) &&
-	   (m_y >= SCREEN_TOP_BOUNDARY && m_y < SCREEN_BOTTOM_BOUNDARY))
+	if(ScreenMatrix::getInstance().isWithinScreenBoundaries((int)m_x, (int)m_y))
 	{
-		gotoxy((int)m_x, (int)m_y);
-		cout << ch;
+		if(useMatrix)
+		{
+			ScreenMatrix::getInstance().updateScreenMatrix((int)m_x, (int)m_y, ch);
+		}
+		else
+		{
+			gotoxy((int)m_x, (int)m_y);
+			cout << ch;
+		}
 	}
 }
 
