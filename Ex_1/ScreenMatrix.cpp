@@ -53,18 +53,15 @@ void ScreenMatrix::clearScreenMatrix()
 
 void ScreenMatrix::updateScreenMatrix(int x, int y, char ch)
 {
-	checkIsInsideBoundaries(x, y);
-
-	currScreenMatrix[x][y] = ch;
+	bool test = isInsideBoundaries(x,y);
+	if(isInsideBoundaries(x,y))
+		currScreenMatrix[x][y] = ch;
 }
 
-void ScreenMatrix::checkIsInsideBoundaries(int x, int y)
+bool ScreenMatrix::isInsideBoundaries(int x, int y)
 {
-	if(x < SCREEN_LEFT_BOUNDARY  || 
-	   x > SCREEN_RIGHT_BOUNDARY ||
-	   y < SCREEN_TOP_BOUNDARY   ||
-	   y > SCREEN_BOTTOM_BOUNDARY)
-	{
-		throw "Given coordinates is out of ScreenMatrix's boundaries!";
-	}
+	return (x >= SCREEN_LEFT_BOUNDARY  && 
+			x <= SCREEN_RIGHT_BOUNDARY &&
+			y >= SCREEN_TOP_BOUNDARY   &&
+			y <= SCREEN_BOTTOM_BOUNDARY);
 }

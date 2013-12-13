@@ -36,7 +36,7 @@ private:
 	void init();
 	void initScreenMatrix(char screenMatrix[SCREEN_RIGHT_BOUNDARY][SCREEN_BOTTOM_BOUNDARY]);
 
-	void checkIsInsideBoundaries(int x, int y);
+	bool isInsideBoundaries(int x, int y);
 };
 
 #endif
