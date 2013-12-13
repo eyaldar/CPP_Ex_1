@@ -23,7 +23,7 @@ public:
 	void removeSquare(Square&);
 	void promoteSquare(Square&);
 	void mergeSquares(Square&, Square&);
-	Square* collideSquares(Square&, Square&);
+	Square* collideSquares(Square&, Square&, bool collideHorizontally);
 	
 	void drawSquares() const;
 	Square* findSquare(const Point& coordinates, const Square* except = NULL) const;

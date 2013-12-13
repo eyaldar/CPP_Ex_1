@@ -47,12 +47,12 @@ public:
 	// Compares to squares by horizontal shift
 	// Returns 0 if the speeds are equal, in case this square is faster returns positive number
 	// otherwise returns negative number.
-	int compareHorizontalSpeedTo(const Square&) const;
+	double compareHorizontalSpeedTo(const Square&) const;
 
 	// Compares to squares by vertical shift
 	// Returns 0 if the speeds are equal, in case this square is faster returns positive number
 	// otherwise returns negative number.
-	int compareVerticalSpeedTo(const Square&) const;
+	double compareVerticalSpeedTo(const Square&) const;
 private:
 
 	unsigned int m_side_length;

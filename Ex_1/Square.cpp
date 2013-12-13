@@ -27,8 +27,8 @@ void Square::drawAsFilled() const
 
 void Square::drawAsFilled(char ch) const
 {
-	double left = m_top_left.getX();
-	double top = m_top_left.getY();
+	int left = (int)m_top_left.getX();
+	int top = (int)m_top_left.getY();
 
 	for (unsigned int rowIndex = 0; rowIndex < m_side_length; rowIndex++)
 	{
@@ -41,10 +41,10 @@ void Square::drawAsFilled(char ch) const
 
 void Square::drawToMatrix(char ch) const
 {
-	double left = m_top_left.getX();
-	double top = m_top_left.getY();
-	double right = m_bottom_right.getX();
-	double bottom = m_bottom_right.getY();
+	int left = (int)m_top_left.getX();
+	int top = (int)m_top_left.getY();
+	int right = (int)m_bottom_right.getX();
+	int bottom = (int)m_bottom_right.getY();
 
 	for (unsigned int lengthIndex = 0; lengthIndex < m_side_length; lengthIndex++)
 	{
@@ -138,20 +138,20 @@ int Square::compareAreaTo(const Square& other) const
 	return thisArea - otherArea;
 }
 
-int Square::compareHorizontalSpeedTo(const Square& other) const
+double Square::compareHorizontalSpeedTo(const Square& other) const
 {		
 	double thisAbsShift = abs(this->m_shift.getX());
-	double otherAbsShift = abs(this->m_shift.getX());
+	double otherAbsShift = abs(other.m_shift.getX());
 
-	return (int)(thisAbsShift - otherAbsShift);
+	return thisAbsShift - otherAbsShift;
 }
 
-int Square::compareVerticalSpeedTo(const Square& other) const
+double Square::compareVerticalSpeedTo(const Square& other) const
 {		
 	double thisAbsShift = abs(this->m_shift.getY());
-	double otherAbsShift = abs(this->m_shift.getY());
+	double otherAbsShift = abs(other.m_shift.getY());
 
-	return (int)(thisAbsShift - otherAbsShift);
+	return thisAbsShift - otherAbsShift;
 }
 
 bool Square::isIntersectingWith(const Square& other) const

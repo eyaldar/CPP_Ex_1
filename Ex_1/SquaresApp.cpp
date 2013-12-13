@@ -127,11 +127,7 @@ void SquaresApp::runSquareMenu()
 
 				if(secondSquare != NOT_FOUND)
 				{
-					if(playDoubleAnimation(*secondSquare))
-					{
-						m_selected_square = handleCollision(*m_selected_square, *secondSquare);
-						playAnimation();
-					}
+					playDoubleAnimation(*secondSquare);
 				}
 
 				break;
@@ -176,8 +172,10 @@ void SquaresApp::playAnimation() const
 	}
 }
 
-bool SquaresApp::playDoubleAnimation(Square& secondSquare) const
+void SquaresApp::playDoubleAnimation(Square& secondSquare)
 {
+	bool hasCollidedHorizontally = false;
+
 	bool previouslyIntersected;
 	bool currentlyIntersecting;
 
@@ -189,28 +187,39 @@ bool SquaresApp::playDoubleAnimation(Square& secondSquare) const
 
 	while(!_kbhit() || _getch()!=27)
 	{
+		if(m_selected_square->isCollidingWith(secondSquare))
+		{
+			hasCollidedHorizontally = m_selected_square->isCollidingHorizontallyWith(secondSquare);
+
+			m_selected_square = handleCollision(*m_selected_square, secondSquare, hasCollidedHorizontally);
+			playAnimation();
+			break;
+		}
+
 		m_squares.getSquaresRelations(*m_selected_square, secondSquare, previouslyContained, previouslyIntersected);
 
 		moveInScreen(*m_selected_square);
+
+		hasCollidedHorizontally = m_selected_square->isCollidingHorizontallyWith(secondSquare);
 
 		moveInScreen(secondSquare);
 
 		m_squares.getSquaresRelations(*m_selected_square, secondSquare, currentlyContaining, currentlyIntersecting);
 
 		// Collided now or collision occured after one square's move and relations between squares changed.
-		if(m_selected_square->isCollidingWith(secondSquare) ||
-		   (previouslyIntersected != currentlyIntersecting || previouslyContained != currentlyContaining))
+		if(previouslyIntersected != currentlyIntersecting || previouslyContained != currentlyContaining)
 		{
-			return true;
+			m_selected_square = handleCollision(*m_selected_square, secondSquare, hasCollidedHorizontally);
+			playAnimation();
+
+			break;
 		}
 
 		Sleep(100);
 	}
-
-	return false;
 }
 
-Square* SquaresApp::handleCollision(Square& firstSquare, Square& secondSquare)
+Square* SquaresApp::handleCollision(Square& firstSquare, Square& secondSquare, bool hasCollidedHorizontally)
 {
 	Square* surviver = NULL;
 
@@ -221,9 +230,7 @@ Square* SquaresApp::handleCollision(Square& firstSquare, Square& secondSquare)
 
 	ScreenMatrix::getInstance().printDiff();
 
-	surviver = m_squares.collideSquares(firstSquare, secondSquare);
-
-	waitForEscape();
+	surviver = m_squares.collideSquares(firstSquare, secondSquare, hasCollidedHorizontally);
 
 	return surviver;
 }

@@ -56,18 +56,16 @@ void SquaresContainer::mergeSquares(Square& firstSquare, Square& secondSquare)
 	removeSquare(secondSquare);
 }
 
-Square* SquaresContainer::collideSquares(Square& firstSquare, Square& secondSquare)
+Square* SquaresContainer::collideSquares(Square& firstSquare, Square& secondSquare, bool collideHorizontally)
 {
 	Square* surviver;
 
-	bool isCollidingHorizontally = firstSquare.isCollidingHorizontallyWith(secondSquare);
-	bool isCollidingVertically = firstSquare.isCollidingVerticallyWith(secondSquare);
 	bool isFirstMovingFasterHorizontally = firstSquare.compareHorizontalSpeedTo(secondSquare) > 0;
 	bool isFirstMovingFasterVertically = firstSquare.compareVerticalSpeedTo(secondSquare) > 0;
 	bool isSecondAreaBigger = firstSquare.compareAreaTo(secondSquare) < 0;
 
-	if(((isFirstMovingFasterHorizontally && isCollidingHorizontally) ||
-		(isFirstMovingFasterVertically && isCollidingVertically)) && isSecondAreaBigger)
+	if(((isFirstMovingFasterHorizontally && collideHorizontally) ||
+		(isFirstMovingFasterVertically && !collideHorizontally)) && isSecondAreaBigger)
 	{
 		removeSquare(firstSquare);
 		surviver = &secondSquare;

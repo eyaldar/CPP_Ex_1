@@ -54,7 +54,7 @@ private:
 
 	void selectSquare();
 	void runSquareMenu();
-	Square* handleCollision(Square& firstSquare, Square& secondSquare);
+	Square* handleCollision(Square& firstSquare, Square& secondSquare, bool hasCollidedHorizontally);
 
 	void waitForEscape() const;
 	void drawSquaresWithSelection() const;
@@ -63,8 +63,7 @@ private:
 	bool drawSquareMovement(Square&) const;
 	void playAnimation() const;
 
-	// Returns whether collision has occured or not.
-	bool playDoubleAnimation(Square& secondSquare) const;
+	void playDoubleAnimation(Square& secondSquare);
 	bool shouldReturnToSquareMenu(int lastOption) const;
 
 	void moveInScreen(Square& square) const;
