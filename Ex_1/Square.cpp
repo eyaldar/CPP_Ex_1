@@ -137,8 +137,8 @@ void Square::input()
 {
 	double sideLength;
 	char ch;
-	Point topLeft;
-	topLeft.input();
+
+	m_top_left.input();
 
 	cout << "Please enter the side length [At least 1] :";
 	cin >> sideLength;
@@ -152,6 +152,8 @@ void Square::input()
 	}
 
 	m_side_length = (int)sideLength;
+
+	m_bottom_right.init(m_top_left.getX() + m_side_length - 1, m_top_left.getY() + m_side_length - 1);
 
 	cout << "Please enter the square character ['@' is not allowed]:";
 	cin >> ch;
