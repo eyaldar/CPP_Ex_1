@@ -79,16 +79,6 @@ bool Square::isIntersectingWith(const Shape* other) const
 	return  other->isIntersectingWith(this);
 }
 
-const Point& Square::getShift() const
-{
-	return m_shift;
-}
-
-void Square::setShift(const Point& point)
-{
-	m_shift = Point(point);
-}
-
 void Square::move()
 {
 	if(isWithinScreenBounds())
@@ -167,6 +157,26 @@ void Square::input()
 	}
 
 	m_draw_char = ch;
+}
+
+double Square::getMinX() const
+{
+	return m_top_left.getX();
+}
+
+double Square::getMaxX() const
+{
+	return m_bottom_right.getX();
+}
+
+double Square::getMinY() const
+{
+	return m_top_left.getY();
+}
+
+double Square::getMaxY() const
+{
+	return m_bottom_right.getY();
 }
 
 // Multi Dispatch methods

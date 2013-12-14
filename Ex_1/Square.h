@@ -24,9 +24,6 @@ public:
 
 	Square(const Square&);
 
-	void setShift(const Point& newShift);
-	const Point& getShift() const;
-
 	void move();
 
 	void input();
@@ -38,17 +35,23 @@ public:
 	bool isIntersectingWith(const Shape*) const; 
 	bool isCollidingHorizontallyWith(const Shape*) const; 
 	bool isCollidingVerticallyWith(const Shape*) const;
-	bool isWithinScreenBounds() const;
 	
 	// Multi dispatch methods
 	bool contains(const Square* other) const;
 	bool isIntersectingWith(const Square*) const;
 	bool isCollidingHorizontallyWith(const Square*) const; 
 	bool isCollidingVerticallyWith(const Square*) const;
+
+	double getMinX() const; 
+	double getMaxX() const; 
+	double getMinY() const; 
+	double getMaxY() const; 
+
 protected:
 
 	void draw(char ch, bool useMatrix = false) const;
 	void drawAsFilled(char ch, bool useMatrix) const;
+	bool isWithinScreenBounds() const;
 
 private:
 

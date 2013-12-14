@@ -90,15 +90,6 @@ Shape* ShapesContainer::collideShapes(Shape* firstShape, Shape* secondShape, boo
 	return surviver;
 }
 
-void ShapesContainer::getShapesRelations(Shape* firstShape, Shape* secondShape, 
-									bool& hasSubsetRelation, bool& hasIntersectionRelation) const
-{
-		hasIntersectionRelation = firstShape->isIntersectingWith(secondShape);
-								
-		hasSubsetRelation = (firstShape->contains(secondShape) ||
-							 secondShape->contains(firstShape));
-}
-
 Shape* ShapesContainer::findShape(const Point& coordinates, const Shape* except) const
 {
 	for (list<Shape*>::const_reverse_iterator it = m_shapes.crbegin(); it != m_shapes.crend(); ++it)

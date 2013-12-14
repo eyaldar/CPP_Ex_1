@@ -1,8 +1,9 @@
-#ifndef __ShapeS_APP_H__
-#define __ShapeS_APP_H__
+#ifndef __SHAPES_APP_H__
+#define __SHAPES_APP_H__
 
 #include "Menu.h"
 #include "ShapesContainer.h"
+#include "ShapesCollisionManager.h"
 #include "Gotoxy.h"
 #include <conio.h>
 

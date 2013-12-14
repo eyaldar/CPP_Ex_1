@@ -37,7 +37,6 @@ public:
 
 	virtual bool isCollidingHorizontallyWith(const Shape*) const = 0; 
 	virtual bool isCollidingVerticallyWith(const Shape*) const = 0;
-	virtual bool isWithinScreenBounds() const = 0;
 
 	// Compares to squares by area
 	// Returns 0 if the areas are equal, in case this shape is bigger returns positive number
@@ -60,6 +59,11 @@ public:
 	virtual bool isCollidingHorizontallyWith(const Square*) const = 0; 
 	virtual bool isCollidingVerticallyWith(const Square*) const = 0;
 
+	virtual double getMinX() const = 0; 
+	virtual double getMaxX() const = 0; 
+	virtual double getMinY() const = 0; 
+	virtual double getMaxY() const = 0; 
+
 protected:
 	char m_selection_char;
 	char m_draw_char;
@@ -67,6 +71,7 @@ protected:
 
 	virtual void draw(char ch, bool useMatrix = false) const = 0;
 	virtual void drawAsFilled(char ch, bool useMatrix = false) const = 0;
+	virtual bool isWithinScreenBounds() const = 0;
 };
 
 #endif

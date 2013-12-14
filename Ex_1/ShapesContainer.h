@@ -27,9 +27,6 @@ public:
 	void drawShapes() const;
 	Shape* findShape(const Point& coordinates, const Shape* except = NULL) const;
 
-	void getShapesRelations(Shape* firstShape, Shape* secondShape, 
-						    bool& hasSubsetRelation, bool& hasIntersectionRelation) const;
-
 private:	
 
 	std::list<Shape*> m_shapes;

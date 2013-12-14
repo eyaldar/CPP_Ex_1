@@ -178,18 +178,14 @@ void ShapesApp::playAnimation() const
 void ShapesApp::playDoubleAnimation(Shape* secondShape)
 {
 	bool hasCollidedHorizontally = false;
-
-	bool previouslyIntersected;
-	bool currentlyIntersecting;
-
-	bool previouslyContained;
-	bool currentlyContaining;
+	ShapesCollisionManager collisionManager(m_selected_shape, secondShape);
 
 	clrscr();
 	ScreenMatrix::getInstance().clearScreenMatrix();
 
 	while(!_kbhit() || _getch()!=27)
 	{
+		// Collided now
 		if(m_selected_shape->isCollidingWith(secondShape))
 		{
 			hasCollidedHorizontally = m_selected_shape->isCollidingHorizontallyWith(secondShape);
@@ -199,7 +195,7 @@ void ShapesApp::playDoubleAnimation(Shape* secondShape)
 			break;
 		}
 
-		m_shapes.getShapesRelations(m_selected_shape, secondShape, previouslyContained, previouslyIntersected);
+		collisionManager.updateShapesRelations();
 
 		moveInScreen(m_selected_shape);
 
@@ -207,10 +203,10 @@ void ShapesApp::playDoubleAnimation(Shape* secondShape)
 
 		moveInScreen(secondShape);
 
-		m_shapes.getShapesRelations(m_selected_shape, secondShape, currentlyContaining, currentlyIntersecting);
+		collisionManager.updateShapesRelations();
 
-		// Collided now or collision occured after one Shape's move and relations between Shapes changed.
-		if(previouslyIntersected != currentlyIntersecting || previouslyContained != currentlyContaining)
+		// Collision occured in between movements
+		if(collisionManager.hasCollided())
 		{
 			m_selected_shape = handleCollision(m_selected_shape, secondShape, hasCollidedHorizontally);
 			playAnimation();
