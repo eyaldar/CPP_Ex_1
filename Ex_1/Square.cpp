@@ -57,8 +57,8 @@ void Square::drawAsFilled(char ch, bool useMatrix) const
 
 bool Square::contains(const Point& point) const
 {
-	return (m_top_left.getX() <= point.getX() && point.getX() <= m_bottom_right.getX()) &&
-		   (m_top_left.getY() <= point.getY() && point.getY() <= m_bottom_right.getY());
+	return ((int)m_top_left.getX() <= point.getX() && point.getX() <= (int)m_bottom_right.getX()) &&
+		   ((int)m_top_left.getY() <= point.getY() && point.getY() <= (int)m_bottom_right.getY());
 }
 
 bool Square::contains(const Shape* other) const
@@ -187,18 +187,18 @@ bool Square::isIntersectingWith(const Square* other) const
 
 bool Square::isCollidingHorizontallyWith(const Square* other) const
 {
-	return (this->m_top_left.getX() == other->m_bottom_right.getX() || 
-			this->m_top_left.getX() == other->m_top_left.getX()	   ||
-			this->m_bottom_right.getX() == other->m_top_left.getX() ||
-			this->m_bottom_right.getX() == other->m_bottom_right.getX()) 	&&
+	return ((int)this->m_top_left.getX() == (int)other->m_bottom_right.getX() || 
+			(int)this->m_top_left.getX() == (int)other->m_top_left.getX()	   ||
+			(int)this->m_bottom_right.getX() == (int)other->m_top_left.getX() ||
+			(int)this->m_bottom_right.getX() == (int)other->m_bottom_right.getX()) 	&&
 			this->isIntersectingWith(other); 
 }
 
 bool Square::isCollidingVerticallyWith(const Square* other) const
 {
-	return  (this->m_top_left.getY() == other->m_bottom_right.getY() || 
-			this->m_top_left.getY() == other->m_top_left.getY()	   ||
-			this->m_bottom_right.getY() == other->m_top_left.getY() ||
-			this->m_bottom_right.getY() == other->m_bottom_right.getY()) 	&&
+	return  ((int)this->m_top_left.getY() == (int)other->m_bottom_right.getY() || 
+			(int)this->m_top_left.getY() == (int)other->m_top_left.getY()	   ||
+			(int)this->m_bottom_right.getY() == (int)other->m_top_left.getY() ||
+			(int)this->m_bottom_right.getY() == (int)other->m_bottom_right.getY()) 	&&
 			this->isIntersectingWith(other); 
 }
