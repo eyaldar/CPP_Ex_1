@@ -20,10 +20,15 @@ void Point::draw(char ch, bool useMatrix) const
 
 void Point::input()
 {
+	double x,y;
+
 	cout << "Please enter the X coordinate :";
-	cin >> m_x;
+	cin >> x;
 	cout << "Please enter the Y coordinate :";
-	cin >> m_y;
+	cin >> y;
+
+	m_x = (int)x;
+	m_y = (int)y;
 }
 
 void Point::init(double x, double y)
