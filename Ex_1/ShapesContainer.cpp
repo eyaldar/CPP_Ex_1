@@ -101,7 +101,7 @@ void ShapesContainer::getShapesRelations(Shape* firstShape, Shape* secondShape,
 
 Shape* ShapesContainer::findShape(const Point& coordinates, const Shape* except) const
 {
-	for (list<Shape*>::const_iterator it = m_shapes.begin(); it != m_shapes.end(); ++it)
+	for (list<Shape*>::const_reverse_iterator it = m_shapes.crbegin(); it != m_shapes.crend(); ++it)
 	{
 		if(*it != except && (*it)->contains(coordinates))
 		{
