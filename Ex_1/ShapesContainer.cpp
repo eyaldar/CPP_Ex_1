@@ -113,6 +113,6 @@ list<Shape*>::const_iterator ShapesContainer::getShapeIterator(const Shape* shap
 		}
 	}
 
-	throw "Couldn't find shape was not found in the container!";
+	throw "Couldn't find iterator for the given shape !";
 }
 
