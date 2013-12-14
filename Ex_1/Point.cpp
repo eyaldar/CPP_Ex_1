@@ -18,6 +18,14 @@ void Point::draw(char ch, bool useMatrix) const
 	}
 }
 
+void Point::input()
+{
+	cout << "Please enter the X coordinate :";
+	cin >> m_x;
+	cout << "Please enter the Y coordinate :";
+	cin >> m_y;
+}
+
 void Point::init(double x, double y)
 {
 	setX(x);

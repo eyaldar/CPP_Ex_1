@@ -1,4 +1,4 @@
-#include "SquaresApp.h"
+#include "ShapesApp.h"
 
 using namespace std;
 
@@ -6,7 +6,7 @@ void main()
 {
 	try
 	{
-		SquaresApp& app = SquaresApp::getInstance();
+		ShapesApp& app = ShapesApp::getInstance();
 		app.run();
 	}
 	catch(const string& error)

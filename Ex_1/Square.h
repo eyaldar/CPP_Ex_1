@@ -1,20 +1,26 @@
 #ifndef __SQUARE_H__
 #define __SQUARE_H__
 
+#include "Shape.h"
 #include "Point.h"
 #include <math.h>
 #include <string>
 
-class Square 
+class Square : public Shape
 {
 public:
+	Square()
+	{
+		input();
+	}
+
 	Square(const Point& point, unsigned int side_length, char ch)
 	: m_top_left(point), m_bottom_right(point.getX() + side_length - 1, point.getY() + side_length - 1), 
-	  m_side_length(side_length), m_draw_char(ch) {}
+	  m_side_length(side_length), Shape(ch) {}
 
 	Square(int x, int y, unsigned int side_length, char ch)
 	: m_top_left(x,y), m_bottom_right(x + side_length - 1, y + side_length - 1), 
-	  m_side_length(side_length), m_draw_char(ch) {}
+	  m_side_length(side_length), Shape(ch) {}
 
 	Square(const Square&);
 
@@ -22,44 +28,36 @@ public:
 	const Point& getShift() const;
 
 	void move();
-	void merge(const Square&);
-	void copyFrom(const Square&);
 
-	void draw(bool useMatrix = false) const;
-	void draw(char ch, bool useMatrix = false) const;
+	void input();
 
-	void drawAsFilled() const;
-	void drawAsFilled(char ch) const;
+	unsigned int getArea() const;
 
 	bool contains(const Point& point) const;
-	bool contains(const Square&) const;
-	bool isIntersectingWith(const Square&) const;
-	bool isCollidingWith(const Square&) const; 
-	bool isCollidingHorizontallyWith(const Square&) const; 
-	bool isCollidingVerticallyWith(const Square&) const;
+	bool contains(const Shape*) const;
+	bool isIntersectingWith(const Shape*) const; 
+	bool isCollidingHorizontallyWith(const Shape*) const; 
+	bool isCollidingVerticallyWith(const Shape*) const;
 	bool isWithinScreenBounds() const;
+	
+	// Multi dispatch methods
+	bool contains(const Square* other) const;
+	bool isIntersectingWith(const Square*) const;
+	bool isCollidingHorizontallyWith(const Square*) const; 
+	bool isCollidingVerticallyWith(const Square*) const;
+protected:
 
-	// Compares to squares by area
-	// Returns 0 if the areas are equal, in case this square is bigger returns positive number
-	// otherwise returns negative number.
-	int compareAreaTo(const Square&) const;
+	void draw(char ch, bool useMatrix = false) const;
+	void drawAsFilled(char ch, bool useMatrix) const;
 
-	// Compares to squares by horizontal shift
-	// Returns 0 if the speeds are equal, in case this square is faster returns positive number
-	// otherwise returns negative number.
-	double compareHorizontalSpeedTo(const Square&) const;
-
-	// Compares to squares by vertical shift
-	// Returns 0 if the speeds are equal, in case this square is faster returns positive number
-	// otherwise returns negative number.
-	double compareVerticalSpeedTo(const Square&) const;
 private:
 
 	unsigned int m_side_length;
 	Point m_top_left;
 	Point m_bottom_right;
-	char m_draw_char;
-	Point m_shift;
+
+	void copyFrom(const Square&);
+
 };
 
 #endif
