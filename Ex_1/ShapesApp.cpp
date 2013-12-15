@@ -177,6 +177,7 @@ void ShapesApp::playAnimation() const
 
 void ShapesApp::playDoubleAnimation(Shape* secondShape)
 {
+	bool hasCollided = false;
 	bool hasCollidedHorizontally = false;
 	ShapesCollisionManager collisionManager(m_selected_shape, secondShape);
 
@@ -200,13 +201,14 @@ void ShapesApp::playDoubleAnimation(Shape* secondShape)
 		moveInScreen(m_selected_shape);
 
 		hasCollidedHorizontally = m_selected_shape->isCollidingHorizontallyWith(secondShape);
+		hasCollided = hasCollidedHorizontally || m_selected_shape->isCollidingVerticallyWith(secondShape);
 
 		moveInScreen(secondShape);
 
 		collisionManager.updateShapesRelations();
 
 		// Collision occured in between movements
-		if(collisionManager.hasCollided())
+		if(hasCollided && collisionManager.hasCollided())
 		{
 			m_selected_shape = handleCollision(m_selected_shape, secondShape, hasCollidedHorizontally);
 			playAnimation();
