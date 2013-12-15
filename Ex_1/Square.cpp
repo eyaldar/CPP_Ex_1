@@ -115,14 +115,6 @@ unsigned int Square::getArea() const
 	return m_side_length * m_side_length;
 }
 
-bool Square::isWithinScreenBounds() const
-{
-	return SCREEN_TOP_BOUNDARY <= m_top_left.getY() && 
-		   m_bottom_right.getY() <= SCREEN_BOTTOM_BOUNDARY  &&
-		   SCREEN_LEFT_BOUNDARY <= m_top_left.getX() &&
-		   m_bottom_right.getX() <= SCREEN_RIGHT_BOUNDARY;
-}
-
 void Square::input()
 {
 	double sideLength;

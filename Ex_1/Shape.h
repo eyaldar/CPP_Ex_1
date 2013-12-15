@@ -5,6 +5,7 @@
 #include <iostream>
 
 class Square;
+class Diamond;
 
 class Shape {
 public:
@@ -53,16 +54,16 @@ public:
 	// otherwise returns negative number.
 	double compareVerticalSpeedTo(const Shape*) const;
 
+	virtual double getMinX() const = 0; 
+	virtual double getMaxX() const = 0; 
+	virtual double getMinY() const = 0; 
+	virtual double getMaxY() const = 0; 
+
 	// Multi dispatch methods
 	virtual bool contains(const Square*) const = 0;
 	virtual bool isIntersectingWith(const Square*) const = 0;
 	virtual bool isCollidingHorizontallyWith(const Square*) const = 0; 
 	virtual bool isCollidingVerticallyWith(const Square*) const = 0;
-
-	virtual double getMinX() const = 0; 
-	virtual double getMaxX() const = 0; 
-	virtual double getMinY() const = 0; 
-	virtual double getMaxY() const = 0; 
 
 protected:
 	char m_selection_char;
@@ -71,7 +72,7 @@ protected:
 
 	virtual void draw(char ch, bool useMatrix = false) const = 0;
 	virtual void drawAsFilled(char ch, bool useMatrix = false) const = 0;
-	virtual bool isWithinScreenBounds() const = 0;
+	virtual bool isWithinScreenBounds() const;
 };
 
 #endif

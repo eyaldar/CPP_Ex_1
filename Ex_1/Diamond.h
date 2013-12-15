@@ -1,28 +1,23 @@
-#ifndef __SQUARE_H__
-#define __SQUARE_H__
+#ifndef __DIAMOND_H__
+#define __DIAMOND_H__
 
 #include "Point.h"
 #include "Shape.h"
-#include <math.h>
-#include <string>
 
-class Square : public Shape
-{
+class Diamond : public Shape{
 public:
-	Square()
+	Diamond()
 	{
 		input();
 	}
 
-	Square(const Point& point, unsigned int side_length, char ch)
-	: m_top_left(point), m_bottom_right(point.getX() + side_length - 1, point.getY() + side_length - 1), 
-	  m_side_length(side_length), Shape(ch) {}
+	Diamond(const Point& center, unsigned int radius)
+	: m_center(center), m_radius(radius), Shape('@') {}
 
-	Square(int x, int y, unsigned int side_length, char ch)
-	: m_top_left(x,y), m_bottom_right(x + side_length - 1, y + side_length - 1), 
-	  m_side_length(side_length), Shape(ch) {}
+	Diamond(int x, int y, unsigned int radius)
+	: m_center(x, y), m_radius(radius), Shape('@') {}
 
-	Square(const Square&);
+	Diamond(const Diamond&);
 
 	virtual void move();
 
@@ -53,13 +48,10 @@ protected:
 	virtual void drawAsFilled(char ch, bool useMatrix) const;
 
 private:
+	Point m_center;
+	unsigned int m_radius;
 
-	unsigned int m_side_length;
-	Point m_top_left;
-	Point m_bottom_right;
-
-	void copyFrom(const Square&);
-
+	void copyFrom(const Diamond&);
 };
 
 #endif

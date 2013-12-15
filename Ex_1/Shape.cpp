@@ -94,3 +94,11 @@ void Shape::setShiftByInput()
 
 	setShift(Point(x,y));
 }
+
+bool Shape::isWithinScreenBounds() const
+{
+	return SCREEN_TOP_BOUNDARY <= getMinY() && 
+		   getMaxY() <= SCREEN_BOTTOM_BOUNDARY  &&
+		   SCREEN_LEFT_BOUNDARY <= getMinX() &&
+		   getMaxX() <= SCREEN_RIGHT_BOUNDARY;
+}

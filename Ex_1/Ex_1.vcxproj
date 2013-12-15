@@ -64,6 +64,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Diamond.cpp" />
     <ClCompile Include="Gotoxy.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -76,6 +77,7 @@
     <ClCompile Include="ShapesContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Diamond.h" />
     <ClInclude Include="Gotoxy.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Point.h" />
