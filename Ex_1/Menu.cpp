@@ -73,6 +73,11 @@ void Menu::set(unsigned int option_number, string option_text)
 	m_options_text[option_number] = option_text;
 }
 
+const char* Menu::get(unsigned int option_number) const
+{
+	return m_options_text[option_number].c_str();
+}
+
 void Menu::checkAvailableOptions() const
 {
 	if(m_num_of_available_options <= 0)

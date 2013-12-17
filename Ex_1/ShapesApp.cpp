@@ -1,6 +1,9 @@
 #include "ShapesApp.h"
 using namespace std;
 
+static const string BINARY_FILE_NAME = "shapes.dat";
+static const string TEXTUAL_FILE_NAME = "shapes.txt";
+
 void ShapesApp::init()
 {
 	m_selected_shape = NULL;
@@ -8,6 +11,7 @@ void ShapesApp::init()
 	m_shapes.init();
 	initMainMenu();
 	initShapeMenu();
+	initAddShapeMenu();
 }
 
 void ShapesApp::initMainMenu()
@@ -17,6 +21,10 @@ void ShapesApp::initMainMenu()
 	m_app_main_menu.set(0, "Add a new Shape.");
 	m_app_main_menu.set(1, "Draw all Shapes.");
 	m_app_main_menu.set(2, "Select Shape.");
+	m_app_main_menu.set(3, "Save to textual file.");
+	m_app_main_menu.set(4, "Load from textual file.");
+	m_app_main_menu.set(5, "Save to binary file.");
+	m_app_main_menu.set(6, "Load from binary file.");
 	m_app_main_menu.set(EXIT_OPTION, "Exit.");
 }
 
@@ -32,6 +40,14 @@ void ShapesApp::initShapeMenu()
 	m_app_shape_menu.set(5, "Show doubled animation");
 }
 
+void ShapesApp::initAddShapeMenu()
+{
+	m_add_shape_menu.init(NUM_OF_ADD_SHAPE_MENU_OPTIONS);
+
+	m_add_shape_menu.set(0, "Square");
+	m_add_shape_menu.set(1, "Diamond");
+}
+
 void ShapesApp::run()
 {
 	unsigned int l_option = 0;
@@ -43,21 +59,68 @@ void ShapesApp::run()
 		{
 			case ADD_SHAPE:
 				{
-					Shape* shape = new Square();
+					int chosenType = m_add_shape_menu.choose();
+					const char* typeName = m_add_shape_menu.get(chosenType);
+
+					Shape* shape = ShapeFactory::getInstance().create(typeName);
 					m_shapes.addShape(shape);
 				}
 				// Allows this case to continue to the next case, as it needs to be printed anyway...
 			case DRAW_SHAPES:
-				clrscr();
-				m_shapes.drawShapes();
-				waitForEscape();
-				break;
+				{
+					clrscr();
+					m_shapes.drawShapes();
+					waitForEscape();
+					break;
+				}
 			case SELECT_SHAPE:
-				selectShape();
+				{
+					selectShape();
 
-				if(m_selected_shape != NOT_FOUND)
-					runShapeMenu();
-				break;
+					if(m_selected_shape != NOT_FOUND)
+						runShapeMenu();
+
+					break;
+				}
+
+			case SAVE_TEXTUAL_FILE:
+				{
+					ofstream file(TEXTUAL_FILE_NAME, ios_base::trunc | ios_base::out);
+
+					if(file)
+						m_shapes.save(file);
+					break;
+				}
+			case LOAD_TEXTUAL_FILE:
+				{
+					if(assureLoadOverride())
+					{
+						ifstream file(TEXTUAL_FILE_NAME, ios_base::in);
+
+						if(file)
+							m_shapes.load(file);
+					}
+					break;
+				}
+			case SAVE_BINARY_FILE:
+				{
+					ofstream file(BINARY_FILE_NAME, ios_base::trunc | ios_base::out | ios_base::binary);
+
+					if(file)
+						m_shapes.save(file);
+					break;
+				}
+			case LOAD_BINARY_FILE:
+				{
+					if(assureLoadOverride())
+					{
+						ifstream file(BINARY_FILE_NAME, ios_base::in | ios_base::binary);
+
+						if(file)
+							m_shapes.load(file);
+					}
+					break;
+				}
 			case EXIT_OPTION:
 				return;
 		}
@@ -271,12 +334,12 @@ bool ShapesApp::assureLoadOverride() const
 
 	if(m_shapes.getShapesNum() > 0)
 	{
-		cout << "Are you sure you want to lose existing data? [Y or N]";
+		cout << "Are you sure you want to lose existing data? [Y or N]" << endl;
 		cin >> answer;
 
 		while(answer != YES && answer != NO)
 		{
-			cerr << "Please click 'Y' for yes and 'N' for no";
+			cerr << "Please click 'Y' for yes and 'N' for no" << endl << endl << endl;
 
 			cout << "Are you sure you want to lose existing data? [Y or N]";
 			cin >> answer;

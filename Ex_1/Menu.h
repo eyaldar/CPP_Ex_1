@@ -16,6 +16,8 @@ public:
 	void init(unsigned int num_of_options);
 	void set(unsigned int option_number, std::string option_text);
 	void setAvailability(unsigned int option_number, bool isEnabled);
+
+	const char* get(unsigned int option_number) const;
 	unsigned int choose() const;
 private:
 	unsigned int m_num_of_options;

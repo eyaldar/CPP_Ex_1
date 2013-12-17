@@ -47,7 +47,7 @@ void Diamond::input()
 {
 	double radius;
 
-	cout << "Please enter values for the ceneter point :";
+	cout << "Please enter values for the center point :" << endl;
 	m_center.input();
 
 	cout << "Please enter the radius length [At least 1] :";
@@ -55,7 +55,7 @@ void Diamond::input()
 
 	while(radius < 1)
 	{
-		cerr << "Invalid radius length !." << endl << endl << endl;
+		cerr << "Invalid radius length !" << endl << endl << endl;
 
 		cout << "Please enter the radius length [At least 1] :";
 		cin >> radius;
