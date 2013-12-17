@@ -334,14 +334,14 @@ bool ShapesApp::assureLoadOverride() const
 
 	if(m_shapes.getShapesNum() > 0)
 	{
-		cout << "Are you sure you want to lose existing data? [Y or N]" << endl;
+		cout << "Are you sure you want to lose existing data? [Y or N] : " << endl;
 		cin >> answer;
 
 		while(answer != YES && answer != NO)
 		{
 			cerr << "Please click 'Y' for yes and 'N' for no" << endl << endl << endl;
 
-			cout << "Are you sure you want to lose existing data? [Y or N]";
+			cout << "Are you sure you want to lose existing data? [Y or N] : ";
 			cin >> answer;
 		}
 	}
