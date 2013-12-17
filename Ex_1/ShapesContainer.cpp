@@ -10,8 +10,6 @@ ShapesContainer::~ShapesContainer()
 void ShapesContainer::init()
 {
 	destruct();
-
-	m_shapes.clear();
 }
 
 void ShapesContainer::destruct()
@@ -103,6 +101,11 @@ Shape* ShapesContainer::findShape(const Point& coordinates, const Shape* except)
 	return NOT_FOUND;
 }
 
+int ShapesContainer::getShapesNum() const
+{
+	return m_shapes.size();
+}
+
 list<Shape*>::const_iterator ShapesContainer::getShapeIterator(const Shape* shape) const
 {
 	for (list<Shape*>::const_iterator it = m_shapes.begin(); it != m_shapes.end(); ++it)
@@ -116,3 +119,42 @@ list<Shape*>::const_iterator ShapesContainer::getShapeIterator(const Shape* shap
 	throw "Couldn't find iterator for the given shape !";
 }
 
+// File operations
+
+void ShapesContainer::save(ofstream& outFile) const
+{
+	int size = m_shapes.size();
+
+	// Saves the shapes num
+	outFile.write((const char*)&size, sizeof(size));
+
+	// Saves the shapes
+	for (list<Shape*>::const_iterator it = m_shapes.begin(); it != m_shapes.end(); ++it)
+	{
+		(*it)->saveType(outFile);
+
+		(*it)->save(outFile);
+	}
+}
+
+void ShapesContainer::load(ifstream& inFile)
+{
+	int size;
+	char typeName[TYPELEN+1];
+
+	// Initialize the container
+	init();
+
+	// Loads the shapes num
+	inFile.read((char*)&size, sizeof(size));
+
+	// Load the shapes
+	for (int shapeIndex = 0; shapeIndex < size; shapeIndex++)
+	{
+		ShapeFactory::getInstance().getTypeFromFile(inFile, typeName);
+
+		Shape* shape = ShapeFactory::getInstance().create(typeName, &inFile);
+
+		addShape(shape);
+	}
+}

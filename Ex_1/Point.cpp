@@ -75,3 +75,23 @@ bool Point::operator!=(const Point& other)
 {
 	return !(*this == other);
 }
+
+// File operations
+
+void Point::save(ofstream& outFile) const
+{
+	// Save x
+	outFile.write((const char*)&m_x, sizeof(m_x));
+
+	// Save y
+	outFile.write((const char*)&m_y, sizeof(m_y));
+}
+
+void Point::load(ifstream& inFile)
+{
+	// Load x
+	inFile.read((char*)&m_x, sizeof(m_x));
+
+	// Load y
+	inFile.read((char*)&m_y, sizeof(m_y));
+}

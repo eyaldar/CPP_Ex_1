@@ -3,6 +3,7 @@
 
 #include <list>
 #include "Square.h"
+#include "ShapesFactory.h"
 
 #define NOT_FOUND NULL
 
@@ -19,6 +20,7 @@ public:
 
 	void init();
 	void addShape(Shape* Shape);
+
 	void removeShape(Shape*);
 	void promoteShape(Shape*);
 	void mergeShapes(Shape*, Shape*);
@@ -26,6 +28,11 @@ public:
 	
 	void drawShapes() const;
 	Shape* findShape(const Point& coordinates, const Shape* except = NULL) const;
+	int getShapesNum() const;
+
+	// File operations
+	void save(std::ofstream& outFile) const;
+	void load(std::ifstream& inFile);
 
 private:	
 

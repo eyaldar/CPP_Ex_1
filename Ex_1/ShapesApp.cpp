@@ -264,3 +264,24 @@ bool ShapesApp::shouldReturnToShapeMenu(int lastOption) const
 	return lastOption == ADD_ANIMATION || 
 		   lastOption == BEGIN_SHAPE_MENU;
 }
+
+bool ShapesApp::assureLoadOverride() const
+{
+	char answer =  YES;
+
+	if(m_shapes.getShapesNum() > 0)
+	{
+		cout << "Are you sure you want to lose existing data? [Y or N]";
+		cin >> answer;
+
+		while(answer != YES && answer != NO)
+		{
+			cerr << "Please click 'Y' for yes and 'N' for no";
+
+			cout << "Are you sure you want to lose existing data? [Y or N]";
+			cin >> answer;
+		}
+	}
+
+	return answer == YES;
+}

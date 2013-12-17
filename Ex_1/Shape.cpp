@@ -102,3 +102,58 @@ bool Shape::isWithinScreenBounds() const
 		   SCREEN_LEFT_BOUNDARY <= getMinX() &&
 		   getMaxX() <= SCREEN_RIGHT_BOUNDARY;
 }
+
+void Shape::deflectOnBounds()
+{
+	if(isWithinScreenBounds())
+	{
+		if(SCREEN_LEFT_BOUNDARY > getMinX() + m_shift.getX() ||
+			SCREEN_RIGHT_BOUNDARY <= getMaxX() + m_shift.getX())
+		{
+			m_shift.setX(m_shift.getX() * -1);
+		}
+
+		if(SCREEN_TOP_BOUNDARY > getMinY() + m_shift.getY() ||
+		   SCREEN_BOTTOM_BOUNDARY <= getMaxY() + m_shift.getY())
+		{
+			m_shift.setY(m_shift.getY() * -1);
+		}
+	}
+}
+
+// File operations
+
+void Shape::saveType(ofstream& outFile) const
+{
+	char type[TYPELEN + 1];
+
+	// in VC++ typeid([instance]).name() == "class [type]"
+	// strlen("class ") == 6
+	strncpy_s(type, typeid(*this).name() + 6, TYPELEN);
+
+	outFile.write((const char*)type, TYPELEN);
+}
+
+void Shape::save(ofstream& outFile) const
+{
+	// Save Shift
+	m_shift.save(outFile);
+
+	// Save Draw Char
+	outFile.write(&m_draw_char, sizeof(m_draw_char));
+
+	// Save Selection Char
+	outFile.write(&m_selection_char, sizeof(m_selection_char));
+}
+
+void Shape::load(ifstream& inFile)
+{
+	// Load Shift
+	m_shift.load(inFile);
+
+	// Load Draw Char
+	inFile.read(&m_draw_char, sizeof(m_draw_char));
+
+	// Load Selection Char
+	inFile.read(&m_selection_char, sizeof(m_selection_char));
+}

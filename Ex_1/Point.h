@@ -2,6 +2,8 @@
 #define __POINT_H__
 
 #include <iostream>
+#include <fstream>
+
 #include "ScreenMatrix.h"
 #include "Gotoxy.h"
 
@@ -27,6 +29,10 @@ public:
 	Point& operator+=(const Point& shift);
 	bool operator==(const Point& other);
 	bool operator!=(const Point& other);
+
+	// File operations
+	virtual void save(std::ofstream& outFile) const;
+	virtual void load(std::ifstream& inFile);
 private:
 	double m_x;
 	double m_y;

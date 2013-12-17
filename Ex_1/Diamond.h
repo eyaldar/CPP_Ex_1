@@ -6,9 +6,14 @@
 
 class Diamond : public Shape{
 public:
-	Diamond()
+	static const char* TYPE_NAME;
+
+	Diamond(std::ifstream* inFile = NULL)
 	{
-		input();
+		if(inFile == NULL)
+			input();
+		else
+			load(*inFile);
 	}
 
 	Diamond(const Point& center, unsigned int radius)
@@ -36,11 +41,20 @@ public:
 	virtual double getMinY() const; 
 	virtual double getMaxY() const; 
 
+	// File operations
+	virtual void save(std::ofstream& outFile) const;
+	virtual void load(std::ifstream& inFile);
+
 	// Multi dispatch methods
 	virtual bool contains(const Square* other) const;
 	virtual bool isIntersectingWith(const Square*) const;
 	virtual bool isCollidingHorizontallyWith(const Square*) const; 
 	virtual bool isCollidingVerticallyWith(const Square*) const;
+
+	virtual bool contains(const Diamond*) const;
+	virtual bool isIntersectingWith(const Diamond*) const;
+	virtual bool isCollidingHorizontallyWith(const Diamond*) const; 
+	virtual bool isCollidingVerticallyWith(const Diamond*) const;
 
 protected:
 

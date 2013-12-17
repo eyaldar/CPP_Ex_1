@@ -1,21 +1,25 @@
 #ifndef __SHAPE_H__
 #define __SHAPE_H__
 
-#include "Point.h"
 #include <iostream>
+#include <typeinfo.h>
+#include <string.h>
 
-class Square;
-class Diamond;
+#include "Point.h"
+#include "ShapeMultiDispatchInterface.h"
 
-class Shape {
+#define TYPELEN 2 // length of Type string in file
+
+class Shape : ShapeMultiDispatchInterface {
 public:
 
 	Shape(char drawChar = '@', char selectionChar = '@')
 		: m_draw_char(drawChar), m_selection_char(selectionChar) {}
 
 	void setShift(const Point& newShift);
+	void setShiftByInput();
+
 	const Point& getShift() const;
-	virtual void setShiftByInput();
 
 	void setSelectionChar(char ch);
 
@@ -59,11 +63,9 @@ public:
 	virtual double getMinY() const = 0; 
 	virtual double getMaxY() const = 0; 
 
-	// Multi dispatch methods
-	virtual bool contains(const Square*) const = 0;
-	virtual bool isIntersectingWith(const Square*) const = 0;
-	virtual bool isCollidingHorizontallyWith(const Square*) const = 0; 
-	virtual bool isCollidingVerticallyWith(const Square*) const = 0;
+	// File operations
+	void saveType(std::ofstream& outFile) const;
+	virtual void save(std::ofstream& outFile) const;
 
 protected:
 	char m_selection_char;
@@ -72,7 +74,11 @@ protected:
 
 	virtual void draw(char ch, bool useMatrix = false) const = 0;
 	virtual void drawAsFilled(char ch, bool useMatrix = false) const = 0;
-	virtual bool isWithinScreenBounds() const;
+
+	bool isWithinScreenBounds() const;
+	void deflectOnBounds();
+
+	virtual void load(std::ifstream& inFile);
 };
 
 #endif

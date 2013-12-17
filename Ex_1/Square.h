@@ -3,15 +3,21 @@
 
 #include "Point.h"
 #include "Shape.h"
+#include "Diamond.h"
 #include <math.h>
 #include <string>
 
 class Square : public Shape
 {
 public:
-	Square()
+	static const char* TYPE_NAME;
+
+	Square(std::ifstream* inFile = NULL)
 	{
-		input();
+		if(inFile == NULL)
+			input();
+		else
+			load(*inFile);
 	}
 
 	Square(const Point& point, unsigned int side_length, char ch)
@@ -41,16 +47,25 @@ public:
 	virtual double getMinY() const; 
 	virtual double getMaxY() const; 
 
+	// File operations
+	virtual void save(std::ofstream& outFile) const;
+
 	// Multi dispatch methods
 	virtual bool contains(const Square* other) const;
 	virtual bool isIntersectingWith(const Square*) const;
 	virtual bool isCollidingHorizontallyWith(const Square*) const; 
 	virtual bool isCollidingVerticallyWith(const Square*) const;
 
+	virtual bool contains(const Diamond* other) const;
+	virtual bool isIntersectingWith(const Diamond*) const;
+	virtual bool isCollidingHorizontallyWith(const Diamond*) const; 
+	virtual bool isCollidingVerticallyWith(const Diamond*) const;
+
 protected:
 
 	virtual void draw(char ch, bool useMatrix = false) const;
 	virtual void drawAsFilled(char ch, bool useMatrix) const;
+	virtual void load(std::ifstream& inFile);
 
 private:
 

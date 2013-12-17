@@ -1,5 +1,5 @@
 #include "ShapesApp.h"
-
+#include "Diamond.h"
 using namespace std;
 
 void main()

@@ -2,6 +2,8 @@
 
 using namespace std;
 
+static const char* TYPE_NAME = "Square";
+
 Square::Square(const Square& other)
 	: Shape(other.m_draw_char)
 {
@@ -81,20 +83,7 @@ bool Square::isIntersectingWith(const Shape* other) const
 
 void Square::move()
 {
-	if(isWithinScreenBounds())
-	{
-		if(SCREEN_LEFT_BOUNDARY > m_top_left.getX() + m_shift.getX() ||
-		   SCREEN_RIGHT_BOUNDARY <= m_bottom_right.getX() + m_shift.getX())
-		{
-			m_shift.setX(m_shift.getX() * -1);
-		}
-
-		if(SCREEN_TOP_BOUNDARY > m_top_left.getY() + m_shift.getY() ||
-		   SCREEN_BOTTOM_BOUNDARY <= m_bottom_right.getY() + m_shift.getY())
-		{
-			m_shift.setY(m_shift.getY() * -1);
-		}
-	}
+	deflectOnBounds();
 
 	m_top_left += m_shift;
 	m_bottom_right += m_shift;
@@ -171,6 +160,33 @@ double Square::getMaxY() const
 	return m_bottom_right.getY();
 }
 
+// File operations
+
+void Square::save(ofstream& outFile) const
+{
+	Shape::save(outFile);
+
+	// Save side length
+	outFile.write((const char*)&m_side_length, sizeof(m_side_length));
+
+	// Save top left
+	m_top_left.save(outFile);
+}
+
+void Square::load(ifstream& inFile)
+{
+	Shape::load(inFile);
+
+	// Save side length
+	inFile.read((char*)&m_side_length, sizeof(m_side_length));
+
+	// Save top left
+	m_top_left.load(inFile);
+
+	// Calculate bottom right
+	m_bottom_right.init(m_top_left.getX() + m_side_length - 1, m_top_left.getY() + m_side_length - 1);
+}
+
 // Multi Dispatch methods
 
 bool Square::contains(const Square* other) const
@@ -203,4 +219,25 @@ bool Square::isCollidingVerticallyWith(const Square* other) const
 			(int)this->m_bottom_right.getY() == (int)other->m_top_left.getY() ||
 			(int)this->m_bottom_right.getY() == (int)other->m_bottom_right.getY()) 	&&
 			this->isIntersectingWith(other); 
+}
+
+bool Square::contains(const Diamond* other) const
+{
+	return this->contains(Point(other->getMaxX(), other->getMaxY())) &&
+		   this->contains(Point(other->getMinX(), other->getMinY()));
+}
+
+bool Square::isIntersectingWith(const Diamond* other) const
+{
+	return false;
+}
+
+bool Square::isCollidingHorizontallyWith(const Diamond* other) const
+{
+	return false;
+}
+
+bool Square::isCollidingVerticallyWith(const Diamond* other) const
+{
+	return false;
 }

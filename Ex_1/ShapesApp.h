@@ -21,6 +21,9 @@ public:
 	void run();
 
 private:
+	static const char YES = 'Y';
+	static const char NO = 'N';
+
 	static const char SELECTION_CHAR = '@';
 	static const int NUM_OF_MAIN_MENU_OPTIONS = 8;
 	static const int NUM_OF_SHAPE_MENU_OPTIONS = 8;
@@ -63,6 +66,8 @@ private:
 
 	void playDoubleAnimation(Shape*);
 	bool shouldReturnToShapeMenu(int lastOption) const;
+
+	bool assureLoadOverride() const;
 
 	void moveInScreen(Shape*) const;
 };
