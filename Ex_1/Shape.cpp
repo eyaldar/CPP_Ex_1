@@ -27,26 +27,26 @@ void Shape::clearAsFilled(bool useMatrix) const
 	drawAsFilled(' ', useMatrix);
 }
 
-double Shape::compareHorizontalSpeedTo(const Shape* other) const
+double Shape::compareHorizontalSpeedTo(const Shape& other) const
 {		
 	double thisAbsShift = abs(this->m_shift.getX());
-	double otherAbsShift = abs(other->m_shift.getX());
+	double otherAbsShift = abs(other.m_shift.getX());
 
 	return thisAbsShift - otherAbsShift;
 }
 
-double Shape::compareVerticalSpeedTo(const Shape* other) const
+double Shape::compareVerticalSpeedTo(const Shape& other) const
 {		
 	double thisAbsShift = abs(this->m_shift.getY());
-	double otherAbsShift = abs(other->m_shift.getY());
+	double otherAbsShift = abs(other.m_shift.getY());
 
 	return thisAbsShift - otherAbsShift;
 }
 
-int Shape::compareAreaTo(const Shape* other) const
+int Shape::compareAreaTo(const Shape& other) const
 {		
 	int thisArea = this->getArea();
-	int otherArea = other->getArea();
+	int otherArea = other.getArea();
 
 	return thisArea - otherArea;
 }
@@ -61,7 +61,7 @@ void Shape::setShift(const Point& point)
 	m_shift = Point(point);
 }
 
-bool Shape::isCollidingWith(const Shape* other) const
+bool Shape::isCollidingWith(const Shape& other) const
 {
 	return isCollidingHorizontallyWith(other) || isCollidingVerticallyWith(other);
 }
@@ -172,9 +172,9 @@ const vector<const Point*>& Shape::getCorners() const
 	return m_corner_points;
 }
 
-bool Shape::contains(const Shape* other) const
+bool Shape::contains(const Shape& other) const
 {
-	const vector<const Point*>& otherVec = other->getCorners();
+	const vector<const Point*>& otherVec = other.getCorners();
 
 	for (vector<const Point*>::const_iterator it = otherVec.cbegin(); it != otherVec.cend(); ++it)
 	{
@@ -185,4 +185,28 @@ bool Shape::contains(const Shape* other) const
 	}
 
 	return true;
+}
+
+// Assumes at least one corner of the two shapes should be contained by the other shape
+bool Shape::isIntersectingWith(const Shape& other) const
+{
+	const vector<const Point*>& otherVec = other.getCorners();
+
+	for (vector<const Point*>::const_iterator it = otherVec.cbegin(); it != otherVec.cend(); ++it)
+	{
+		if(contains(*(*it)))
+		{
+			return true;
+		}
+	}
+
+	for (vector<const Point*>::const_iterator it = m_corner_points.cbegin(); it != m_corner_points.cend(); ++it)
+	{
+		if(other.contains(*(*it)))
+		{
+			return true;
+		}
+	}
+
+	return false;
 }

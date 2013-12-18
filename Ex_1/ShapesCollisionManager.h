@@ -6,15 +6,15 @@
 class ShapesCollisionManager
 {
 public:
-	ShapesCollisionManager(const Shape* firstShape, const Shape* secondShape);
+	ShapesCollisionManager(const Shape& firstShape, const Shape& secondShape);
 
 	void updateShapesRelations();
 
 	bool hasCollided() const;
 
 private:
-	const Shape* m_first_shape;
-	const Shape* m_second_shape;
+	const Shape& m_first_shape;
+	const Shape& m_second_shape;
 
 	bool m_had_inclusuion_relation;
 	bool m_had_intersection_relation;

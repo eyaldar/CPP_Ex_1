@@ -16,20 +16,24 @@ void Diamond::copyFrom(const Diamond& other)
 	this->m_radius = other.m_radius;
 	this->m_center = Point(other.m_center);
 	
+	updateCorners();
 	initCornersVector();
 }
 
-void Diamond::initCornersVector()
+void Diamond::updateCorners()
 {
-	m_corner_points.clear();
-
 	double xCenter = m_center.getX();
 	double yCenter = m_center.getY();
 
 	m_left.init(xCenter - m_radius, yCenter);
 	m_top.init(xCenter, yCenter - m_radius);
 	m_right.init(xCenter + m_radius, yCenter);
-	m_bottom.init(xCenter, yCenter - m_radius);
+	m_bottom.init(xCenter, yCenter + m_radius);
+}
+
+void Diamond::initCornersVector()
+{
+	m_corner_points.clear();
 
 	m_corner_points.push_back(&m_left);
 	m_corner_points.push_back(&m_top);
@@ -39,22 +43,22 @@ void Diamond::initCornersVector()
 
 double Diamond::getMinX() const
 {
-	return m_center.getX() - m_radius;
+	return m_left.getX();
 }
 
 double Diamond::getMaxX() const
 {
-	return m_center.getX() + m_radius;
+	return m_right.getX();
 }
 
 double Diamond::getMinY() const
 {
-	return m_center.getY() - m_radius;
+	return m_top.getY();
 }
 
 double Diamond::getMaxY() const
 {
-	return m_center.getY() + m_radius;
+	return m_bottom.getY();
 }
 
 unsigned int Diamond::getArea() const
@@ -83,6 +87,7 @@ void Diamond::input()
 
 	m_radius = (int)radius;
 
+	updateCorners();
 	initCornersVector();
 }
 
@@ -127,6 +132,7 @@ void Diamond::move()
 	deflectOnBounds();
 
 	m_center += m_shift;
+	updateCorners();
 }
 
 bool Diamond::contains(const Point& point) const
@@ -137,19 +143,14 @@ bool Diamond::contains(const Point& point) const
 	return (xDistance + yDistance) <= (int)m_radius; 
 }
 
-bool Diamond::isIntersectingWith(const Shape* shape) const
+bool Diamond::isCollidingHorizontallyWith(const Shape& shape) const
 {
-	return shape->isIntersectingWith(this);
+	return shape.isCollidingHorizontallyWith(*this);
 }
 
-bool Diamond::isCollidingHorizontallyWith(const Shape* shape) const
+bool Diamond::isCollidingVerticallyWith(const Shape& shape) const
 {
-	return shape->isCollidingHorizontallyWith(this);
-}
-
-bool Diamond::isCollidingVerticallyWith(const Shape* shape) const
-{
-	return shape->isCollidingVerticallyWith(this);
+	return shape.isCollidingVerticallyWith(*this);
 }
 
 // File operations
@@ -175,37 +176,37 @@ void Diamond::load(ifstream& inFile)
 	// Save radius
 	inFile.read((char*)&m_radius, sizeof(m_radius));
 
-	// Initialize corners vector
+	// Initialize corners
+	updateCorners();
 	initCornersVector();
 }
 
 // Multi dispatch methods
-bool Diamond::isIntersectingWith(const Square* square) const
+
+bool Diamond::isCollidingHorizontallyWith(const Square& square) const
 {
-	return true;
+	return ((square.getMinX() >= this->getMinX() && square.getMinX() <= this->getMaxX()) ||
+		   (square.getMaxX() <= this->getMaxX() && square.getMaxX() <= this->getMinX())) &&
+		  this->isIntersectingWith(square); 
 }
 
-bool Diamond::isCollidingHorizontallyWith(const Square* square) const
+bool Diamond::isCollidingVerticallyWith(const Square& square) const
 {
-	return true;
+	return ((square.getMinY() >= this->getMinY() && square.getMinY() <= this->getMaxY()) ||
+		   (square.getMaxY() <= this->getMaxY() && square.getMaxX() <= this->getMinY())) &&
+		   this->isIntersectingWith(square); 
 }
 
-bool Diamond::isCollidingVerticallyWith(const Square* square) const
+bool Diamond::isCollidingHorizontallyWith(const Diamond& other) const
 {
-	return true;
+	return ((other.getMinX() >= this->getMinX() && other.getMinX() <= this->getMaxX()) ||
+		   (other.getMaxX() <= this->getMaxX() && other.getMaxX() <= this->getMinX())) &&
+		  this->isIntersectingWith(other); 
 }
 
-bool Diamond::isIntersectingWith(const Diamond* other) const
+bool Diamond::isCollidingVerticallyWith(const Diamond& other) const
 {
-	return false;
-}
-
-bool Diamond::isCollidingHorizontallyWith(const Diamond* other) const
-{
-	return false;
-}
-
-bool Diamond::isCollidingVerticallyWith(const Diamond* other) const
-{
-	return false;
+	return ((other.getMinY() >= this->getMinY() && other.getMinY() <= this->getMaxY()) ||
+		   (other.getMaxY() <= this->getMaxY() && other.getMaxX() <= this->getMinY())) &&
+		   this->isIntersectingWith(other); 
 }

@@ -49,11 +49,11 @@ void ShapesContainer::promoteShape(Shape* shape)
 
 void ShapesContainer::mergeShapes(Shape* firstShape, Shape* secondShape)
 {
-	bool areIntersecting = firstShape->isIntersectingWith(secondShape);
-	bool isFirstAreaBigger = firstShape->compareAreaTo(secondShape) > 0;
+	bool areIntersecting = firstShape->isIntersectingWith(*secondShape);
+	bool isFirstAreaBigger = firstShape->compareAreaTo(*secondShape) > 0;
 
-	if(!firstShape->contains(secondShape) &&
-	   (secondShape->contains(firstShape) ||
+	if(!firstShape->contains(*secondShape) &&
+	   (secondShape->contains(*firstShape) ||
 	   (areIntersecting && isFirstAreaBigger)  ||
 	   (!areIntersecting && !isFirstAreaBigger)))
 	{
@@ -69,9 +69,9 @@ Shape* ShapesContainer::collideShapes(Shape* firstShape, Shape* secondShape, boo
 {
 	Shape* surviver;
 
-	bool isFirstMovingFasterHorizontally = firstShape->compareHorizontalSpeedTo(secondShape) > 0;
-	bool isFirstMovingFasterVertically = firstShape->compareVerticalSpeedTo(secondShape) > 0;
-	bool isSecondAreaBigger = firstShape->compareAreaTo(secondShape) < 0;
+	bool isFirstMovingFasterHorizontally = firstShape->compareHorizontalSpeedTo(*secondShape) > 0;
+	bool isFirstMovingFasterVertically = firstShape->compareVerticalSpeedTo(*secondShape) > 0;
+	bool isSecondAreaBigger = firstShape->compareAreaTo(*secondShape) < 0;
 
 	if(((isFirstMovingFasterHorizontally && collideVertically) ||
 		(isFirstMovingFasterVertically && !collideVertically)) && isSecondAreaBigger)

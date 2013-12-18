@@ -255,7 +255,7 @@ void ShapesApp::playDoubleAnimation(Shape* secondShape)
 {
 	bool hasCollided = false;
 	bool hasCollidedVertically = false;
-	ShapesCollisionManager collisionManager(m_selected_shape, secondShape);
+	ShapesCollisionManager collisionManager(*m_selected_shape, *secondShape);
 
 	clrscr();
 	ScreenMatrix::getInstance().clearScreenMatrix();
@@ -265,7 +265,7 @@ void ShapesApp::playDoubleAnimation(Shape* secondShape)
 		// Collided now
 		if(collisionManager.hasCollided())
 		{
-			hasCollidedVertically = m_selected_shape->isCollidingVerticallyWith(secondShape);
+			hasCollidedVertically = m_selected_shape->isCollidingVerticallyWith(*secondShape);
 
 			m_selected_shape = handleCollision(m_selected_shape, secondShape, hasCollidedVertically);
 			playAnimation();
@@ -276,8 +276,8 @@ void ShapesApp::playDoubleAnimation(Shape* secondShape)
 
 		moveInScreen(m_selected_shape);
 
-		hasCollidedVertically = m_selected_shape->isCollidingHorizontallyWith(secondShape);
-		hasCollided = hasCollidedVertically || m_selected_shape->isCollidingVerticallyWith(secondShape);
+		hasCollidedVertically = m_selected_shape->isCollidingHorizontallyWith(*secondShape);
+		hasCollided = hasCollidedVertically || m_selected_shape->isCollidingVerticallyWith(*secondShape);
 
 		moveInScreen(secondShape);
 

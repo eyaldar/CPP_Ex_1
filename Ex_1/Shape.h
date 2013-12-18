@@ -11,7 +11,7 @@
 
 #define TYPELEN 2 // length of Type string in file
 
-class Shape : ShapeMultiDispatchInterface {
+class Shape : public ShapeMultiDispatchInterface {
 public:
 
 	Shape(char drawChar = '@', char selectionChar = '@')
@@ -33,31 +33,28 @@ public:
 	void drawAsFilled(bool useMatrix = false) const;
 	void clear(bool useMatrix = false) const;
 	void clearAsFilled(bool useMatrix = false) const;
-	bool isCollidingWith(const Shape*) const; 
+	bool isCollidingWith(const Shape&) const; 
 
 	virtual unsigned int getArea() const = 0;
 
 	virtual bool contains(const Point&) const = 0;
-	virtual bool contains(const Shape*) const;
-	virtual bool isIntersectingWith(const Shape*) const = 0;
-
-	virtual bool isCollidingHorizontallyWith(const Shape*) const = 0; 
-	virtual bool isCollidingVerticallyWith(const Shape*) const = 0;
+	virtual bool contains(const Shape&) const;
+	virtual bool isIntersectingWith(const Shape&) const;
 
 	// Compares to squares by area
 	// Returns 0 if the areas are equal, in case this shape is bigger returns positive number
 	// otherwise returns negative number.
-	int compareAreaTo(const Shape*) const;
+	int compareAreaTo(const Shape&) const;
 
 	// Compares to squares by horizontal shift
 	// Returns 0 if the speeds are equal, in case this shape is faster returns positive number
 	// otherwise returns negative number.
-	double compareHorizontalSpeedTo(const Shape*) const;
+	double compareHorizontalSpeedTo(const Shape&) const;
 
 	// Compares to squares by vertical shift
 	// Returns 0 if the speeds are equal, in case this shape is faster returns positive number
 	// otherwise returns negative number.
-	double compareVerticalSpeedTo(const Shape*) const;
+	double compareVerticalSpeedTo(const Shape&) const;
 
 	const std::vector<const Point*>& getCorners() const;
 	virtual double getMinX() const = 0; 
@@ -80,6 +77,7 @@ protected:
 
 	bool isWithinScreenBounds() const;
 	void deflectOnBounds();
+	virtual void updateCorners() = 0;
 	virtual void initCornersVector() = 0;
 
 	virtual void load(std::ifstream& inFile);

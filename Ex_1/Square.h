@@ -21,16 +21,16 @@ public:
 	}
 
 	Square(const Point& point, unsigned int side_length, char ch)
-	: m_top_left(point), m_bottom_right(point.getX() + side_length - 1, point.getY() + side_length - 1), 
-	  m_side_length(side_length), Shape(ch) 
+	: m_top_left(point), m_side_length(side_length), Shape(ch) 
 	{
+		updateCorners();
 		initCornersVector();
 	}
 
 	Square(int x, int y, unsigned int side_length, char ch)
-	: m_top_left(x,y), m_bottom_right(x + side_length - 1, y + side_length - 1), 
-	  m_side_length(side_length), Shape(ch) 
+	: m_top_left(x, y), m_side_length(side_length), Shape(ch) 
 	{
+		updateCorners();
 		initCornersVector();
 	}
 
@@ -44,9 +44,8 @@ public:
 
 	virtual bool contains(const Point& point) const;
 
-	virtual bool isIntersectingWith(const Shape*) const; 
-	virtual bool isCollidingHorizontallyWith(const Shape*) const; 
-	virtual bool isCollidingVerticallyWith(const Shape*) const;
+	virtual bool isCollidingHorizontallyWith(const Shape&) const; 
+	virtual bool isCollidingVerticallyWith(const Shape&) const;
 	
 	virtual double getMinX() const; 
 	virtual double getMaxX() const; 
@@ -57,13 +56,11 @@ public:
 	virtual void save(std::ofstream& outFile) const;
 
 	// Multi dispatch methods
-	virtual bool isIntersectingWith(const Square*) const;
-	virtual bool isCollidingHorizontallyWith(const Square*) const; 
-	virtual bool isCollidingVerticallyWith(const Square*) const;
+	virtual bool isCollidingHorizontallyWith(const Square&) const; 
+	virtual bool isCollidingVerticallyWith(const Square&) const;
 
-	virtual bool isIntersectingWith(const Diamond*) const;
-	virtual bool isCollidingHorizontallyWith(const Diamond*) const; 
-	virtual bool isCollidingVerticallyWith(const Diamond*) const;
+	virtual bool isCollidingHorizontallyWith(const Diamond&) const; 
+	virtual bool isCollidingVerticallyWith(const Diamond&) const;
 
 protected:
 
@@ -71,6 +68,7 @@ protected:
 	virtual void drawAsFilled(char ch, bool useMatrix) const;
 	virtual void load(std::ifstream& inFile);
 
+	virtual void updateCorners();
 	
 	virtual void initCornersVector();
 
@@ -78,6 +76,8 @@ private:
 
 	unsigned int m_side_length;
 	Point m_top_left;
+	Point m_top_right;
+	Point m_bottom_left;
 	Point m_bottom_right;
 
 	void copyFrom(const Square&);

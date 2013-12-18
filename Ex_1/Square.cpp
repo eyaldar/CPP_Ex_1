@@ -69,8 +69,8 @@ void Square::copyFrom(const Square& other)
 
 	this->m_side_length = other.m_side_length;
 	this->m_top_left = Point(other.m_top_left);
-	this->m_bottom_right = Point(other.m_bottom_right);
 
+	updateCorners();
 	initCornersVector();
 }
 
@@ -79,12 +79,9 @@ void Square::initCornersVector()
 	m_corner_points.clear();
 
 	m_corner_points.push_back(&m_top_left);
+	m_corner_points.push_back(&m_top_right);
+	m_corner_points.push_back(&m_bottom_left);
 	m_corner_points.push_back(&m_bottom_right);
-}
-
-bool Square::isIntersectingWith(const Shape* other) const
-{
-	return  other->isIntersectingWith(this);
 }
 
 void Square::move()
@@ -92,17 +89,27 @@ void Square::move()
 	deflectOnBounds();
 
 	m_top_left += m_shift;
-	m_bottom_right += m_shift;
+	updateCorners();
 }
 
-bool Square::isCollidingHorizontallyWith(const Shape* other) const
+void Square::updateCorners()
 {
-	return other->isCollidingHorizontallyWith(this);
+	double top = m_top_left.getY();
+	double left = m_top_left.getX();
+
+	m_top_right.init(left + m_side_length - 1, top);
+	m_bottom_left.init(left, top + m_side_length - 1);
+	m_bottom_right.init(left + m_side_length - 1, top + m_side_length - 1);
 }
 
-bool Square::isCollidingVerticallyWith(const Shape* other) const
+bool Square::isCollidingHorizontallyWith(const Shape& other) const
 {
-	return other->isCollidingVerticallyWith(this);
+	return other.isCollidingHorizontallyWith(*this);
+}
+
+bool Square::isCollidingVerticallyWith(const Shape& other) const
+{
+	return other.isCollidingVerticallyWith(*this);
 }
 
 unsigned int Square::getArea() const
@@ -130,22 +137,21 @@ void Square::input()
 
 	m_side_length = (int)sideLength;
 
-	m_bottom_right.init(m_top_left.getX() + m_side_length - 1, m_top_left.getY() + m_side_length - 1);
+	updateCorners();
+	initCornersVector();
 
-	cout << "Please enter the square character ['@' is not allowed]:";
+		cout << "Please enter the square character ['" << m_selection_char << "' is not allowed]:";
 	cin >> ch;
 
 	while(ch == m_selection_char)
 	{
 		cerr << "Invalid character ! Please insert different square character ." << endl << endl << endl;
 
-		cout << "Please enter the square character ['@' is not allowed]:";
+		cout << "Please enter the square character ['" << m_selection_char << "' is not allowed]:";
 		cin >> ch;
 	}
 
 	m_draw_char = ch;
-
-	initCornersVector();
 }
 
 double Square::getMinX() const
@@ -191,51 +197,40 @@ void Square::load(ifstream& inFile)
 	// Save top left
 	m_top_left.load(inFile);
 
-	// Calculate bottom right
-	m_bottom_right.init(m_top_left.getX() + m_side_length - 1, m_top_left.getY() + m_side_length - 1);
-
+	updateCorners();
 	initCornersVector();
 }
 
 // Multi Dispatch methods
 
-bool Square::isIntersectingWith(const Square* other) const
+bool Square::isCollidingHorizontallyWith(const Square& other) const
 {
-	return  (int)this->m_top_left.getX() <= (int)other->m_bottom_right.getX() &&
-			(int)other->m_top_left.getX() <= (int)this->m_bottom_right.getX() &&
-			(int)this->m_top_left.getY() <= (int)other->m_bottom_right.getY() &&
-			(int)other->m_top_left.getY() <= (int)this->m_bottom_right.getY();
-}
-
-bool Square::isCollidingHorizontallyWith(const Square* other) const
-{
-	return ((int)this->m_top_left.getX() == (int)other->m_bottom_right.getX() || 
-			(int)this->m_top_left.getX() == (int)other->m_top_left.getX()	   ||
-			(int)this->m_bottom_right.getX() == (int)other->m_top_left.getX() ||
-			(int)this->m_bottom_right.getX() == (int)other->m_bottom_right.getX()) 	&&
+	return ((int)this->m_top_left.getX() == (int)other.m_bottom_right.getX() || 
+			(int)this->m_top_left.getX() == (int)other.m_top_left.getX()	   ||
+			(int)this->m_bottom_right.getX() == (int)other.m_top_left.getX() ||
+			(int)this->m_bottom_right.getX() == (int)other.m_bottom_right.getX()) 	&&
 			this->isIntersectingWith(other); 
 }
 
-bool Square::isCollidingVerticallyWith(const Square* other) const
+bool Square::isCollidingVerticallyWith(const Square& other) const
 {
-	return  ((int)this->m_top_left.getY() == (int)other->m_bottom_right.getY() || 
-			(int)this->m_top_left.getY() == (int)other->m_top_left.getY()	   ||
-			(int)this->m_bottom_right.getY() == (int)other->m_top_left.getY() ||
-			(int)this->m_bottom_right.getY() == (int)other->m_bottom_right.getY()) 	&&
+	return  ((int)this->m_top_left.getY() == (int)other.m_bottom_right.getY() || 
+			(int)this->m_top_left.getY() == (int)other.m_top_left.getY()	   ||
+			(int)this->m_bottom_right.getY() == (int)other.m_top_left.getY() ||
+			(int)this->m_bottom_right.getY() == (int)other.m_bottom_right.getY()) 	&&
 			this->isIntersectingWith(other); 
 }
 
-bool Square::isIntersectingWith(const Diamond* other) const
+bool Square::isCollidingHorizontallyWith(const Diamond& other) const
 {
-	return false;
+	return ((other.getMinX() >= this->getMinX() && other.getMinX() <= this->getMaxX()) ||
+		   (other.getMaxX() <= this->getMaxX() && other.getMaxX() <= this->getMinX())) &&
+		   this->isIntersectingWith(other); 
 }
 
-bool Square::isCollidingHorizontallyWith(const Diamond* other) const
+bool Square::isCollidingVerticallyWith(const Diamond& other) const
 {
-	return false;
-}
-
-bool Square::isCollidingVerticallyWith(const Diamond* other) const
-{
-	return false;
+	return ((other.getMinY() >= this->getMinY() && other.getMinY() <= this->getMaxY()) ||
+		   (other.getMaxY() <= this->getMaxY() && other.getMaxX() <= this->getMinY())) &&
+		   this->isIntersectingWith(other); 
 }
