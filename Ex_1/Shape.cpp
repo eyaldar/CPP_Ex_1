@@ -157,3 +157,32 @@ void Shape::load(ifstream& inFile)
 	// Load Selection Char
 	inFile.read(&m_selection_char, sizeof(m_selection_char));
 }
+
+void Shape::copyFrom(const Shape& other)
+{
+	this->m_draw_char = other.m_draw_char;
+	this->m_selection_char = other.m_selection_char;
+	this->m_shift = Point(other.m_shift);
+	
+	initCornersVector();
+}
+
+const vector<const Point*>& Shape::getCorners() const
+{
+	return m_corner_points;
+}
+
+bool Shape::contains(const Shape* other) const
+{
+	const vector<const Point*>& otherVec = other->getCorners();
+
+	for (vector<const Point*>::const_iterator it = otherVec.cbegin(); it != otherVec.cend(); ++it)
+	{
+		if(!contains(*(*it)))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}

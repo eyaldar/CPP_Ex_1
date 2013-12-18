@@ -88,7 +88,11 @@ void ShapesApp::run()
 					ofstream file(TEXTUAL_FILE_NAME, ios_base::trunc | ios_base::out);
 
 					if(file)
+					{
 						m_shapes.save(file);
+						file.close();
+					}
+
 					break;
 				}
 			case LOAD_TEXTUAL_FILE:
@@ -98,7 +102,10 @@ void ShapesApp::run()
 						ifstream file(TEXTUAL_FILE_NAME, ios_base::in);
 
 						if(file)
+						{
 							m_shapes.load(file);
+							file.close();
+						}
 					}
 					break;
 				}
@@ -107,7 +114,10 @@ void ShapesApp::run()
 					ofstream file(BINARY_FILE_NAME, ios_base::trunc | ios_base::out | ios_base::binary);
 
 					if(file)
+					{
 						m_shapes.save(file);
+						file.close();
+					}
 					break;
 				}
 			case LOAD_BINARY_FILE:
@@ -117,7 +127,10 @@ void ShapesApp::run()
 						ifstream file(BINARY_FILE_NAME, ios_base::in | ios_base::binary);
 
 						if(file)
+						{
 							m_shapes.load(file);
+							file.close();
+						}
 					}
 					break;
 				}
@@ -241,7 +254,7 @@ void ShapesApp::playAnimation() const
 void ShapesApp::playDoubleAnimation(Shape* secondShape)
 {
 	bool hasCollided = false;
-	bool hasCollidedHorizontally = false;
+	bool hasCollidedVertically = false;
 	ShapesCollisionManager collisionManager(m_selected_shape, secondShape);
 
 	clrscr();
@@ -250,11 +263,11 @@ void ShapesApp::playDoubleAnimation(Shape* secondShape)
 	while(!_kbhit() || _getch()!=27)
 	{
 		// Collided now
-		if(m_selected_shape->isCollidingWith(secondShape))
+		if(collisionManager.hasCollided())
 		{
-			hasCollidedHorizontally = m_selected_shape->isCollidingHorizontallyWith(secondShape);
+			hasCollidedVertically = m_selected_shape->isCollidingVerticallyWith(secondShape);
 
-			m_selected_shape = handleCollision(m_selected_shape, secondShape, hasCollidedHorizontally);
+			m_selected_shape = handleCollision(m_selected_shape, secondShape, hasCollidedVertically);
 			playAnimation();
 			break;
 		}
@@ -263,8 +276,8 @@ void ShapesApp::playDoubleAnimation(Shape* secondShape)
 
 		moveInScreen(m_selected_shape);
 
-		hasCollidedHorizontally = m_selected_shape->isCollidingHorizontallyWith(secondShape);
-		hasCollided = hasCollidedHorizontally || m_selected_shape->isCollidingVerticallyWith(secondShape);
+		hasCollidedVertically = m_selected_shape->isCollidingHorizontallyWith(secondShape);
+		hasCollided = hasCollidedVertically || m_selected_shape->isCollidingVerticallyWith(secondShape);
 
 		moveInScreen(secondShape);
 
@@ -273,7 +286,7 @@ void ShapesApp::playDoubleAnimation(Shape* secondShape)
 		// Collision occured in between movements
 		if(hasCollided && collisionManager.hasCollided())
 		{
-			m_selected_shape = handleCollision(m_selected_shape, secondShape, hasCollidedHorizontally);
+			m_selected_shape = handleCollision(m_selected_shape, secondShape, hasCollidedVertically);
 			playAnimation();
 
 			break;
@@ -283,7 +296,7 @@ void ShapesApp::playDoubleAnimation(Shape* secondShape)
 	}
 }
 
-Shape* ShapesApp::handleCollision(Shape* firstShape, Shape* secondShape, bool hasCollidedHorizontally)
+Shape* ShapesApp::handleCollision(Shape* firstShape, Shape* secondShape, bool hasCollidedVertically)
 {
 	Shape* surviver = NULL;
 
@@ -294,7 +307,7 @@ Shape* ShapesApp::handleCollision(Shape* firstShape, Shape* secondShape, bool ha
 
 	ScreenMatrix::getInstance().printDiff();
 
-	surviver = m_shapes.collideShapes(firstShape, secondShape, hasCollidedHorizontally);
+	surviver = m_shapes.collideShapes(firstShape, secondShape, hasCollidedVertically);
 
 	return surviver;
 }

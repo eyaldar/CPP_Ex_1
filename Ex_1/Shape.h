@@ -4,6 +4,7 @@
 #include <iostream>
 #include <typeinfo.h>
 #include <string.h>
+#include <vector>
 
 #include "Point.h"
 #include "ShapeMultiDispatchInterface.h"
@@ -37,7 +38,7 @@ public:
 	virtual unsigned int getArea() const = 0;
 
 	virtual bool contains(const Point&) const = 0;
-	virtual bool contains(const Shape*) const = 0;
+	virtual bool contains(const Shape*) const;
 	virtual bool isIntersectingWith(const Shape*) const = 0;
 
 	virtual bool isCollidingHorizontallyWith(const Shape*) const = 0; 
@@ -58,6 +59,7 @@ public:
 	// otherwise returns negative number.
 	double compareVerticalSpeedTo(const Shape*) const;
 
+	const std::vector<const Point*>& getCorners() const;
 	virtual double getMinX() const = 0; 
 	virtual double getMaxX() const = 0; 
 	virtual double getMinY() const = 0; 
@@ -68,6 +70,7 @@ public:
 	virtual void save(std::ofstream& outFile) const;
 
 protected:
+	std::vector<const Point*> m_corner_points;
 	char m_selection_char;
 	char m_draw_char;
 	Point m_shift;
@@ -77,8 +80,11 @@ protected:
 
 	bool isWithinScreenBounds() const;
 	void deflectOnBounds();
+	virtual void initCornersVector() = 0;
 
 	virtual void load(std::ifstream& inFile);
+
+	void copyFrom(const Shape& other);
 };
 
 #endif

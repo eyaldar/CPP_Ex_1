@@ -22,11 +22,17 @@ public:
 
 	Square(const Point& point, unsigned int side_length, char ch)
 	: m_top_left(point), m_bottom_right(point.getX() + side_length - 1, point.getY() + side_length - 1), 
-	  m_side_length(side_length), Shape(ch) {}
+	  m_side_length(side_length), Shape(ch) 
+	{
+		initCornersVector();
+	}
 
 	Square(int x, int y, unsigned int side_length, char ch)
 	: m_top_left(x,y), m_bottom_right(x + side_length - 1, y + side_length - 1), 
-	  m_side_length(side_length), Shape(ch) {}
+	  m_side_length(side_length), Shape(ch) 
+	{
+		initCornersVector();
+	}
 
 	Square(const Square&);
 
@@ -37,7 +43,7 @@ public:
 	virtual unsigned int getArea() const;
 
 	virtual bool contains(const Point& point) const;
-	virtual bool contains(const Shape*) const;
+
 	virtual bool isIntersectingWith(const Shape*) const; 
 	virtual bool isCollidingHorizontallyWith(const Shape*) const; 
 	virtual bool isCollidingVerticallyWith(const Shape*) const;
@@ -51,12 +57,10 @@ public:
 	virtual void save(std::ofstream& outFile) const;
 
 	// Multi dispatch methods
-	virtual bool contains(const Square* other) const;
 	virtual bool isIntersectingWith(const Square*) const;
 	virtual bool isCollidingHorizontallyWith(const Square*) const; 
 	virtual bool isCollidingVerticallyWith(const Square*) const;
 
-	virtual bool contains(const Diamond* other) const;
 	virtual bool isIntersectingWith(const Diamond*) const;
 	virtual bool isCollidingHorizontallyWith(const Diamond*) const; 
 	virtual bool isCollidingVerticallyWith(const Diamond*) const;
@@ -66,6 +70,9 @@ protected:
 	virtual void draw(char ch, bool useMatrix = false) const;
 	virtual void drawAsFilled(char ch, bool useMatrix) const;
 	virtual void load(std::ifstream& inFile);
+
+	
+	virtual void initCornersVector();
 
 private:
 

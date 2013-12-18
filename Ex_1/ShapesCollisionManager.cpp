@@ -65,7 +65,8 @@ const Shape* ShapesCollisionManager::getBottommostShape() const
 
 bool ShapesCollisionManager::hasCollided() const
 {
-	return m_had_intersection_relation && hasShapeEdgesChanged() || 
+	return m_first_shape->isCollidingWith(m_second_shape) ||
+		   m_had_intersection_relation && hasShapeEdgesChanged() || 
 		   hasShapeRelationsChanged();
 }
 

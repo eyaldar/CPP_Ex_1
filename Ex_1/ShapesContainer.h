@@ -24,7 +24,7 @@ public:
 	void removeShape(Shape*);
 	void promoteShape(Shape*);
 	void mergeShapes(Shape*, Shape*);
-	Shape* collideShapes(Shape*, Shape*, bool collideHorizontally);
+	Shape* collideShapes(Shape*, Shape*, bool collideVertically);
 	
 	void drawShapes() const;
 	Shape* findShape(const Point& coordinates, const Shape* except = NULL) const;

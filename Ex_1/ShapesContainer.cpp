@@ -35,7 +35,7 @@ void ShapesContainer::removeShape(Shape* shape)
 
 void ShapesContainer::drawShapes() const
 {
-	for (list<Shape*>::const_iterator it = m_shapes.begin(); it != m_shapes.end(); ++it)
+	for (list<Shape*>::const_iterator it = m_shapes.cbegin(); it != m_shapes.cend(); ++it)
 	{
 		(*it)->draw();
 	}
@@ -65,7 +65,7 @@ void ShapesContainer::mergeShapes(Shape* firstShape, Shape* secondShape)
 	removeShape(secondShape);
 }
 
-Shape* ShapesContainer::collideShapes(Shape* firstShape, Shape* secondShape, bool collideHorizontally)
+Shape* ShapesContainer::collideShapes(Shape* firstShape, Shape* secondShape, bool collideVertically)
 {
 	Shape* surviver;
 
@@ -73,8 +73,8 @@ Shape* ShapesContainer::collideShapes(Shape* firstShape, Shape* secondShape, boo
 	bool isFirstMovingFasterVertically = firstShape->compareVerticalSpeedTo(secondShape) > 0;
 	bool isSecondAreaBigger = firstShape->compareAreaTo(secondShape) < 0;
 
-	if(((isFirstMovingFasterHorizontally && collideHorizontally) ||
-		(isFirstMovingFasterVertically && !collideHorizontally)) && isSecondAreaBigger)
+	if(((isFirstMovingFasterHorizontally && collideVertically) ||
+		(isFirstMovingFasterVertically && !collideVertically)) && isSecondAreaBigger)
 	{
 		removeShape(firstShape);
 		surviver = secondShape;

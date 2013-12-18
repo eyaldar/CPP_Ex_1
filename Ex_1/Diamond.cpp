@@ -12,9 +12,29 @@ Diamond::Diamond(const Diamond& other)
 
 void Diamond::copyFrom(const Diamond& other)
 {
-	this->m_draw_char = other.m_draw_char;
+	Shape::copyFrom(other);
 	this->m_radius = other.m_radius;
 	this->m_center = Point(other.m_center);
+	
+	initCornersVector();
+}
+
+void Diamond::initCornersVector()
+{
+	m_corner_points.clear();
+
+	double xCenter = m_center.getX();
+	double yCenter = m_center.getY();
+
+	m_left.init(xCenter - m_radius, yCenter);
+	m_top.init(xCenter, yCenter - m_radius);
+	m_right.init(xCenter + m_radius, yCenter);
+	m_bottom.init(xCenter, yCenter - m_radius);
+
+	m_corner_points.push_back(&m_left);
+	m_corner_points.push_back(&m_top);
+	m_corner_points.push_back(&m_right);
+	m_corner_points.push_back(&m_bottom);
 }
 
 double Diamond::getMinX() const
@@ -62,6 +82,8 @@ void Diamond::input()
 	}
 
 	m_radius = (int)radius;
+
+	initCornersVector();
 }
 
 void Diamond::draw(char ch, bool useMatrix) const
@@ -109,27 +131,25 @@ void Diamond::move()
 
 bool Diamond::contains(const Point& point) const
 {
-	return true;
+	int xDistance = (int)abs(point.getX() - m_center.getX());
+	int yDistance = (int)abs(point.getY() - m_center.getY());
+
+	return (xDistance + yDistance) <= (int)m_radius; 
 }
 
-bool Diamond::contains(const Shape*) const
+bool Diamond::isIntersectingWith(const Shape* shape) const
 {
-	return contains(this);
+	return shape->isIntersectingWith(this);
 }
 
-bool Diamond::isIntersectingWith(const Shape*) const
+bool Diamond::isCollidingHorizontallyWith(const Shape* shape) const
 {
-	return isIntersectingWith(this);
+	return shape->isCollidingHorizontallyWith(this);
 }
 
-bool Diamond::isCollidingHorizontallyWith(const Shape*) const
+bool Diamond::isCollidingVerticallyWith(const Shape* shape) const
 {
-	return isCollidingHorizontallyWith(this);
-}
-
-bool Diamond::isCollidingVerticallyWith(const Shape*) const
-{
-	return isCollidingVerticallyWith(this);
+	return shape->isCollidingVerticallyWith(this);
 }
 
 // File operations
@@ -154,33 +174,25 @@ void Diamond::load(ifstream& inFile)
 
 	// Save radius
 	inFile.read((char*)&m_radius, sizeof(m_radius));
+
+	// Initialize corners vector
+	initCornersVector();
 }
 
 // Multi dispatch methods
-bool Diamond::contains(const Square*) const
+bool Diamond::isIntersectingWith(const Square* square) const
 {
 	return true;
 }
 
-bool Diamond::isIntersectingWith(const Square*) const
+bool Diamond::isCollidingHorizontallyWith(const Square* square) const
 {
 	return true;
 }
 
-bool Diamond::isCollidingHorizontallyWith(const Square*) const
+bool Diamond::isCollidingVerticallyWith(const Square* square) const
 {
 	return true;
-}
-
-bool Diamond::isCollidingVerticallyWith(const Square*) const
-{
-	return true;
-}
-
-bool Diamond::contains(const Diamond* other) const
-{
-	return this->contains(Point(other->getMaxX(), other->getMaxY())) &&
-		   this->contains(Point(other->getMinX(), other->getMinY()));
 }
 
 bool Diamond::isIntersectingWith(const Diamond* other) const

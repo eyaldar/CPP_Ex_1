@@ -63,17 +63,23 @@ bool Square::contains(const Point& point) const
 		   ((int)m_top_left.getY() <= point.getY() && point.getY() <= (int)m_bottom_right.getY());
 }
 
-bool Square::contains(const Shape* other) const
-{
-	return other->contains(this);
-}
-
 void Square::copyFrom(const Square& other)
 {
-	this->m_draw_char = other.m_draw_char;
+	Shape::copyFrom(other);
+
 	this->m_side_length = other.m_side_length;
 	this->m_top_left = Point(other.m_top_left);
 	this->m_bottom_right = Point(other.m_bottom_right);
+
+	initCornersVector();
+}
+
+void Square::initCornersVector()
+{
+	m_corner_points.clear();
+
+	m_corner_points.push_back(&m_top_left);
+	m_corner_points.push_back(&m_bottom_right);
 }
 
 bool Square::isIntersectingWith(const Shape* other) const
@@ -138,6 +144,8 @@ void Square::input()
 	}
 
 	m_draw_char = ch;
+
+	initCornersVector();
 }
 
 double Square::getMinX() const
@@ -185,15 +193,11 @@ void Square::load(ifstream& inFile)
 
 	// Calculate bottom right
 	m_bottom_right.init(m_top_left.getX() + m_side_length - 1, m_top_left.getY() + m_side_length - 1);
+
+	initCornersVector();
 }
 
 // Multi Dispatch methods
-
-bool Square::contains(const Square* other) const
-{
-	return this->contains(other->m_bottom_right) &&
-		   this->contains(other->m_top_left);
-}
 
 bool Square::isIntersectingWith(const Square* other) const
 {
@@ -219,12 +223,6 @@ bool Square::isCollidingVerticallyWith(const Square* other) const
 			(int)this->m_bottom_right.getY() == (int)other->m_top_left.getY() ||
 			(int)this->m_bottom_right.getY() == (int)other->m_bottom_right.getY()) 	&&
 			this->isIntersectingWith(other); 
-}
-
-bool Square::contains(const Diamond* other) const
-{
-	return this->contains(Point(other->getMaxX(), other->getMaxY())) &&
-		   this->contains(Point(other->getMinX(), other->getMinY()));
 }
 
 bool Square::isIntersectingWith(const Diamond* other) const

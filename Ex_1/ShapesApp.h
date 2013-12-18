@@ -67,7 +67,7 @@ private:
 
 	void selectShape();
 	void runShapeMenu();
-	Shape* handleCollision(Shape* firstShape, Shape* secondShape, bool hasCollidedHorizontally);
+	Shape* handleCollision(Shape* firstShape, Shape* secondShape, bool hasCollidedVertically);
 
 	void waitForEscape() const;
 	void drawShapesWithSelection() const;
