@@ -221,16 +221,14 @@ bool Square::isCollidingVerticallyWith(const Square& other) const
 			this->isIntersectingWith(other); 
 }
 
-bool Square::isCollidingHorizontallyWith(const Diamond& other) const
+bool Square::isCollidingHorizontallyWith(const Diamond& diamond) const
 {
-	return ((other.getMinX() >= this->getMinX() && other.getMinX() <= this->getMaxX()) ||
-		   (other.getMaxX() <= this->getMaxX() && other.getMaxX() <= this->getMinX())) &&
-		   this->isIntersectingWith(other); 
+	return ((diamond.getShift().getX() != 0) || (this->getShift().getX() != 0)) &&
+			!this->Shape::contains(diamond) && this->isIntersectingWith(diamond); 
 }
 
-bool Square::isCollidingVerticallyWith(const Diamond& other) const
+bool Square::isCollidingVerticallyWith(const Diamond& diamond) const
 {
-	return ((other.getMinY() >= this->getMinY() && other.getMinY() <= this->getMaxY()) ||
-		   (other.getMaxY() <= this->getMaxY() && other.getMaxX() <= this->getMinY())) &&
-		   this->isIntersectingWith(other); 
+	return ((diamond.getShift().getY() != 0) || (this->getShift().getY() != 0)) &&
+			!this->Shape::contains(diamond) && this->isIntersectingWith(diamond); 
 }

@@ -2,8 +2,8 @@
 #define __DIAMOND_H__
 
 #include "Point.h"
-#include "Shape.h"
 #include "Square.h"
+#include "Shape.h"
 
 class Diamond : public Shape{
 public:
@@ -48,6 +48,8 @@ public:
 	virtual double getMaxX() const; 
 	virtual double getMinY() const; 
 	virtual double getMaxY() const; 
+
+	const Point getDistanceFromCenter(const Point&) const;
 
 	// File operations
 	virtual void save(std::ofstream& outFile) const;

@@ -137,10 +137,8 @@ void Diamond::move()
 
 bool Diamond::contains(const Point& point) const
 {
-	int xDistance = (int)abs(point.getX() - m_center.getX());
-	int yDistance = (int)abs(point.getY() - m_center.getY());
-
-	return (xDistance + yDistance) <= (int)m_radius; 
+	const Point& distanceVector = getDistanceFromCenter(point);
+	return distanceVector.getX() + distanceVector.getY() <= (int)m_radius; 
 }
 
 bool Diamond::isCollidingHorizontallyWith(const Shape& shape) const
@@ -151,6 +149,14 @@ bool Diamond::isCollidingHorizontallyWith(const Shape& shape) const
 bool Diamond::isCollidingVerticallyWith(const Shape& shape) const
 {
 	return shape.isCollidingVerticallyWith(*this);
+}
+
+const Point Diamond::getDistanceFromCenter(const Point& point) const
+{
+	int xDistance = (int)abs(point.getX() - m_center.getX());
+	int yDistance = (int)abs(point.getY() - m_center.getY());
+
+	return Point(xDistance, yDistance);
 }
 
 // File operations
@@ -185,28 +191,24 @@ void Diamond::load(ifstream& inFile)
 
 bool Diamond::isCollidingHorizontallyWith(const Square& square) const
 {
-	return ((square.getMinX() >= this->getMinX() && square.getMinX() <= this->getMaxX()) ||
-		   (square.getMaxX() <= this->getMaxX() && square.getMaxX() <= this->getMinX())) &&
-		  this->isIntersectingWith(square); 
+	return ((square.getShift().getX() != 0) || (this->getShift().getX() != 0)) &&
+		   !square.Shape::contains(*this) && this->isIntersectingWith(square); 
 }
 
 bool Diamond::isCollidingVerticallyWith(const Square& square) const
 {
-	return ((square.getMinY() >= this->getMinY() && square.getMinY() <= this->getMaxY()) ||
-		   (square.getMaxY() <= this->getMaxY() && square.getMaxX() <= this->getMinY())) &&
-		   this->isIntersectingWith(square); 
+	return ((square.getShift().getY() != 0) || (this->getShift().getY() != 0)) &&
+		   !square.Shape::contains(*this) && this->isIntersectingWith(square); 
 }
 
 bool Diamond::isCollidingHorizontallyWith(const Diamond& other) const
 {
-	return ((other.getMinX() >= this->getMinX() && other.getMinX() <= this->getMaxX()) ||
-		   (other.getMaxX() <= this->getMaxX() && other.getMaxX() <= this->getMinX())) &&
-		  this->isIntersectingWith(other); 
+	return ((other.getShift().getX() != 0) || (this->getShift().getX() != 0)) &&
+		   this->isIntersectingWith(other); 
 }
 
 bool Diamond::isCollidingVerticallyWith(const Diamond& other) const
 {
-	return ((other.getMinY() >= this->getMinY() && other.getMinY() <= this->getMaxY()) ||
-		   (other.getMaxY() <= this->getMaxY() && other.getMaxX() <= this->getMinY())) &&
-		   this->isIntersectingWith(other); 
+	return ((other.getShift().getY() != 0) || (this->getShift().getY() != 0)) && 
+			this->isIntersectingWith(other); 
 }
