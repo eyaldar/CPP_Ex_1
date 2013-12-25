@@ -1,85 +1,91 @@
 #include "ShapesCollisionManager.h"
 
-ShapesCollisionManager::ShapesCollisionManager(const Shape& firstShape, const Shape& secondShape) 
-	:m_first_shape(firstShape), m_second_shape(secondShape)
-{
-	m_had_intersection_relation = m_has_intersection_relation = m_first_shape.isIntersectingWith(m_second_shape);							
-	m_had_inclusuion_relation = m_has_inclusuion_relation = (m_first_shape.contains(m_second_shape) || m_second_shape.contains(m_first_shape));
+using namespace std;
 
-	m_prev_leftmost_shape = m_curr_leftmost_shape = getLeftmostShape();
-	m_prev_rightmost_shape = m_curr_rightmost_shape =	getRighmostShape();
-	m_prev_topmost_shape = m_curr_topmost_shape = getTopmostShape();		
-	m_prev_bottommost_shape = m_curr_bottommost_shape = getBottommostShape();
+Shape* ShapesCollisionManager::getCollisionSurviver(Shape* firstShape, Shape* secondShape, bool collideVertically)
+{
+	Shape* surviver = NULL;
+
+	if(typeid(*firstShape) == typeid(Square) && typeid(*secondShape) == typeid(Square))
+	{
+		surviver = getCollisionSurviver((Square*)firstShape,  (Square*)secondShape, collideVertically);
+	}
+	else if(typeid(*firstShape) == typeid(Square) && typeid(*secondShape) == typeid(Diamond))
+	{
+		surviver = getCollisionSurviver((Square*)secondShape,  (Diamond*)firstShape, collideVertically);
+	}
+	else if(typeid(*firstShape) == typeid(Diamond) && typeid(*secondShape) == typeid(Square))
+	{
+		surviver = getCollisionSurviver((Square*)firstShape,  (Diamond*)secondShape, collideVertically);
+	}
+	else if(typeid(*firstShape) == typeid(Diamond) && typeid(*secondShape) == typeid(Diamond))
+	{
+		surviver = getCollisionSurviver((Diamond*)firstShape,  (Diamond*)secondShape, collideVertically);
+	}
+
+	return surviver;
 }
 
-void ShapesCollisionManager::updateShapesRelations()
+Shape* ShapesCollisionManager::getCollisionSurviver(Diamond* firstDiamond, Diamond* secondDiamond, bool collideVertically)
 {
-	m_had_intersection_relation = m_has_intersection_relation;
-	m_had_inclusuion_relation = m_has_inclusuion_relation;
+	Shape* surviver;
 
-	m_has_intersection_relation = m_first_shape.isIntersectingWith(m_second_shape);							
-	m_has_inclusuion_relation = (m_first_shape.contains(m_second_shape) || m_second_shape.contains(m_first_shape));
+	bool isFirstMovingFasterHorizontally = firstDiamond->compareHorizontalSpeedTo(*secondDiamond) > 0;
+	bool isFirstMovingFasterVertically = firstDiamond->compareVerticalSpeedTo(*secondDiamond) > 0;
+	bool isFirstAreaBigger = firstDiamond->compareAreaTo(*secondDiamond) > 0;
 
-	m_prev_leftmost_shape = m_curr_leftmost_shape;
-	m_prev_rightmost_shape = m_curr_rightmost_shape;
-	m_prev_topmost_shape = m_curr_topmost_shape;		
-	m_prev_bottommost_shape = m_curr_bottommost_shape;
-
-	m_curr_leftmost_shape = getLeftmostShape();
-	m_curr_rightmost_shape = getRighmostShape();
-	m_curr_topmost_shape = getTopmostShape();		
-	m_curr_bottommost_shape = getBottommostShape();
-}
-
-const Shape* ShapesCollisionManager::getLeftmostShape() const
-{
-	if(m_first_shape.getMinX() < m_second_shape.getMinX())
-		return &m_first_shape;
+	if(((isFirstMovingFasterHorizontally && !collideVertically) ||
+		(isFirstMovingFasterVertically && collideVertically)) && isFirstAreaBigger)
+	{
+		surviver = firstDiamond;
+	}
 	else
-		return &m_second_shape;
+	{
+		surviver = secondDiamond;
+	}
+	
+	return surviver;
+
 }
 
-const Shape* ShapesCollisionManager::getRighmostShape() const
+Shape* ShapesCollisionManager::getCollisionSurviver(Square* square, Diamond* diamond, bool collideVertically)
 {
-	if(m_first_shape.getMaxX() >= m_second_shape.getMaxX())
-		return &m_first_shape;
+	Shape* surviver;
+
+	bool isSquareMovingFasterHorizontally = square->compareHorizontalSpeedTo(*diamond) > 0;
+	bool isSquareMovingFasterVertically = square->compareVerticalSpeedTo(*diamond) > 0;
+
+	if(((isSquareMovingFasterHorizontally && !collideVertically) ||
+		(isSquareMovingFasterVertically && collideVertically)))
+	{
+		surviver = square;
+	}
 	else
-		return &m_second_shape;
+	{
+		surviver = diamond;
+	}
+	
+	return surviver;
+
 }
 
-const Shape* ShapesCollisionManager::getTopmostShape() const
+Shape* ShapesCollisionManager::getCollisionSurviver(Square* firstSquare, Square* secondSquare, bool collideVertically)
 {
-	if(m_first_shape.getMinY() < m_second_shape.getMinY())
-		return &m_first_shape;
+	Shape* surviver;
+
+	bool isFirstMovingFasterHorizontally = firstSquare->compareHorizontalSpeedTo(*secondSquare) > 0;
+	bool isFirstMovingFasterVertically = firstSquare->compareVerticalSpeedTo(*secondSquare) > 0;
+	bool isSecondAreaBigger = firstSquare->compareAreaTo(*secondSquare) < 0;
+
+	if(((isFirstMovingFasterHorizontally && !collideVertically) ||
+		(isFirstMovingFasterVertically && collideVertically)) && isSecondAreaBigger)
+	{
+		surviver = secondSquare;
+	}
 	else
-		return &m_second_shape;
-}
-
-const Shape* ShapesCollisionManager::getBottommostShape() const
-{
-	if(m_first_shape.getMaxY() >= m_second_shape.getMaxY())
-		return &m_first_shape;
-	else
-		return &m_second_shape;
-}
-
-bool ShapesCollisionManager::hasCollided() const
-{
-	return m_first_shape.isCollidingWith(m_second_shape) ||
-		   m_had_intersection_relation && hasShapeEdgesChanged() || 
-		   hasShapeRelationsChanged();
-}
-
-bool ShapesCollisionManager::hasShapeRelationsChanged() const
-{
-	return m_had_intersection_relation != m_has_intersection_relation || 
-		   m_had_inclusuion_relation != m_has_inclusuion_relation;
-}
-
-bool ShapesCollisionManager::hasShapeEdgesChanged() const
-{
-	return m_curr_leftmost_shape != m_prev_leftmost_shape ||
-		   m_curr_rightmost_shape != m_prev_rightmost_shape ||
-		   m_curr_topmost_shape != m_prev_topmost_shape ||
-		   m_curr_bottommost_shape != m_prev_bottommost_shape;
+	{
+		surviver = firstSquare;
+	}
+	
+	return surviver;
 }

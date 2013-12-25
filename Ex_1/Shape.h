@@ -2,7 +2,7 @@
 #define __SHAPE_H__
 
 #include <iostream>
-#include <typeinfo.h>
+//#include <typeinfo.h>
 #include <string.h>
 #include <vector>
 

@@ -65,29 +65,6 @@ void ShapesContainer::mergeShapes(Shape* firstShape, Shape* secondShape)
 	removeShape(secondShape);
 }
 
-Shape* ShapesContainer::collideShapes(Shape* firstShape, Shape* secondShape, bool collideVertically)
-{
-	Shape* surviver;
-
-	bool isFirstMovingFasterHorizontally = firstShape->compareHorizontalSpeedTo(*secondShape) > 0;
-	bool isFirstMovingFasterVertically = firstShape->compareVerticalSpeedTo(*secondShape) > 0;
-	bool isSecondAreaBigger = firstShape->compareAreaTo(*secondShape) < 0;
-
-	if(((isFirstMovingFasterHorizontally && collideVertically) ||
-		(isFirstMovingFasterVertically && !collideVertically)) && isSecondAreaBigger)
-	{
-		removeShape(firstShape);
-		surviver = secondShape;
-	}
-	else
-	{
-		removeShape(secondShape);
-		surviver = firstShape;
-	}
-	
-	return surviver;
-}
-
 Shape* ShapesContainer::findShape(const Point& coordinates, const Shape* except) const
 {
 	for (list<Shape*>::const_reverse_iterator it = m_shapes.crbegin(); it != m_shapes.crend(); ++it)

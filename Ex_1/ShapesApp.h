@@ -3,8 +3,10 @@
 
 #include "Menu.h"
 #include "ShapesContainer.h"
+#include "ShapesCollisionDetector.h"
 #include "ShapesCollisionManager.h"
 #include "Gotoxy.h"
+
 #include <conio.h>
 
 class ShapesApp

@@ -255,7 +255,7 @@ void ShapesApp::playDoubleAnimation(Shape* secondShape)
 {
 	bool hasCollided = false;
 	bool hasCollidedVertically = false;
-	ShapesCollisionManager collisionManager(*m_selected_shape, *secondShape);
+	ShapesCollisionDetector collisionManager(*m_selected_shape, *secondShape);
 
 	clrscr();
 	ScreenMatrix::getInstance().clearScreenMatrix();
@@ -307,7 +307,16 @@ Shape* ShapesApp::handleCollision(Shape* firstShape, Shape* secondShape, bool ha
 
 	ScreenMatrix::getInstance().printDiff();
 
-	surviver = m_shapes.collideShapes(firstShape, secondShape, hasCollidedVertically);
+	surviver = ShapesCollisionManager::getInstance().getCollisionSurviver(firstShape, secondShape, hasCollidedVertically);
+
+	if(surviver != firstShape)
+	{
+		m_shapes.removeShape(firstShape);
+	}
+	else
+	{
+		m_shapes.removeShape(secondShape);
+	}
 
 	return surviver;
 }

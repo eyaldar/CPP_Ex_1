@@ -2,7 +2,8 @@
 #define __SHAPES_CONTAINER_H__
 
 #include <list>
-#include "Square.h"
+
+#include "Shape.h"
 #include "ShapesFactory.h"
 
 #define NOT_FOUND NULL
@@ -24,7 +25,6 @@ public:
 	void removeShape(Shape*);
 	void promoteShape(Shape*);
 	void mergeShapes(Shape*, Shape*);
-	Shape* collideShapes(Shape*, Shape*, bool collideVertically);
 	
 	void drawShapes() const;
 	Shape* findShape(const Point& coordinates, const Shape* except = NULL) const;
