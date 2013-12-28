@@ -59,9 +59,11 @@ private:
 	Menu m_add_shape_menu;
 	ShapesContainer m_shapes;
 	Shape*	m_selected_shape;
+	bool m_is_dirty;
 
 	ShapesApp()
-	: m_selected_shape(NOT_FOUND)
+	: m_selected_shape(NOT_FOUND),
+	  m_is_dirty(false)
 	{
 		init();
 	}

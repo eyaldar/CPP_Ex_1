@@ -66,6 +66,8 @@ void ShapesApp::run()
 					{
 						Shape* shape = ShapeFactory::getInstance().create(typeName);
 						m_shapes.addShape(shape);
+
+						m_is_dirty = true;
 					}
 					catch(InvalidTypeNameException e)
 					{
@@ -96,17 +98,20 @@ void ShapesApp::run()
 
 					FileManager::getInstance().saveFile(filename, m_shapes, false);
 
+					m_is_dirty = false;
+
 					break;
 				}
 			case LOAD_TEXTUAL_FILE:
 				{
-					if(assureLoadOverride())
+					if(!m_is_dirty || assureLoadOverride())
 					{
 						string filename = FileManager::getInstance().getFileNameFromInput(TEXTUAL_FILE_EXTENSION);
 
 						try
 						{
 							FileManager::getInstance().loadFile(filename, m_shapes, false);
+							m_is_dirty = false;
 						}
 						catch(Exception& e)
 						{
@@ -120,18 +125,20 @@ void ShapesApp::run()
 					string filename = FileManager::getInstance().getFileNameFromInput(BINARY_FILE_EXTENSION);
 
 					FileManager::getInstance().saveFile(filename, m_shapes, true);
+					m_is_dirty = false;
 
 					break;
 				}
 			case LOAD_BINARY_FILE:
 				{
-					if(assureLoadOverride())
+					if(!m_is_dirty || assureLoadOverride())
 					{
 						string filename = FileManager::getInstance().getFileNameFromInput(BINARY_FILE_EXTENSION);
 
 						try
 						{
 							FileManager::getInstance().loadFile(filename, m_shapes, true);
+							m_is_dirty = false;
 						}
 						catch(Exception& e)
 						{
@@ -176,11 +183,13 @@ void ShapesApp::runShapeMenu()
 			case REMOVE_Shape:
 			{
 				m_shapes.removeShape(m_selected_shape);
+				m_is_dirty = true;
 				break;
 			}
 			case MOVE_TOP:
 			{
 				m_shapes.promoteShape(m_selected_shape);
+				m_is_dirty = true;
 				break;
 			}
 			case MERGE_SHAPE:
@@ -191,7 +200,10 @@ void ShapesApp::runShapeMenu()
 				Shape* secondShape =  m_shapes.findShape(selectionPoint, m_selected_shape);
 
 				if(secondShape != NOT_FOUND)
+				{
 					m_shapes.mergeShapes(m_selected_shape, secondShape);
+					m_is_dirty = true;
+				}
 
 				break;
 			}
@@ -200,6 +212,8 @@ void ShapesApp::runShapeMenu()
 				m_selected_shape->setShiftByInput();
 
 				playAnimation();
+
+				m_is_dirty = true;
 
 				break;
 			}
@@ -213,6 +227,8 @@ void ShapesApp::runShapeMenu()
 				if(secondShape != NOT_FOUND)
 				{
 					playDoubleAnimation(secondShape);
+
+					m_is_dirty = true;
 				}
 
 				break;
