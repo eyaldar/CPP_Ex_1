@@ -67,7 +67,7 @@ Shape* ShapesCollisionManager::getCollisionSurviver(Square* firstSquare, Square*
 	}
 }
 
-bool isFirstShapeMovingFaster(const Shape* firstShape, const Shape* secondShape, bool collideVertically)
+bool ShapesCollisionManager::isFirstShapeMovingFaster(const Shape* firstShape, const Shape* secondShape, bool collideVertically)
 {
 	bool isFirstMovingFasterHorizontally = firstShape->compareHorizontalSpeedTo(*secondShape) > 0;
 	bool isFirstMovingFasterVertically = firstShape->compareVerticalSpeedTo(*secondShape) > 0;
