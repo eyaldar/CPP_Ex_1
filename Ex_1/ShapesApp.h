@@ -6,6 +6,7 @@
 #include "ShapesCollisionDetector.h"
 #include "ShapesCollisionManager.h"
 #include "Gotoxy.h"
+#include "FileManager.h"
 
 #include <conio.h>
 

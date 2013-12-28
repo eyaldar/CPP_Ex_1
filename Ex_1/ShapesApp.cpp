@@ -1,8 +1,8 @@
 #include "ShapesApp.h"
 using namespace std;
 
-static const string BINARY_FILE_NAME = "shapes.dat";
-static const string TEXTUAL_FILE_NAME = "shapes.txt";
+static const string BINARY_FILE_EXTENSION = ".dat";
+static const string TEXTUAL_FILE_EXTENSION = ".txt";
 
 void ShapesApp::init()
 {
@@ -85,13 +85,9 @@ void ShapesApp::run()
 
 			case SAVE_TEXTUAL_FILE:
 				{
-					ofstream file(TEXTUAL_FILE_NAME, ios_base::trunc | ios_base::out);
+					string filename = FileManager::getInstance().getFileNameFromInput(TEXTUAL_FILE_EXTENSION);
 
-					if(file)
-					{
-						m_shapes.save(file);
-						file.close();
-					}
+					FileManager::getInstance().saveFile(filename, m_shapes, false);
 
 					break;
 				}
@@ -99,38 +95,27 @@ void ShapesApp::run()
 				{
 					if(assureLoadOverride())
 					{
-						ifstream file(TEXTUAL_FILE_NAME, ios_base::in);
+						string filename = FileManager::getInstance().getFileNameFromInput(TEXTUAL_FILE_EXTENSION);
 
-						if(file)
-						{
-							m_shapes.load(file);
-							file.close();
-						}
+						FileManager::getInstance().loadFile(filename, m_shapes, false);
 					}
 					break;
 				}
 			case SAVE_BINARY_FILE:
 				{
-					ofstream file(BINARY_FILE_NAME, ios_base::trunc | ios_base::out | ios_base::binary);
+					string filename = FileManager::getInstance().getFileNameFromInput(BINARY_FILE_EXTENSION);
 
-					if(file)
-					{
-						m_shapes.save(file);
-						file.close();
-					}
+					FileManager::getInstance().saveFile(filename, m_shapes, true);
+
 					break;
 				}
 			case LOAD_BINARY_FILE:
 				{
 					if(assureLoadOverride())
 					{
-						ifstream file(BINARY_FILE_NAME, ios_base::in | ios_base::binary);
+						string filename = FileManager::getInstance().getFileNameFromInput(BINARY_FILE_EXTENSION);
 
-						if(file)
-						{
-							m_shapes.load(file);
-							file.close();
-						}
+						FileManager::getInstance().loadFile(filename, m_shapes, true);
 					}
 					break;
 				}
