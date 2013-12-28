@@ -7,6 +7,7 @@
 #include "ShapesCollisionManager.h"
 #include "Gotoxy.h"
 #include "FileManager.h"
+#include "FileNotFoundException.h"
 
 #include <conio.h>
 

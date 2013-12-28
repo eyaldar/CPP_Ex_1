@@ -56,10 +56,12 @@ void FileManager::loadFile(const string& filename, ShapesContainer& container, b
 		inFile.open(filename, ios_base::in);
 	}
 
-	if(inFile)
+	if(!inFile)
 	{
-		container.load(inFile);
-
-		inFile.close();
+		throw FileNotFoundException(filename);
 	}
+
+	container.load(inFile);
+
+	inFile.close();
 }

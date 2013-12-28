@@ -97,7 +97,17 @@ void ShapesApp::run()
 					{
 						string filename = FileManager::getInstance().getFileNameFromInput(TEXTUAL_FILE_EXTENSION);
 
-						FileManager::getInstance().loadFile(filename, m_shapes, false);
+						try
+						{
+							FileManager::getInstance().loadFile(filename, m_shapes, false);
+						}
+						catch(FileNotFoundException e)
+						{
+							e.print();
+
+							cout << "Press ESC to continue...";
+							waitForEscape();
+						}
 					}
 					break;
 				}
@@ -115,7 +125,16 @@ void ShapesApp::run()
 					{
 						string filename = FileManager::getInstance().getFileNameFromInput(BINARY_FILE_EXTENSION);
 
-						FileManager::getInstance().loadFile(filename, m_shapes, true);
+						try
+						{
+							FileManager::getInstance().loadFile(filename, m_shapes, true);
+						}
+						catch(FileNotFoundException e)
+						{
+							e.print();
+							cout << "Press ESC to continue...";
+							waitForEscape();
+						}
 					}
 					break;
 				}
