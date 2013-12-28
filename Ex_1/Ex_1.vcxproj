@@ -68,6 +68,7 @@
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="FileNotFoundException.cpp" />
     <ClCompile Include="Gotoxy.cpp" />
+    <ClCompile Include="InvalidTypeNameException.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Point.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include="Square.h" />
     <ClInclude Include="ShapesApp.h" />
     <ClInclude Include="ShapesContainer.h" />
+    <ClInclude Include="InvalidTypeNameException.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

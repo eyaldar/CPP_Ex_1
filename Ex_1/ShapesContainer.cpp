@@ -124,14 +124,22 @@ void ShapesContainer::load(ifstream& inFile)
 
 	// Loads the shapes num
 	inFile.read((char*)&size, sizeof(size));
-
-	// Load the shapes
-	for (int shapeIndex = 0; shapeIndex < size; shapeIndex++)
+	try
 	{
-		ShapeFactory::getInstance().getTypeFromFile(inFile, typeName);
+		// Load the shapes
+		for (int shapeIndex = 0; shapeIndex < size; shapeIndex++)
+		{
+			ShapeFactory::getInstance().getTypeFromFile(inFile, typeName);
 
-		Shape* shape = ShapeFactory::getInstance().create(typeName, &inFile);
+			Shape* shape = ShapeFactory::getInstance().create(typeName, &inFile);
 
-		addShape(shape);
+			addShape(shape);
+		}
+	}
+	catch(InvalidTypeNameException e)
+	{
+		destruct();
+
+		throw e;
 	}
 }

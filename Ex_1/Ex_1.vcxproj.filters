@@ -60,6 +60,9 @@
     <ClCompile Include="FileNotFoundException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InvalidTypeNameException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gotoxy.h">
@@ -108,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InvalidTypeNameException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

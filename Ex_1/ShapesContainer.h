@@ -5,6 +5,7 @@
 
 #include "Shape.h"
 #include "ShapesFactory.h"
+#include "InvalidTypeNameException.h"
 
 #define NOT_FOUND NULL
 
@@ -32,7 +33,7 @@ public:
 
 	// File operations
 	void save(std::ofstream& outFile) const;
-	void load(std::ifstream& inFile);
+	void load(std::ifstream& inFile) throw (InvalidTypeNameException);
 
 private:	
 

@@ -8,6 +8,7 @@
 #include "Gotoxy.h"
 #include "FileManager.h"
 #include "FileNotFoundException.h"
+#include "InvalidTypeNameException.h"
 
 #include <conio.h>
 
@@ -84,6 +85,8 @@ private:
 	bool assureLoadOverride() const;
 
 	void moveInScreen(Shape*) const;
+
+	void printException(const Exception& e) const;
 };
 
 #endif

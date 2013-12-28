@@ -7,6 +7,7 @@
 #include "Shape.h"
 #include "Square.h"
 #include "Diamond.h"
+#include "InvalidTypeNameException.h"
 
 class ShapeFactory{
 public:
@@ -16,9 +17,9 @@ public:
 		return instance;
 	}
 
-	Shape* create(const char* typeName, std::ifstream* inFile = NULL);
+	Shape* create(const char* typeName, std::ifstream* inFile = NULL) const throw(InvalidTypeNameException);
 
-	char* getTypeFromFile(std::ifstream& inFile, char* buf);
+	char* getTypeFromFile(std::ifstream& inFile, char* buf) const;
 
 private:
 	ShapeFactory() {}

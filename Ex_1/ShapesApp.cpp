@@ -62,8 +62,15 @@ void ShapesApp::run()
 					int chosenType = m_add_shape_menu.choose();
 					const char* typeName = m_add_shape_menu.get(chosenType);
 
-					Shape* shape = ShapeFactory::getInstance().create(typeName);
-					m_shapes.addShape(shape);
+					try
+					{
+						Shape* shape = ShapeFactory::getInstance().create(typeName);
+						m_shapes.addShape(shape);
+					}
+					catch(InvalidTypeNameException e)
+					{
+						printException(e);
+					}
 				}
 				// Allows this case to continue to the next case, as it needs to be printed anyway...
 			case DRAW_SHAPES:
@@ -101,12 +108,9 @@ void ShapesApp::run()
 						{
 							FileManager::getInstance().loadFile(filename, m_shapes, false);
 						}
-						catch(FileNotFoundException e)
+						catch(Exception& e)
 						{
-							e.print();
-
-							cout << "Press ESC to continue...";
-							waitForEscape();
+							printException(e);
 						}
 					}
 					break;
@@ -129,11 +133,9 @@ void ShapesApp::run()
 						{
 							FileManager::getInstance().loadFile(filename, m_shapes, true);
 						}
-						catch(FileNotFoundException e)
+						catch(Exception& e)
 						{
-							e.print();
-							cout << "Press ESC to continue...";
-							waitForEscape();
+							printException(e);
 						}
 					}
 					break;
@@ -373,4 +375,12 @@ bool ShapesApp::assureLoadOverride() const
 	}
 
 	return answer == YES;
+}
+
+void ShapesApp::printException(const Exception& e) const
+{
+	e.print();
+
+	cout << "Press ESC to continue...";
+	waitForEscape();
 }

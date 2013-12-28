@@ -18,7 +18,8 @@ public:
 	std::string getFileNameFromInput(const std::string& fileExtension) const;
 
 	void saveFile(const std::string& filename, const ShapesContainer& container, bool openBinary) const;
-	void loadFile(const std::string& filename, ShapesContainer& container, bool openBinary) const throw (FileNotFoundException);
+	void loadFile(const std::string& filename, ShapesContainer& container, bool openBinary) const 
+		throw (FileNotFoundException, InvalidTypeNameException);
 
 private:
 	FileManager() {}

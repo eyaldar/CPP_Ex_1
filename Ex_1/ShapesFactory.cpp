@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Shape* ShapeFactory::create(const char* typeName, ifstream* inFile)
+Shape* ShapeFactory::create(const char* typeName, ifstream* inFile) const
 {
 	// Analyze type
 	//if(strncmp(typeName, Square::TYPE_NAME, TYPELEN) == 0)
@@ -16,10 +16,10 @@ Shape* ShapeFactory::create(const char* typeName, ifstream* inFile)
 		return new Diamond(inFile);
 	}
 
-	throw "Invalid type name!";
+	throw InvalidTypeNameException(typeName);
 }
 
-char* ShapeFactory::getTypeFromFile(std::ifstream& inFile, char* buf)
+char* ShapeFactory::getTypeFromFile(std::ifstream& inFile, char* buf) const
 {
 	//Read type
 	inFile.read((char*)buf, TYPELEN);
