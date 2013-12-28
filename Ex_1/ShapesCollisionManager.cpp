@@ -28,64 +28,50 @@ Shape* ShapesCollisionManager::getCollisionSurviver(Shape* firstShape, Shape* se
 
 Shape* ShapesCollisionManager::getCollisionSurviver(Diamond* firstDiamond, Diamond* secondDiamond, bool collideVertically)
 {
-	Shape* surviver;
-
-	bool isFirstMovingFasterHorizontally = firstDiamond->compareHorizontalSpeedTo(*secondDiamond) > 0;
-	bool isFirstMovingFasterVertically = firstDiamond->compareVerticalSpeedTo(*secondDiamond) > 0;
+	// in case the area is bigger we know the radius is bound to be bigger.
 	bool isFirstAreaBigger = firstDiamond->compareAreaTo(*secondDiamond) > 0;
 
-	if(((isFirstMovingFasterHorizontally && !collideVertically) ||
-		(isFirstMovingFasterVertically && collideVertically)) && isFirstAreaBigger)
+	if(isFirstShapeMovingFaster(firstDiamond, secondDiamond, collideVertically) && isFirstAreaBigger)
 	{
-		surviver = firstDiamond;
+		return firstDiamond;
 	}
 	else
 	{
-		surviver = secondDiamond;
+		return secondDiamond;
 	}
-	
-	return surviver;
-
 }
 
 Shape* ShapesCollisionManager::getCollisionSurviver(Square* square, Diamond* diamond, bool collideVertically)
 {
-	Shape* surviver;
-
-	bool isSquareMovingFasterHorizontally = square->compareHorizontalSpeedTo(*diamond) > 0;
-	bool isSquareMovingFasterVertically = square->compareVerticalSpeedTo(*diamond) > 0;
-
-	if(((isSquareMovingFasterHorizontally && !collideVertically) ||
-		(isSquareMovingFasterVertically && collideVertically)))
+	if(isFirstShapeMovingFaster(square, diamond, collideVertically))
 	{
-		surviver = square;
+		return square;
 	}
 	else
 	{
-		surviver = diamond;
+		return diamond;
 	}
-	
-	return surviver;
-
 }
 
 Shape* ShapesCollisionManager::getCollisionSurviver(Square* firstSquare, Square* secondSquare, bool collideVertically)
 {
-	Shape* surviver;
-
-	bool isFirstMovingFasterHorizontally = firstSquare->compareHorizontalSpeedTo(*secondSquare) > 0;
-	bool isFirstMovingFasterVertically = firstSquare->compareVerticalSpeedTo(*secondSquare) > 0;
 	bool isSecondAreaBigger = firstSquare->compareAreaTo(*secondSquare) < 0;
 
-	if(((isFirstMovingFasterHorizontally && !collideVertically) ||
-		(isFirstMovingFasterVertically && collideVertically)) && isSecondAreaBigger)
+	if(isFirstShapeMovingFaster(firstSquare, secondSquare, collideVertically)  && isSecondAreaBigger)
 	{
-		surviver = secondSquare;
+		return secondSquare;
 	}
 	else
 	{
-		surviver = firstSquare;
+		return firstSquare;
 	}
-	
-	return surviver;
+}
+
+bool isFirstShapeMovingFaster(const Shape* firstShape, const Shape* secondShape, bool collideVertically)
+{
+	bool isFirstMovingFasterHorizontally = firstShape->compareHorizontalSpeedTo(*secondShape) > 0;
+	bool isFirstMovingFasterVertically = firstShape->compareVerticalSpeedTo(*secondShape) > 0;
+
+	return (isFirstMovingFasterHorizontally && !collideVertically) ||
+		   (isFirstMovingFasterVertically && collideVertically);
 }

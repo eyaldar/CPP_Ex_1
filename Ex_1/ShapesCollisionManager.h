@@ -25,6 +25,8 @@ private:
 	Shape* getCollisionSurviver(Diamond*, Diamond*, bool collideVertically);
 	Shape* getCollisionSurviver(Square*, Diamond*, bool collideVertically);
 	Shape* getCollisionSurviver(Square*, Square*, bool collideVertically);
+
+	bool isFirstShapeMovingFaster(const Shape*, const Shape*, bool collideVertically);
 };
 
 #endif
